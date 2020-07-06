@@ -22,40 +22,50 @@
 
 
 
-async function setUp() {
+async function setUp(height, width) {
 
-   const categories = await getCategories(100);
-   const selectCats = await getSelects(categories);
-   const titles = await getClues(selectCats);
+    const categories = await getCategories(100);
+    const selectCats = await getSelects(categories);
+    const titles = await getClues(selectCats, height, width);
 
-   console.log(titles);
-   
+    console.log(titles);
+
 
 }
 
 setUp();
 
+
+
+// - setting up the 2D array for the board
+const makeBoard = (HEIGHT, WIDTH) => {
+    / - new array for the height length (board[y][x])
+const board = new Array(HEIGHT);
+  for (let i = 0; i < HEIGHT; i++) {
+    //  - new array for the width length (board[y][x])
+    board[i] = new Array(WIDTH);
+  }
+
+  for (let j = 0; j < WIDTH; j++) {
+    for (let k = 0; k < HEIGHT; k++) {
+      board[k][j] = null;
+    }
+  }
+};
+
 async function getClues(selectCats) {
     const titles = [];
-    // console.log(selectCats[1][1]);
-    
-       for (let i = 0; i < 6; i++) {
-
+    for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 5; j++) {
-            // titles.push(selectCats[i][j].category.title)
-            // titles.push(selectCats[i][j].answer)
-            // titles.push(selectCats[i][j].question)
-            titles.push({title: selectCats[i][j].category.title, question: selectCats[i][j].question, answer: selectCats[i][j].answer })
-            
-
+            titles.push({
+                title: selectCats[i][j].category.title,
+                question: selectCats[i][j].question,
+                answer: selectCats[i][j].answer
+            })
         }
-
-
     }
 
     return titles;
-    
-    
 }
 
 
@@ -69,11 +79,8 @@ async function getSelects(categories) {
             }
         });
         selectCats.push(res.data);
-
     }
-
     return selectCats;
-
 }
 
 
@@ -85,15 +92,9 @@ async function getCategories(num) {
             count: num
         }
     });
-    // const res2 = await axios.get("https://jservice.io/api/clues", {
-    //     params: {
-    //         category: 5412
-    //     }
-    // });
 
     const list = res.data
 
-    
     for (const item of list) {
         categories.push({
             id: item.id,
@@ -104,64 +105,7 @@ async function getCategories(num) {
 
     return categories;
 
-
-
-    // for (let i = 0; i < 6; i++) {
-    //     let randomNum = Math.floor(Math.random() * 100);
-    //     const res = await axios.get("https://jservice.io/api/clues", {
-    //         params: {
-    //             category: categories[randomNum].id
-    //         }
-    //     });
-    //     selectCats.push(res.data);
-
-    // }
-
-
-    // for (let i = 0; i < 7; i++) {
-
-    //     for (let j = 0; j < 5; j++) {
-    //         console.log(selectCats[i][j].category.title);
-    //         titles.push(selectCats[i][j].category.title)
-
-    //     }
-
-
-    // }
-
-
 };
-
-
-
-
-
-
-
-
-// async function getClues() {
-
-//     console.log(categories);
-
-
-//     let randomNum = Math.floor(Math.random() * 100);
-//     console.log(categories[3].title);
-//     console.log(categories[3].id);
-//     for (let i = 0; i < 7; i++) {
-//         // const res = await axios.get("https://jservice.io/api/clues", { params: { category: categories[randomNum].id } });
-//         // selectCats.push(res);
-//         // console.log(categories[randomNum]);
-
-
-//     }
-// // console.log(selectCats);
-
-
-
-// }
-
-// // getClues();
-
 
 
 

@@ -1,5 +1,6 @@
 // categories is the main data structure for the app; it looks like this:
 
+
 //  [
 //    { title: "Math",
 //      clues: [
@@ -23,50 +24,41 @@
 
 
 async function setUp(height, width) {
+    const HEIGHT = height;
+    const WIDTH = width
 
     const categories = await getCategories(100);
     const selectCats = await getSelects(categories);
-    const titles = await getClues(selectCats, height, width);
+    const board = await getClues(selectCats, HEIGHT, WIDTH);
 
-    console.log(titles);
-
+    console.log(board);
 
 }
 
-setUp();
+setUp(5, 6);
 
 
 
-// - setting up the 2D array for the board
-const makeBoard = (HEIGHT, WIDTH) => {
-    / - new array for the height length (board[y][x])
+
+async function getClues(selectCats, HEIGHT, WIDTH) {
 const board = new Array(HEIGHT);
   for (let i = 0; i < HEIGHT; i++) {
-    //  - new array for the width length (board[y][x])
     board[i] = new Array(WIDTH);
   }
 
   for (let j = 0; j < WIDTH; j++) {
     for (let k = 0; k < HEIGHT; k++) {
-      board[k][j] = null;
+      board[k][j] = {
+        title: selectCats[j][k].category.title,
+        question: selectCats[j][k].question,
+        answer: selectCats[j][k].answer
+    };
     }
   }
+  return board;
 };
 
-async function getClues(selectCats) {
-    const titles = [];
-    for (let i = 0; i < 6; i++) {
-        for (let j = 0; j < 5; j++) {
-            titles.push({
-                title: selectCats[i][j].category.title,
-                question: selectCats[i][j].question,
-                answer: selectCats[i][j].answer
-            })
-        }
-    }
 
-    return titles;
-}
 
 
 async function getSelects(categories) {

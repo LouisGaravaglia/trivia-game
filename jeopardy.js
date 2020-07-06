@@ -1,5 +1,6 @@
 // categories is the main data structure for the app; it looks like this:
 
+
 //  [
 //    { title: "Math",
 //      clues: [
@@ -23,55 +24,95 @@
 
 
 async function setUp(height, width) {
+    const HEIGHT = height;
+    const WIDTH = width
 
     const categories = await getCategories(100);
-    const selectCats = await getSelects(categories);
-    const titles = await getClues(selectCats, height, width);
+    const selectCats = await getSelects(categories, WIDTH);
+    const board = await getClues(selectCats, HEIGHT, WIDTH);
+    makeHtmlBoard(HEIGHT, WIDTH, board);
 
-    console.log(titles);
-
+    
 
 }
 
-setUp();
+setUp(5, 6);
 
 
 
-// - setting up the 2D array for the board
-const makeBoard = (HEIGHT, WIDTH) => {
-    / - new array for the height length (board[y][x])
+function makeHtmlBoard(height, width, board) {
+    const HEIGHT = height;
+    const WIDTH = width;
+    const BOARD = board;
+    const htmlBoard = document.querySelector("#board");
+    const top = document.createElement("tr");
+   
+    top.setAttribute("id", "column-top");
+
+    for (let x = 0; x < WIDTH; x++) {
+      const headCell = document.createElement("td");
+      headCell.setAttribute("id", x);
+      top.append(headCell);
+    }
+
+    htmlBoard.append(top);
+   
+    for (let y = 0; y < HEIGHT; y++) {
+      const row = document.createElement("tr");
+
+      for (let x = 0; x < WIDTH; x++) {
+        const cell = document.createElement("td");
+        cell.classList.add("card-box");
+        
+        const front = document.createElement("div");
+        front.setAttribute("data-key",`${y}-${x}`)
+        front.classList.add("card-front");
+        const frontH3 = document.createElement("h3");
+        frontH3.innerText = board[y][x].question;
+
+        const back = document.createElement("div");
+        back.classList.add("card-back");
+        const backP = document.createElement("p");
+        backP.innerText = board[y][x].answer;
+
+        front.append(frontH3);
+        back.append(backP)
+        cell.append(front);
+        cell.append(back)
+        row.append(cell);
+      }
+ 
+      htmlBoard.append(row);
+    }
+}
+
+
+
+async function getClues(selectCats, HEIGHT, WIDTH) {
 const board = new Array(HEIGHT);
   for (let i = 0; i < HEIGHT; i++) {
-    //  - new array for the width length (board[y][x])
     board[i] = new Array(WIDTH);
   }
 
   for (let j = 0; j < WIDTH; j++) {
     for (let k = 0; k < HEIGHT; k++) {
-      board[k][j] = null;
+      board[k][j] = {
+        title: selectCats[j][k].category.title,
+        question: selectCats[j][k].question,
+        answer: selectCats[j][k].answer
+    };
     }
   }
+  return board;
 };
 
-async function getClues(selectCats) {
-    const titles = [];
-    for (let i = 0; i < 6; i++) {
-        for (let j = 0; j < 5; j++) {
-            titles.push({
-                title: selectCats[i][j].category.title,
-                question: selectCats[i][j].question,
-                answer: selectCats[i][j].answer
-            })
-        }
-    }
-
-    return titles;
-}
 
 
-async function getSelects(categories) {
+
+async function getSelects(categories, width) {
     const selectCats = [];
-    for (let i = 0; i < 6; i++) {
+    const WIDTH = width;
+    for (let i = 0; i < WIDTH; i++) {
         let randomNum = Math.floor(Math.random() * 100);
         const res = await axios.get("https://jservice.io/api/clues", {
             params: {

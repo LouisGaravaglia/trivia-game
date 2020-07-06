@@ -30,7 +30,7 @@ async function setUp(height, width) {
     const categories = await getCategories(100);
     const selectCats = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
-    await makeHtmlBoard(HEIGHT, WIDTH, board);
+    makeHtmlBoard(HEIGHT, WIDTH, board);
 
     
 
@@ -62,6 +62,8 @@ function makeHtmlBoard(height, width, board) {
 
       for (let x = 0; x < WIDTH; x++) {
         const cell = document.createElement("td");
+        cell.classList.add("card-box");
+        
         const front = document.createElement("div");
         front.setAttribute("data-key",`${y}-${x}`)
         front.classList.add("card-front");

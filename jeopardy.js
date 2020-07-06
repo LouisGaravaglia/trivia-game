@@ -18,7 +18,97 @@
 //    ...
 //  ]
 
-let categories = [];
+
+
+
+
+async function setUp(height, width) {
+
+    const categories = await getCategories(100);
+    const selectCats = await getSelects(categories);
+    const titles = await getClues(selectCats, height, width);
+
+    console.log(titles);
+
+
+}
+
+setUp();
+
+
+
+// - setting up the 2D array for the board
+const makeBoard = (HEIGHT, WIDTH) => {
+    / - new array for the height length (board[y][x])
+const board = new Array(HEIGHT);
+  for (let i = 0; i < HEIGHT; i++) {
+    //  - new array for the width length (board[y][x])
+    board[i] = new Array(WIDTH);
+  }
+
+  for (let j = 0; j < WIDTH; j++) {
+    for (let k = 0; k < HEIGHT; k++) {
+      board[k][j] = null;
+    }
+  }
+};
+
+async function getClues(selectCats) {
+    const titles = [];
+    for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < 5; j++) {
+            titles.push({
+                title: selectCats[i][j].category.title,
+                question: selectCats[i][j].question,
+                answer: selectCats[i][j].answer
+            })
+        }
+    }
+
+    return titles;
+}
+
+
+async function getSelects(categories) {
+    const selectCats = [];
+    for (let i = 0; i < 6; i++) {
+        let randomNum = Math.floor(Math.random() * 100);
+        const res = await axios.get("https://jservice.io/api/clues", {
+            params: {
+                category: categories[randomNum].id
+            }
+        });
+        selectCats.push(res.data);
+    }
+    return selectCats;
+}
+
+
+
+async function getCategories(num) {
+    const categories = [];
+    const res = await axios.get("https://jservice.io/api/categories", {
+        params: {
+            count: num
+        }
+    });
+
+    const list = res.data
+
+    for (const item of list) {
+        categories.push({
+            id: item.id,
+            title: item.title
+        });
+
+    }
+
+    return categories;
+
+};
+
+
+
 
 
 /** Get NUM_CATEGORIES random category from API.
@@ -26,8 +116,7 @@ let categories = [];
  * Returns array of category ids
  */
 
-function getCategoryIds() {
-}
+function getCategoryIds() {}
 
 /** Return object with data about a category:
  *
@@ -41,8 +130,7 @@ function getCategoryIds() {
  *   ]
  */
 
-function getCategory(catId) {
-}
+function getCategory(catId) {}
 
 /** Fill the HTML table#jeopardy with the categories & cells for questions.
  *
@@ -52,8 +140,7 @@ function getCategory(catId) {
  *   (initally, just show a "?" where the question/answer would go.)
  */
 
-async function fillTable() {
-}
+async function fillTable() {}
 
 /** Handle clicking on a clue: show the question or answer.
  *
@@ -63,8 +150,7 @@ async function fillTable() {
  * - if currently "answer", ignore click
  * */
 
-function handleClick(evt) {
-}
+function handleClick(evt) {}
 
 /** Wipe the current Jeopardy board, show the loading spinner,
  * and update the button used to fetch data.
@@ -76,8 +162,7 @@ function showLoadingView() {
 
 /** Remove the loading spinner and update the button used to fetch data. */
 
-function hideLoadingView() {
-}
+function hideLoadingView() {}
 
 /** Start game:
  *
@@ -86,8 +171,7 @@ function hideLoadingView() {
  * - create HTML table
  * */
 
-async function setupAndStart() {
-}
+async function setupAndStart() {}
 
 /** On click of start / restart button, set up game. */
 

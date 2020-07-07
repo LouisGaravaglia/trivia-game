@@ -30,13 +30,53 @@ async function setUp(height, width) {
     const categories = await getCategories(100);
     const selectCats = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
-    makeHtmlBoard(HEIGHT, WIDTH, board);
+    const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board);
+    
+    listening(htmlBoard, HEIGHT);
+    
 
     
 
 }
 
 setUp(5, 6);
+
+// function listening(htmlBoard, width) {
+//     const WIDTH = width
+
+//     console.log(htmlBoard.children[1].children[1].firstChild);
+
+//     for (let i = 0; i < WIDTH; i++) {
+        
+//         console.log(htmlBoard.children[i+1].children[i].firstChild.innerText);
+//         console.log(htmlBoard.children[i+1].children[i].lastChild.innerText);
+        
+//     }
+
+
+// }
+
+function listening(htmlBoard, height, width) {
+    const HEIGHT = height
+    const WIDTH = width;
+
+    
+
+    for (let i = 1; i <= HEIGHT; i++) {
+        
+        console.log(htmlBoard.children[i].children);
+
+        for (let j = 0; j <= WIDTH; j++) {
+        
+            console.log(htmlBoard.children[i].children[0]);
+            
+        }
+        
+    }
+
+
+}
+
 
 
 
@@ -68,12 +108,12 @@ function makeHtmlBoard(height, width, board) {
         front.setAttribute("data-key",`${y}-${x}`)
         front.classList.add("card-front");
         const frontH3 = document.createElement("h3");
-        frontH3.innerText = board[y][x].question;
+        frontH3.innerText = BOARD[y][x].question;
 
         const back = document.createElement("div");
         back.classList.add("card-back");
         const backP = document.createElement("p");
-        backP.innerText = board[y][x].answer;
+        backP.innerText = BOARD[y][x].answer;
 
         front.append(frontH3);
         back.append(backP)
@@ -84,6 +124,7 @@ function makeHtmlBoard(height, width, board) {
  
       htmlBoard.append(row);
     }
+    return htmlBoard;
 }
 
 

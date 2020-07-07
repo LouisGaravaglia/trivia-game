@@ -26,13 +26,14 @@
 async function setUp(height, width) {
     const HEIGHT = height;
     const WIDTH = width
+    const TIME_LIMIT = 5;
 
     const categories = await getCategories(100);
     const selectCats = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
     const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board);
 
-    listening(htmlBoard, HEIGHT);
+    listening(TIME_LIMIT);
 
 
 
@@ -58,46 +59,103 @@ setUp(5, 6);
 
 
 
-function listening(htmlBoard, height, width) {
-    const cards = document.querySelectorAll(".card-front");
-    // const HEIGHT = height
-    // const WIDTH = width;
+function listening(TIME_LIMIT) {
+    const cards = document.querySelectorAll(".money-amount");
+    const cardContainer = document.querySelector(".card-container");
+
+
+
+
+
+
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
-            let question;
-            let answer;
-            if (e.target.dataset.name === "H4") {
-                console.log("hit an H4");
-                question = e.target.parentElement;
-                answer = e.target.parentElement.parentElement.lastChild.firstChild;
+            console.log(e);
+            if (e.target.localName === "h1") {
+                money = e.target.parentElement;
+                question = e.target.parentElement.parentElement.children[1];
+                passingQuestion = question.innerText;
+                answer = e.target.parentElement.parentElement.lastChild;
             } else {
-                question = e.target;
-                console.log("hit a card front div");
-                answer = e.target.parentElement.lastChild.firstChild;
+                money = e.target;
+                question = e.target.parentElement.children[1];
+                passingQuestion = question.innerText;
+                answer = e.target.parentElement.lastChild;
             }
 
-            if (question.classList.contains("flip")) question.classList.add("flip");
-            if (answer.classList.contains("flip")) answer.classList.remove("flip");
 
+
+            money.classList.add("flip");
+            question.classList.toggle("flip");
+            clockTicking(TIME_LIMIT, passingQuestion);
+            setTimeout(() => {
+
+                question.classList.toggle("flip");
+                answer.classList.remove("flip");
+            }, 5000);
         })
     })
-
-
-
-    // for (let i = 1; i <= HEIGHT; i++) {
-
-    //     console.log(htmlBoard.children[i].children);
-
-    //     for (let j = 0; j <= WIDTH; j++) {
-
-    //         console.log(htmlBoard.children[i].children[0]);
-
-    //     }
-
-    // }
-
-
 }
+
+
+function typeAnswerInput(clockContainer, passingQuestion) {
+    const displayQuestion = document.createElement("h1");
+    displayQuestion.innerText = passingQuestion;
+    displayQuestion.classList.add("display-question");
+    const typeAnswer = document.createElement("div");
+    typeAnswer.classList.add("input-group", "mb-3", "type-answer");
+    const input = document.createElement("input");
+    input.placeholder = "What is ...";
+    input.type = "text";
+    input.classList.add("form-control");
+
+    typeAnswer.append(input);
+    clockContainer.append(displayQuestion);
+    clockContainer.append(typeAnswer);
+    return clockContainer;
+}
+
+
+
+
+
+
+function clockTicking(TIME_LIMIT, passingQuestion) {
+    const body = document.querySelector("body");
+    let timePassed = 0;
+
+    const clockContainer = document.createElement("div");
+    clockContainer.classList.add("clock-container");
+
+    const clockBox = document.createElement("div");
+    clockBox.classList.add("clock-box");
+
+    const clock = document.createElement("h1");
+    clock.classList.add("starting", "clock");
+    clock.innerText = `00:0${TIME_LIMIT}`;
+
+    clockBox.append(clock);
+    clockContainer.append(clockBox);
+    newClockContainer = typeAnswerInput(clockContainer, passingQuestion);
+    body.append(newClockContainer);
+
+    let timer = setInterval(() => {
+        timePassed = timePassed += 1;
+        timeLeft = TIME_LIMIT - timePassed;
+
+        clock.innerText = `00:0${timeLeft}`;
+
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            clockContainer.classList.add("flip");
+        }
+    }, 1000);
+}
+
+
+
+
+
 
 
 
@@ -144,10 +202,11 @@ function makeHtmlBoard(height, width, board) {
 
             const answerDiv = document.createElement("div");
             answerDiv.classList.add("card-back");
+            answerDiv.classList.add("flip");
 
             const answerText = document.createElement("p");
             answerText.innerText = BOARD[y][x].answer;
-            answerText.classList.add("flip");
+            // answerText.classList.add("flip");
 
             moneyDiv.append(moneyText);
             questionDiv.append(questionText);

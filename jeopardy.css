@@ -21,6 +21,63 @@
   display: none;
 }
 
+.clock-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.clock-box {
+  position: relative;
+  top: 0;
+  left: 0;
+  background-color: rgba(72, 22, 255, 0.9);
+}
+
+.clock {
+position: absolute;
+display: block;
+top: 20px;
+left: 0;
+width: 100vw;
+height: 100vh;
+z-index: 1;
+text-align: center;
+font-size: 10vw;
+}
+
+.display-question {
+  position: absolute;
+  top: 200px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  text-align: center;
+  font-size: 3vw;
+  }
+
+  .type-answer {
+    position: absolute;
+    top: 400px;
+    left: 0;
+    width: 60vw;
+    height: 100vh;
+    z-index: 1;
+    text-align: center;
+    font-size: 3vw;
+    }
+
+.starting {
+  color: #21bf73;
+  /* border: 1px solid #21bf73; */
+}
+
+.danger {
+  color: #9a1f40;
+  /* border: 1px solid #9a1f40; */
+}
+
 .money-amount {
   position: absolute;
   font-size: .8vw;

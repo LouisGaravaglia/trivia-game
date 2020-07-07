@@ -69,9 +69,17 @@ function listening() {
 
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
+            console.log(e);
+            if(e.target.localName === "h1") {
+                money = e.target.parentElement;
+                question = e.target.parentElement.parentElement.children[1];
+                answer = e.target.parentElement.parentElement.lastChild;
+            } else {
                 money = e.target;
                 question = e.target.parentElement.children[1];
                 answer = e.target.parentElement.lastChild;
+            }
+
 
                 
                 money.classList.add("flip");
@@ -92,15 +100,14 @@ function listening() {
 
 
 
-function clockTicking(time) {
+function clockTicking(TIME_LIMIT) {
     const body = document.querySelector("body");
     let timePassed = 0;
-    const TIME_LIMIT = time;
-
     const clockContainer = document.createElement("div");
     const clock = document.createElement("h1");
+
     clock.classList.add("starting", "clock");
-    clock.innerText = "00:05";
+    clock.innerText = `00:0${TIME_LIMIT}`;
     clockContainer.append(clock);
     body.append(clockContainer);
   
@@ -108,24 +115,13 @@ function clockTicking(time) {
       timePassed = timePassed += 1;
       timeLeft = TIME_LIMIT - timePassed;
   
-      clock.innerText = `00:${timeLeft}`;
-  
-
-      if (timeLeft < 10) {
-        clock.innerText = `00:0${timeLeft}`;
-        clock.classList.remove("starting");
-        clock.classList.add("danger");
-  
-      }
+      clock.innerText = `00:0${timeLeft}`;
   
       if (timeLeft === 0) {
         clearInterval(timer);
         clockContainer.classList.add("flip");
-    
       }
-  
     }, 1000);
-  
   }
 
 

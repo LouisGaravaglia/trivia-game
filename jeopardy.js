@@ -58,26 +58,58 @@ setUp(5, 6);
 
 
 
-function listening(htmlBoard, height, width) {
-    const cards = document.querySelectorAll(".card-front");
-    // const HEIGHT = height
-    // const WIDTH = width;
+function listening() {
+    const cards = document.querySelectorAll(".money-amount");
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
+            console.log(e.target);
+            
+            
+            let money;
             let question;
             let answer;
-            if (e.target.dataset.name === "H4") {
-                console.log("hit an H4");
-                question = e.target.parentElement;
-                answer = e.target.parentElement.parentElement.lastChild.firstChild;
-            } else {
-                question = e.target;
-                console.log("hit a card front div");
-                answer = e.target.parentElement.lastChild.firstChild;
-            }
+            // if (e.target.classList.contains("money-amount")) {
+                money = e.target;
+                question = e.target.parentElement.children[1];
+                answer = e.target.parentElement.lastChild;
+            // }
+            // else if (e.target.dataset.name === "H4") {
+            //     question = e.target.parentElement;
+            //     answer = e.target.parentElement.parentElement.lastChild.firstChild;
+            // } else {
+                // console.log(e.target);
+                
+                // question = e.target;
+                // console.log("hit a card front div");
+                // answer = e.target.parentElement.lastChild.firstChild;
+            // }
 
-            if (question.classList.contains("flip")) question.classList.add("flip");
-            if (answer.classList.contains("flip")) answer.classList.remove("flip");
+            
+                money.classList.add("flip");
+                question.classList.toggle("flip");
+                setTimeout(() => {
+                    question.classList.toggle("flip");
+                    answer.classList.remove("flip");
+                    console.log("returning from removing flip from answer");
+                }, 2000);
+             
+        
+
+            // if (!money.classList.contains("flip")) {
+            //     money.classList.add("flip");
+            //     console.log("returning from adding flip to money");
+                
+                
+            // } 
+            // if (question.classList.contains("flip")) {
+            //     question.classList.remove("flip");
+            //     console.log("returning from removing flip from question");
+            //     return;
+            // } 
+            // if (answer.classList.contains("flip")) {
+            //     answer.classList.remove("flip");
+            //     console.log("returning from removing flip from answer");
+            // } 
 
         })
     })
@@ -144,10 +176,11 @@ function makeHtmlBoard(height, width, board) {
 
             const answerDiv = document.createElement("div");
             answerDiv.classList.add("card-back");
+            answerDiv.classList.add("flip");
 
             const answerText = document.createElement("p");
             answerText.innerText = BOARD[y][x].answer;
-            answerText.classList.add("flip");
+            // answerText.classList.add("flip");
 
             moneyDiv.append(moneyText);
             questionDiv.append(questionText);

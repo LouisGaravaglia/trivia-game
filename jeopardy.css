@@ -7,10 +7,6 @@
 */
 
 .card-container {
-  /* display: grid;
-  grid-template-columns: repeat(auto-fill, 150px);
-  grid-gap: 20px 0;
-  justify-content: center; */
   width: 100%;
 
 }
@@ -19,26 +15,22 @@
   position: relative;
   width: 220px;
   height: 120px;
-  /* transition: all 0.3s ease;
-  transform-style: preserve-3d; */
 }
 
 .flip {
-  /* transform: rotateY(180deg); */
   display: none;
 }
 
 .card-front {
   position: absolute;
-  font-size: 1vw;
+  font-size: .8vw;
   top: 0;
   left: 0;
   width: 16vw;
   height: 17vh;
-  
-  /* clip-path: inset(10px); */
+  text-align: center;
+  word-wrap: break-word;
   background: yellow;
-  /* backface-visibility: hidden; */
 }
 
 .card-back {
@@ -48,10 +40,7 @@
   width: 16vw;
   height: 17vh;
   z-index: -1;
-  /* width: 220px;
-  height: 120px; */
+  text-align: center;
+  word-wrap: break-word;
   background: yellow;
-  /* clip-path: inset(10px); */
-  /* backface-visibility: hidden;
-  transform: rotateY(180deg); */
 }

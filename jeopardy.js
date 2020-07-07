@@ -66,8 +66,8 @@ function listening(htmlBoard, height, width) {
         card.addEventListener("click", (e) => {
             let question;
             let answer;
-            if (e.target.dataset.name === "H3") {
-                console.log("hit an H3");
+            if (e.target.dataset.name === "H4") {
+                console.log("hit an H4");
                 question = e.target.parentElement;
                 answer = e.target.parentElement.parentElement.lastChild.firstChild;
             } else {
@@ -129,8 +129,8 @@ function makeHtmlBoard(height, width, board) {
             const front = document.createElement("div");
             front.setAttribute("data-key", `${y}-${x}`)
             front.classList.add("card-front");
-            const frontH3 = document.createElement("h3");
-            frontH3.setAttribute("data-name", "H3")
+            const frontH3 = document.createElement("h4");
+            frontH3.setAttribute("data-name", "H4")
             frontH3.innerText = BOARD[y][x].question;
 
             const back = document.createElement("div");

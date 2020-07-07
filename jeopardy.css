@@ -21,6 +21,27 @@
   display: none;
 }
 
+.clock {
+position: absolute;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+z-index: 1;
+font-size: 100px;
+background-color: rgba(255, 22, 22, 0)
+}
+
+.starting {
+  color: #21bf73;
+  /* border: 1px solid #21bf73; */
+}
+
+.danger {
+  color: #9a1f40;
+  /* border: 1px solid #9a1f40; */
+}
+
 .money-amount {
   position: absolute;
   font-size: .8vw;

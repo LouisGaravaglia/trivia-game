@@ -76,14 +76,62 @@ function listening() {
                 
                 money.classList.add("flip");
                 question.classList.toggle("flip");
+                clockTicking(5);
                 setTimeout(() => {
-             
+                    
                     question.classList.toggle("flip");
                     answer.classList.remove("flip");
-                }, 2000);
+                }, 5000);
         })
     })
 }
+
+
+
+
+
+
+
+function clockTicking(time) {
+    const body = document.querySelector("body");
+    let timePassed = 0;
+    const TIME_LIMIT = time;
+
+    const clockContainer = document.createElement("div");
+    const clock = document.createElement("h1");
+    clock.classList.add("starting", "clock");
+    clock.innerText = "00:05";
+    clockContainer.append(clock);
+    body.append(clockContainer);
+  
+    let timer = setInterval(() => {
+      timePassed = timePassed += 1;
+      timeLeft = TIME_LIMIT - timePassed;
+  
+      clock.innerText = `00:${timeLeft}`;
+  
+
+      if (timeLeft < 10) {
+        clock.innerText = `00:0${timeLeft}`;
+        clock.classList.remove("starting");
+        clock.classList.add("danger");
+  
+      }
+  
+      if (timeLeft === 0) {
+        clearInterval(timer);
+        clockContainer.classList.add("flip");
+    
+      }
+  
+    }, 1000);
+  
+  }
+
+
+
+
+
 
 
 

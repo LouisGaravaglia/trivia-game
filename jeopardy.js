@@ -76,7 +76,7 @@ function listening(htmlBoard, height, width) {
                 answer = e.target.parentElement.lastChild.firstChild;
             }
 
-            if (!question.classList.contains("flip")) question.classList.add("flip");
+            if (question.classList.contains("flip")) question.classList.add("flip");
             if (answer.classList.contains("flip")) answer.classList.remove("flip");
 
         })

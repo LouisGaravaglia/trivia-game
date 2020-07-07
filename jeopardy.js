@@ -126,23 +126,35 @@ function makeHtmlBoard(height, width, board) {
             const cell = document.createElement("td");
             cell.classList.add("card-box");
 
-            const front = document.createElement("div");
-            front.setAttribute("data-key", `${y}-${x}`)
-            front.classList.add("card-front");
-            const frontH3 = document.createElement("h4");
-            frontH3.setAttribute("data-name", "H4")
-            frontH3.innerText = BOARD[y][x].question;
+            const moneyDiv = document.createElement("div");
+            moneyDiv.setAttribute("data-name", "MONEY")
+            moneyDiv.classList.add("money-amount");
 
-            const back = document.createElement("div");
-            back.classList.add("card-back");
-            const backP = document.createElement("p");
-            backP.innerText = BOARD[y][x].answer;
-            backP.classList.add("flip");
+            const moneyText = document.createElement("h1");
+            moneyText.innerText = `$${(y+1)*2}00`;
 
-            front.append(frontH3);
-            back.append(backP)
-            cell.append(front);
-            cell.append(back)
+            const questionDiv = document.createElement("div");
+            questionDiv.setAttribute("data-key", `${y}-${x}`)
+            questionDiv.classList.add("card-front");
+            questionDiv.classList.add("flip");
+
+            const questionText = document.createElement("h4");
+            questionText.setAttribute("data-name", "H4")
+            questionText.innerText = BOARD[y][x].question;
+
+            const answerDiv = document.createElement("div");
+            answerDiv.classList.add("card-back");
+
+            const answerText = document.createElement("p");
+            answerText.innerText = BOARD[y][x].answer;
+            answerText.classList.add("flip");
+
+            moneyDiv.append(moneyText);
+            questionDiv.append(questionText);
+            answerDiv.append(answerText);
+            cell.append(moneyDiv);
+            cell.append(questionDiv);
+            cell.append(answerDiv)
             row.append(cell);
         }
 

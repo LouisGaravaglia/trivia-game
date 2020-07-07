@@ -21,6 +21,18 @@
   display: none;
 }
 
+.money-amount {
+  position: absolute;
+  font-size: .8vw;
+  top: 0;
+  left: 0;
+  width: 16vw;
+  height: 17vh;
+  text-align: center;
+  word-wrap: break-word;
+  background: yellow;
+}
+
 .card-front {
   position: absolute;
   font-size: .8vw;

@@ -102,17 +102,16 @@ function typeAnswerInput(clockContainer, passingQuestion) {
     const displayQuestion = document.createElement("h1");
     displayQuestion.innerText = passingQuestion;
     displayQuestion.classList.add("display-question");
-    const $typeAnswer = $(
-        ` <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="What is..." aria-label="Type answer to question here" aria-describedby="button-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2">SUBMIT</button>
-            </div>
-        </div>`
-    );
+    const typeAnswer = document.createElement("div");
+    typeAnswer.classList.add("input-group", "mb-3", "type-answer");
+    const input = document.createElement("input");
+    input.placeholder = "What is ...";
+    input.type = "text";
+    input.classList.add("form-control");
 
+    typeAnswer.append(input);
     clockContainer.append(displayQuestion);
-    clockContainer.append($typeAnswer);
+    clockContainer.append(typeAnswer);
     return clockContainer;
 }
 
@@ -128,11 +127,15 @@ function clockTicking(TIME_LIMIT, passingQuestion) {
     const clockContainer = document.createElement("div");
     clockContainer.classList.add("clock-container");
 
+    const clockBox = document.createElement("div");
+    clockBox.classList.add("clock-box");
+
     const clock = document.createElement("h1");
     clock.classList.add("starting", "clock");
     clock.innerText = `00:0${TIME_LIMIT}`;
 
-    clockContainer.append(clock);
+    clockBox.append(clock);
+    clockContainer.append(clockBox);
     newClockContainer = typeAnswerInput(clockContainer, passingQuestion);
     body.append(newClockContainer);
 

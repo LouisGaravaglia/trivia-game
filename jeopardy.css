@@ -23,7 +23,8 @@
 }
 
 .flip {
-  transform: rotateY(180deg);
+  /* transform: rotateY(180deg); */
+  display: none;
 }
 
 .card-front {
@@ -44,6 +45,6 @@
   left: 0;
   object-fit: scale-down;
   /* clip-path: inset(10px); */
-  backface-visibility: hidden;
-  transform: rotateY(180deg);
+  /* backface-visibility: hidden;
+  transform: rotateY(180deg); */
 }

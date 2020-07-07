@@ -31,11 +31,11 @@ async function setUp(height, width) {
     const selectCats = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
     const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board);
-    
-    listening(htmlBoard, HEIGHT);
-    
 
-    
+    listening(htmlBoard, HEIGHT);
+
+
+
 
 }
 
@@ -47,32 +47,54 @@ setUp(5, 6);
 //     console.log(htmlBoard.children[1].children[1].firstChild);
 
 //     for (let i = 0; i < WIDTH; i++) {
-        
+
 //         console.log(htmlBoard.children[i+1].children[i].firstChild.innerText);
 //         console.log(htmlBoard.children[i+1].children[i].lastChild.innerText);
-        
+
 //     }
 
 
 // }
 
+
+
 function listening(htmlBoard, height, width) {
-    const HEIGHT = height
-    const WIDTH = width;
+    const cards = document.querySelectorAll(".card-front");
+    // const HEIGHT = height
+    // const WIDTH = width;
+    cards.forEach((card) => {
+        card.addEventListener("click", (e) => {
+            let question;
+            let answer;
+            if (e.target.dataset.name === "H3") {
+                console.log("hit an H3");
+                question = e.target.parentElement;
+                answer = e.target.parentElement.parentElement.lastChild.firstChild;
+            } else {
+                question = e.target;
+                console.log("hit a card front div");
+                answer = e.target.parentElement.lastChild.firstChild;
+            }
 
-    
+            if (!question.classList.contains("flip")) question.classList.add("flip");
+            if (answer.classList.contains("flip")) answer.classList.remove("flip");
 
-    for (let i = 1; i <= HEIGHT; i++) {
-        
-        console.log(htmlBoard.children[i].children);
+        })
+    })
 
-        for (let j = 0; j <= WIDTH; j++) {
-        
-            console.log(htmlBoard.children[i].children[0]);
-            
-        }
-        
-    }
+
+
+    // for (let i = 1; i <= HEIGHT; i++) {
+
+    //     console.log(htmlBoard.children[i].children);
+
+    //     for (let j = 0; j <= WIDTH; j++) {
+
+    //         console.log(htmlBoard.children[i].children[0]);
+
+    //     }
+
+    // }
 
 
 }
@@ -86,43 +108,45 @@ function makeHtmlBoard(height, width, board) {
     const BOARD = board;
     const htmlBoard = document.querySelector("#board");
     const top = document.createElement("tr");
-   
+
     top.setAttribute("id", "column-top");
 
     for (let x = 0; x < WIDTH; x++) {
-      const headCell = document.createElement("td");
-      headCell.setAttribute("id", x);
-      top.append(headCell);
+        const headCell = document.createElement("td");
+        headCell.setAttribute("id", x);
+        top.append(headCell);
     }
 
     htmlBoard.append(top);
-   
+
     for (let y = 0; y < HEIGHT; y++) {
-      const row = document.createElement("tr");
+        const row = document.createElement("tr");
 
-      for (let x = 0; x < WIDTH; x++) {
-        const cell = document.createElement("td");
-        cell.classList.add("card-box");
-        
-        const front = document.createElement("div");
-        front.setAttribute("data-key",`${y}-${x}`)
-        front.classList.add("card-front");
-        const frontH3 = document.createElement("h3");
-        frontH3.innerText = BOARD[y][x].question;
+        for (let x = 0; x < WIDTH; x++) {
+            const cell = document.createElement("td");
+            cell.classList.add("card-box");
 
-        const back = document.createElement("div");
-        back.classList.add("card-back");
-        const backP = document.createElement("p");
-        backP.innerText = BOARD[y][x].answer;
+            const front = document.createElement("div");
+            front.setAttribute("data-key", `${y}-${x}`)
+            front.classList.add("card-front");
+            const frontH3 = document.createElement("h3");
+            frontH3.setAttribute("data-name", "H3")
+            frontH3.innerText = BOARD[y][x].question;
 
-        front.append(frontH3);
-        back.append(backP)
-        cell.append(front);
-        cell.append(back)
-        row.append(cell);
-      }
- 
-      htmlBoard.append(row);
+            const back = document.createElement("div");
+            back.classList.add("card-back");
+            const backP = document.createElement("p");
+            backP.innerText = BOARD[y][x].answer;
+            backP.classList.add("flip");
+
+            front.append(frontH3);
+            back.append(backP)
+            cell.append(front);
+            cell.append(back)
+            row.append(cell);
+        }
+
+        htmlBoard.append(row);
     }
     return htmlBoard;
 }
@@ -130,21 +154,21 @@ function makeHtmlBoard(height, width, board) {
 
 
 async function getClues(selectCats, HEIGHT, WIDTH) {
-const board = new Array(HEIGHT);
-  for (let i = 0; i < HEIGHT; i++) {
-    board[i] = new Array(WIDTH);
-  }
-
-  for (let j = 0; j < WIDTH; j++) {
-    for (let k = 0; k < HEIGHT; k++) {
-      board[k][j] = {
-        title: selectCats[j][k].category.title,
-        question: selectCats[j][k].question,
-        answer: selectCats[j][k].answer
-    };
+    const board = new Array(HEIGHT);
+    for (let i = 0; i < HEIGHT; i++) {
+        board[i] = new Array(WIDTH);
     }
-  }
-  return board;
+
+    for (let j = 0; j < WIDTH; j++) {
+        for (let k = 0; k < HEIGHT; k++) {
+            board[k][j] = {
+                title: selectCats[j][k].category.title,
+                question: selectCats[j][k].question,
+                answer: selectCats[j][k].answer
+            };
+        }
+    }
+    return board;
 };
 
 

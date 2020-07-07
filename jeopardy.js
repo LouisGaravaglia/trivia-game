@@ -26,13 +26,14 @@
 async function setUp(height, width) {
     const HEIGHT = height;
     const WIDTH = width
+    const TIME_LIMIT = 5;
 
     const categories = await getCategories(100);
     const selectCats = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
     const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board);
 
-    listening(htmlBoard, HEIGHT);
+    listening(TIME_LIMIT);
 
 
 
@@ -58,40 +59,61 @@ setUp(5, 6);
 
 
 
-function listening() {
+function listening(TIME_LIMIT) {
     const cards = document.querySelectorAll(".money-amount");
     const cardContainer = document.querySelector(".card-container");
-   
 
 
 
-    
+
+
 
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
             console.log(e);
-            if(e.target.localName === "h1") {
+            if (e.target.localName === "h1") {
                 money = e.target.parentElement;
                 question = e.target.parentElement.parentElement.children[1];
+                passingQuestion = question.innerText;
                 answer = e.target.parentElement.parentElement.lastChild;
             } else {
                 money = e.target;
                 question = e.target.parentElement.children[1];
+                passingQuestion = question.innerText;
                 answer = e.target.parentElement.lastChild;
             }
 
 
-                
-                money.classList.add("flip");
+
+            money.classList.add("flip");
+            question.classList.toggle("flip");
+            clockTicking(TIME_LIMIT, passingQuestion);
+            setTimeout(() => {
+
                 question.classList.toggle("flip");
-                clockTicking(5);
-                setTimeout(() => {
-                    
-                    question.classList.toggle("flip");
-                    answer.classList.remove("flip");
-                }, 5000);
+                answer.classList.remove("flip");
+            }, 5000);
         })
     })
+}
+
+
+function typeAnswerInput(clockContainer, passingQuestion) {
+    const displayQuestion = document.createElement("h1");
+    displayQuestion.innerText = passingQuestion;
+    displayQuestion.classList.add("display-question");
+    const $typeAnswer = $(
+        ` <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="What is..." aria-label="Type answer to question here" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2">SUBMIT</button>
+            </div>
+        </div>`
+    );
+
+    clockContainer.append(displayQuestion);
+    clockContainer.append($typeAnswer);
+    return clockContainer;
 }
 
 
@@ -99,30 +121,33 @@ function listening() {
 
 
 
-
-function clockTicking(TIME_LIMIT) {
+function clockTicking(TIME_LIMIT, passingQuestion) {
     const body = document.querySelector("body");
     let timePassed = 0;
-    const clockContainer = document.createElement("div");
-    const clock = document.createElement("h1");
 
+    const clockContainer = document.createElement("div");
+    clockContainer.classList.add("clock-container");
+
+    const clock = document.createElement("h1");
     clock.classList.add("starting", "clock");
     clock.innerText = `00:0${TIME_LIMIT}`;
+
     clockContainer.append(clock);
-    body.append(clockContainer);
-  
+    newClockContainer = typeAnswerInput(clockContainer, passingQuestion);
+    body.append(newClockContainer);
+
     let timer = setInterval(() => {
-      timePassed = timePassed += 1;
-      timeLeft = TIME_LIMIT - timePassed;
-  
-      clock.innerText = `00:0${timeLeft}`;
-  
-      if (timeLeft === 0) {
-        clearInterval(timer);
-        clockContainer.classList.add("flip");
-      }
+        timePassed = timePassed += 1;
+        timeLeft = TIME_LIMIT - timePassed;
+
+        clock.innerText = `00:0${timeLeft}`;
+
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            clockContainer.classList.add("flip");
+        }
     }, 1000);
-  }
+}
 
 
 

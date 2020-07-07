@@ -21,16 +21,36 @@
   display: none;
 }
 
+.clock-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .clock {
 position: absolute;
-top: 0;
+display: block;
+top: -40px;
 left: 0;
 width: 100vw;
 height: 100vh;
 z-index: 1;
-font-size: 100px;
+text-align: center;
+font-size: 10vw;
 background-color: rgba(255, 22, 22, 0)
 }
+
+.display-question {
+  position: absolute;
+  top: -80px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  text-align: center;
+  font-size: 10vw;
+  background-color: rgba(255, 22, 22, 0)
+  }
 
 .starting {
   color: #21bf73;

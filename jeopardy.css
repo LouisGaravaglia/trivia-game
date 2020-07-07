@@ -47,9 +47,10 @@
   left: 0;
   width: 16vw;
   height: 17vh;
+  z-index: -1;
   /* width: 220px;
   height: 120px; */
-  background: blue;
+  background: yellow;
   /* clip-path: inset(10px); */
   /* backface-visibility: hidden;
   transform: rotateY(180deg); */

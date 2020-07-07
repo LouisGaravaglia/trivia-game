@@ -11,15 +11,16 @@
   grid-template-columns: repeat(auto-fill, 150px);
   grid-gap: 20px 0;
   justify-content: center; */
-  margin-left: 20px;
+  width: 100%;
+
 }
 
 .card-box {
   position: relative;
   width: 220px;
   height: 120px;
-  transition: all 0.3s ease;
-  transform-style: preserve-3d;
+  /* transition: all 0.3s ease;
+  transform-style: preserve-3d; */
 }
 
 .flip {
@@ -29,21 +30,26 @@
 
 .card-front {
   position: absolute;
-  font-size: 10px;
+  font-size: 1vw;
   top: 0;
   left: 0;
-  width: 220px;
-  height: 120px;
+  width: 16vw;
+  height: 17vh;
+  
   /* clip-path: inset(10px); */
-  background: #fff;
-  backface-visibility: hidden;
+  background: yellow;
+  /* backface-visibility: hidden; */
 }
 
 .card-back {
   position: absolute;
   top: 0;
   left: 0;
-  object-fit: scale-down;
+  width: 16vw;
+  height: 17vh;
+  /* width: 220px;
+  height: 120px; */
+  background: blue;
   /* clip-path: inset(10px); */
   /* backface-visibility: hidden;
   transform: rotateY(180deg); */

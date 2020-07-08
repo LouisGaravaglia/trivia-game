@@ -1,26 +1,3 @@
-// categories is the main data structure for the app; it looks like this:
-
-
-//  [
-//    { title: "Math",
-//      clues: [
-//        {question: "2+2", answer: 4, showing: null},
-//        {question: "1+1", answer: 2, showing: null}
-//        ...
-//      ],
-//    },
-//    { title: "Literature",
-//      clues: [
-//        {question: "Hamlet Author", answer: "Shakespeare", showing: null},
-//        {question: "Bell Jar Author", answer: "Plath", showing: null},
-//        ...
-//      ],
-//    },
-//    ...
-//  ]
-
-
-
 
 
 async function setUp(height, width) {
@@ -29,33 +6,15 @@ async function setUp(height, width) {
     const TIME_LIMIT = 5;
 
     const categories = await getCategories(100);
-    const selectCats = await getSelects(categories, WIDTH);
+    const {selectCats, titles} = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
-    const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board);
+    const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board, titles);
 
     listening(TIME_LIMIT);
-
-
-
-
 }
 
 setUp(5, 6);
 
-// function listening(htmlBoard, width) {
-//     const WIDTH = width
-
-//     console.log(htmlBoard.children[1].children[1].firstChild);
-
-//     for (let i = 0; i < WIDTH; i++) {
-
-//         console.log(htmlBoard.children[i+1].children[i].firstChild.innerText);
-//         console.log(htmlBoard.children[i+1].children[i].lastChild.innerText);
-
-//     }
-
-
-// }
 
 
 
@@ -63,15 +22,10 @@ function listening(TIME_LIMIT) {
     const cards = document.querySelectorAll(".money-amount");
     const cardContainer = document.querySelector(".card-container");
 
-
-
-
-
-
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
             console.log(e);
-            if (e.target.localName === "h1") {
+            if (e.target.localName === "p") {
                 money = e.target.parentElement;
                 question = e.target.parentElement.parentElement.children[1];
                 passingQuestion = question.innerText;
@@ -83,11 +37,9 @@ function listening(TIME_LIMIT) {
                 answer = e.target.parentElement.lastChild;
             }
 
-
-
             money.classList.add("flip");
             question.classList.toggle("flip");
-            clockTicking(TIME_LIMIT, passingQuestion);
+            clockTicking(TIME_LIMIT);
             setTimeout(() => {
 
                 question.classList.toggle("flip");
@@ -98,29 +50,14 @@ function listening(TIME_LIMIT) {
 }
 
 
-function typeAnswerInput(clockContainer, passingQuestion) {
-    const displayQuestion = document.createElement("h1");
-    displayQuestion.innerText = passingQuestion;
-    displayQuestion.classList.add("display-question");
-    const typeAnswer = document.createElement("div");
-    typeAnswer.classList.add("input-group", "mb-3", "type-answer");
-    const input = document.createElement("input");
-    input.placeholder = "What is ...";
-    input.type = "text";
-    input.classList.add("form-control");
 
-    typeAnswer.append(input);
-    clockContainer.append(displayQuestion);
-    clockContainer.append(typeAnswer);
-    return clockContainer;
+function typeAnswerInput(clockBox) {
+    const typeField = document.querySelector(".type-answer");
 }
 
 
 
-
-
-
-function clockTicking(TIME_LIMIT, passingQuestion) {
+function clockTicking(TIME_LIMIT) {
     const body = document.querySelector("body");
     let timePassed = 0;
 
@@ -134,10 +71,11 @@ function clockTicking(TIME_LIMIT, passingQuestion) {
     clock.classList.add("starting", "clock");
     clock.innerText = `00:0${TIME_LIMIT}`;
 
+    
+    
     clockBox.append(clock);
     clockContainer.append(clockBox);
-    newClockContainer = typeAnswerInput(clockContainer, passingQuestion);
-    body.append(newClockContainer);
+    body.append(clockContainer);
 
     let timer = setInterval(() => {
         timePassed = timePassed += 1;
@@ -146,6 +84,8 @@ function clockTicking(TIME_LIMIT, passingQuestion) {
         clock.innerText = `00:0${timeLeft}`;
 
         if (timeLeft === 0) {
+
+            ///////////////////////////ADD TIMES UP! RESPONSE
             clearInterval(timer);
             clockContainer.classList.add("flip");
         }
@@ -154,27 +94,43 @@ function clockTicking(TIME_LIMIT, passingQuestion) {
 
 
 
+function makeTopRow(WIDTH, titles){
+    const topRow = document.createElement("tr");
+
+    topRow.setAttribute("id", "column-top");
+
+    // console.log(titles);
+    console.log(titles);
+
+    for (let x = 0; x < WIDTH; x++) {
+        const titleCell = document.createElement("td");
+        titleCell.setAttribute("id", x);
+
+        const titleBox = document.createElement("div");
+        titleBox.classList.add("title-box");
+
+        const title = document.createElement("p");
+        title.innerText = titles[x];
+
+        titleBox.append(title);
+        titleCell.append(titleBox);
+        topRow.append(titleCell);
+    }
+
+    return topRow;
+}
 
 
 
 
 
-
-function makeHtmlBoard(height, width, board) {
+async function makeHtmlBoard(height, width, board, titles) {
     const HEIGHT = height;
     const WIDTH = width;
     const BOARD = board;
     const htmlBoard = document.querySelector("#board");
-    const top = document.createElement("tr");
 
-    top.setAttribute("id", "column-top");
-
-    for (let x = 0; x < WIDTH; x++) {
-        const headCell = document.createElement("td");
-        headCell.setAttribute("id", x);
-        top.append(headCell);
-    }
-
+    const top = makeTopRow(WIDTH, titles);
     htmlBoard.append(top);
 
     for (let y = 0; y < HEIGHT; y++) {
@@ -188,7 +144,7 @@ function makeHtmlBoard(height, width, board) {
             moneyDiv.setAttribute("data-name", "MONEY")
             moneyDiv.classList.add("money-amount");
 
-            const moneyText = document.createElement("h1");
+            const moneyText = document.createElement("p");
             moneyText.innerText = `$${(y+1)*2}00`;
 
             const questionDiv = document.createElement("div");
@@ -196,8 +152,8 @@ function makeHtmlBoard(height, width, board) {
             questionDiv.classList.add("card-front");
             questionDiv.classList.add("flip");
 
-            const questionText = document.createElement("h4");
-            questionText.setAttribute("data-name", "H4")
+            const questionText = document.createElement("p");
+            questionText.setAttribute("data-name", "P")
             questionText.innerText = BOARD[y][x].question;
 
             const answerDiv = document.createElement("div");
@@ -206,7 +162,6 @@ function makeHtmlBoard(height, width, board) {
 
             const answerText = document.createElement("p");
             answerText.innerText = BOARD[y][x].answer;
-            // answerText.classList.add("flip");
 
             moneyDiv.append(moneyText);
             questionDiv.append(questionText);
@@ -247,6 +202,7 @@ async function getClues(selectCats, HEIGHT, WIDTH) {
 
 async function getSelects(categories, width) {
     const selectCats = [];
+    const titles = [];
     const WIDTH = width;
     for (let i = 0; i < WIDTH; i++) {
         let randomNum = Math.floor(Math.random() * 100);
@@ -256,8 +212,14 @@ async function getSelects(categories, width) {
             }
         });
         selectCats.push(res.data);
+        
     }
-    return selectCats;
+
+    for (let i = 0; i < WIDTH; i++) {
+        titles.push(selectCats[i][0].category.title)
+    }
+
+    return {selectCats: selectCats, titles: titles};
 }
 
 

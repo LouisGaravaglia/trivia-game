@@ -78,13 +78,23 @@ font-size: 3vw;
   /* border: 1px solid #9a1f40; */
 }
 
+.title-box {
+  position: relative;
+  width: 16vw;
+  height: 9vh;
+  text-align: center;
+  font-size: .8vw;
+  background: yellow;
+  margin-bottom: 10px;
+}
+
 .money-amount {
   position: absolute;
   font-size: .8vw;
   top: 0;
   left: 0;
   width: 16vw;
-  height: 17vh;
+  height: 16vh;
   text-align: center;
   word-wrap: break-word;
   background: yellow;
@@ -96,7 +106,7 @@ font-size: 3vw;
   top: 0;
   left: 0;
   width: 16vw;
-  height: 17vh;
+  height: 16vh;
   text-align: center;
   word-wrap: break-word;
   background: yellow;
@@ -107,7 +117,7 @@ font-size: 3vw;
   top: 0;
   left: 0;
   width: 16vw;
-  height: 17vh;
+  height: 16vh;
   z-index: -1;
   text-align: center;
   word-wrap: break-word;

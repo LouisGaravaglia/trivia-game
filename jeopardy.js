@@ -1,26 +1,3 @@
-// categories is the main data structure for the app; it looks like this:
-
-
-//  [
-//    { title: "Math",
-//      clues: [
-//        {question: "2+2", answer: 4, showing: null},
-//        {question: "1+1", answer: 2, showing: null}
-//        ...
-//      ],
-//    },
-//    { title: "Literature",
-//      clues: [
-//        {question: "Hamlet Author", answer: "Shakespeare", showing: null},
-//        {question: "Bell Jar Author", answer: "Plath", showing: null},
-//        ...
-//      ],
-//    },
-//    ...
-//  ]
-
-
-
 
 
 async function setUp(height, width) {
@@ -29,44 +6,21 @@ async function setUp(height, width) {
     const TIME_LIMIT = 5;
 
     const categories = await getCategories(100);
-    const selectCats = await getSelects(categories, WIDTH);
+    const {selectCats, titles} = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
-    const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board);
+    const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board, titles);
 
     listening(TIME_LIMIT);
-
-
-
-
 }
 
 setUp(5, 6);
 
-// function listening(htmlBoard, width) {
-//     const WIDTH = width
-
-//     console.log(htmlBoard.children[1].children[1].firstChild);
-
-//     for (let i = 0; i < WIDTH; i++) {
-
-//         console.log(htmlBoard.children[i+1].children[i].firstChild.innerText);
-//         console.log(htmlBoard.children[i+1].children[i].lastChild.innerText);
-
-//     }
-
-
-// }
 
 
 
 function listening(TIME_LIMIT) {
     const cards = document.querySelectorAll(".money-amount");
     const cardContainer = document.querySelector(".card-container");
-
-
-
-
-
 
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
@@ -82,8 +36,6 @@ function listening(TIME_LIMIT) {
                 passingQuestion = question.innerText;
                 answer = e.target.parentElement.lastChild;
             }
-
-
 
             money.classList.add("flip");
             question.classList.toggle("flip");
@@ -158,27 +110,51 @@ function clockTicking(TIME_LIMIT) {
 
 
 
+function makeTopRow(WIDTH, titles){
+    const topRow = document.createElement("tr");
+
+    topRow.setAttribute("id", "column-top");
+
+    // console.log(titles);
+    console.log(titles);
+
+    for (let x = 0; x < WIDTH; x++) {
+        const titleCell = document.createElement("td");
+        titleCell.setAttribute("id", x);
+
+        const titleBox = document.createElement("div");
+        titleBox.classList.add("title-box");
+
+        const title = document.createElement("h4");
+        title.innerText = titles[x];
+
+        titleBox.append(title);
+        titleCell.append(titleBox);
+        topRow.append(titleCell);
+    }
+
+    return topRow;
+}
 
 
 
 
 
-
-function makeHtmlBoard(height, width, board) {
+async function makeHtmlBoard(height, width, board, titles) {
     const HEIGHT = height;
     const WIDTH = width;
     const BOARD = board;
     const htmlBoard = document.querySelector("#board");
-    const top = document.createElement("tr");
+    // const top = document.createElement("tr");
 
-    top.setAttribute("id", "column-top");
+    // top.setAttribute("id", "column-top");
 
-    for (let x = 0; x < WIDTH; x++) {
-        const headCell = document.createElement("td");
-        headCell.setAttribute("id", x);
-        top.append(headCell);
-    }
-
+    // for (let x = 0; x < WIDTH; x++) {
+    //     const headCell = document.createElement("td");
+    //     headCell.setAttribute("id", x);
+    //     top.append(headCell);
+    // }
+    const top = makeTopRow(WIDTH, titles);
     htmlBoard.append(top);
 
     for (let y = 0; y < HEIGHT; y++) {
@@ -250,6 +226,7 @@ async function getClues(selectCats, HEIGHT, WIDTH) {
 
 async function getSelects(categories, width) {
     const selectCats = [];
+    const titles = [];
     const WIDTH = width;
     for (let i = 0; i < WIDTH; i++) {
         let randomNum = Math.floor(Math.random() * 100);
@@ -259,8 +236,14 @@ async function getSelects(categories, width) {
             }
         });
         selectCats.push(res.data);
+        
     }
-    return selectCats;
+
+    for (let i = 0; i < WIDTH; i++) {
+        titles.push(selectCats[i][0].category.title)
+    }
+
+    return {selectCats: selectCats, titles: titles};
 }
 
 

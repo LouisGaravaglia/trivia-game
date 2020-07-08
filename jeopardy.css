@@ -38,10 +38,12 @@ top: 5px;
 left: 5vw;
 z-index: 1;
 text-align: center;
-font-size: 3vw;
-color: #21bf73;
-border: 3px solid #21bf73;
-padding: 1px 10px 3px;
+border: 5px solid rgb(164, 0, 185);
+padding: 1px 10px 0px;
+font-family: 'Roboto', sans-serif;
+font-weight: 600;
+font-size: 3.3vw;
+color: rgb(210, 31, 255);
 }
 
 
@@ -68,19 +70,21 @@ top: 5px;
 left: 44.5vw;
 z-index: 1;
 text-align: center;
-font-size: 3vw;
+font-family: 'Roboto', sans-serif;
+font-weight: 600;
+font-size: 3.3vw;
 }
 
 .starting {
   color: #21bf73;
-  border: 3px solid #21bf73;
-  padding: 1px 10px 3px;
+  border: 5px solid #21bf73;
+  padding: 1px 10px 0px;
 }
 
 .danger {
-  color: #9a1f40;
+  color: #d4043b;
   border: 5px solid #9a1f40;
-  padding: 1px 10px 3px;
+  padding: 1px 10px 0px;
 }
 
 

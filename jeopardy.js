@@ -54,46 +54,41 @@ function listening(TIME_LIMIT) {
 
 
 
-    function checkingAnswer(guess, answer, money, score) {
+    function checkingAnswer(guess, answer, money) {
         correctAnswer = _.toUpper(answer.innerText);
         money = money.innerText.slice(1);
         moneyAmount = parseInt(money);
-        
-        
-        
-        
-        
-        
-        
-        if (guess == correctAnswer) {
+
+        if (guess === correctAnswer) {
+            console.log("this is RIGHT answer");
+            console.log(`right guess: ${guess}`);
+            console.log(`right answer: ${correctAnswer}`);
             
-            score += moneyAmount;
-            console.log(score);
             return moneyAmount
-            
-           
 
         } else {
-            console.log("wrong answer");
+            console.log("this is WRONG answer");
+            console.log(`wrong guess: ${guess}`);
+            console.log(`wrong answer: ${correctAnswer}`);
             
+            return undefined;
         }
-
-
-        
+      
 }
 
-const ifCorrect = (addScore, scoreArray) => {
+const ifCorrect = (addScore) => {
+    const displayScore = document.querySelector(".score");
+    const getScore = sessionStorage.getItem("score");
+    let score = parseInt(getScore);
+
+    console.log(`this is the score before adding: ${score}`);
     
-
-    scoreArray.push(addScore);
-        const displayScore = document.querySelector(".score");
-        let sumScore = 0;
-
-        for (let i = 0; i < scoreArray.length; i++) {
-            sumScore += scoreArray[i];
-            
-        }
-        displayScore.innerText = `SCORE:$${sumScore}`
+    if(!score) score = 0;
+    score += addScore;
+        
+    
+        displayScore.innerText = `SCORE:$${score}`
+        sessionStorage.setItem("score", `${score}`);
 }
 
 
@@ -109,7 +104,7 @@ function clockTicking(TIME_LIMIT, answer, money) {
     clockBox.classList.add("clock-box");
 
     const clock = document.createElement("h1");
-    clock.classList.add("starting", "clock");
+    clock.classList.add("danger", "clock");
     clock.innerText = `00:0${TIME_LIMIT}`;
     
     clockBox.append(clock);
@@ -121,17 +116,7 @@ function clockTicking(TIME_LIMIT, answer, money) {
 
     console.log(answer.innerText);
   
-    submitBtn.on("click", () => {
-        guess = _.toUpper(typeField.value);
-        
-        
-
-       addScore = checkingAnswer(guess, answer, money);
-
-        if(addScore) {
-            ifCorrect(addScore);
-        }
-    });
+   
 
    
 
@@ -150,6 +135,25 @@ function clockTicking(TIME_LIMIT, answer, money) {
     }, 1000);
 }
 
+
+ submitBtn.on("click", () => {
+        guess = _.toUpper(typeField.value);
+        
+       addScore = checkingAnswer(guess, answer, money);
+        console.log(`this is the addScore value: ${addScore}`);
+        
+        if(addScore == undefined) {
+            console.log("I'M only returning");
+            typeField.value = "";
+
+           return;
+        } else {
+            console.log("I'M running ifCorrect func");
+            typeField.value = "";
+
+            ifCorrect(addScore);
+        }
+    });
 
 
 function makeTopRow(WIDTH, titles){

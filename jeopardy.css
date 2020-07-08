@@ -8,8 +8,13 @@
 }
 
 
-
-
+/* ///////////////////////////////////////////////IMAGE*/
+img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
 
 
 
@@ -33,7 +38,7 @@
 position: absolute;
 display: block;
 top: 5px;
-left: 45.8vw;
+left: 44.5vw;
 z-index: 1;
 text-align: center;
 font-size: 3vw;
@@ -64,6 +69,7 @@ font-size: 3vw;
   width: 60%;
   border-collapse: collapse;
   margin: 75px auto 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .card-box {
@@ -78,10 +84,10 @@ font-size: 3vw;
   height: 9vh;
   text-align: center;
   font-size: 1vw;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
   padding-top: 20px;
   color: #fff;
-  background: #060ce9;
+  background: #050cd8;
 }
 
 
@@ -96,7 +102,7 @@ font-size: 3vw;
   text-align: center;
   word-wrap: break-word;
   color: #ffd000;
-  background: #060ce9;
+  background: #050cd8;
 }
 
 .card-front {
@@ -110,7 +116,7 @@ font-size: 3vw;
   text-align: center;
   word-wrap: break-word;
   color: #fff;
-  background: #060ce9;
+  background: #050cd8;
 }
 
 
@@ -126,7 +132,7 @@ font-size: 3vw;
   text-align: center;
   word-wrap: break-word;
   color: #fff;
-  background: #060ce9;
+  background: #050cd8;
 }
 
 .flip {

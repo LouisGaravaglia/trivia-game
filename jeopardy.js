@@ -87,7 +87,7 @@ function listening(TIME_LIMIT) {
 
             money.classList.add("flip");
             question.classList.toggle("flip");
-            clockTicking(TIME_LIMIT, passingQuestion);
+            clockTicking(TIME_LIMIT);
             setTimeout(() => {
 
                 question.classList.toggle("flip");
@@ -98,10 +98,10 @@ function listening(TIME_LIMIT) {
 }
 
 
-function typeAnswerInput(clockContainer, passingQuestion) {
-    const displayQuestion = document.createElement("h1");
-    displayQuestion.innerText = passingQuestion;
-    displayQuestion.classList.add("display-question");
+function typeAnswerInput(clockBox) {
+    // const displayQuestion = document.createElement("h1");
+    // displayQuestion.innerText = passingQuestion;
+    // displayQuestion.classList.add("display-question");
     const typeAnswer = document.createElement("div");
     typeAnswer.classList.add("input-group", "mb-3", "type-answer");
     const input = document.createElement("input");
@@ -110,9 +110,9 @@ function typeAnswerInput(clockContainer, passingQuestion) {
     input.classList.add("form-control");
 
     typeAnswer.append(input);
-    clockContainer.append(displayQuestion);
-    clockContainer.append(typeAnswer);
-    return clockContainer;
+    // clockContainer.append(displayQuestion);
+    clockBox.append(typeAnswer);
+    return clockBox;
 }
 
 
@@ -120,7 +120,7 @@ function typeAnswerInput(clockContainer, passingQuestion) {
 
 
 
-function clockTicking(TIME_LIMIT, passingQuestion) {
+function clockTicking(TIME_LIMIT) {
     const body = document.querySelector("body");
     let timePassed = 0;
 
@@ -134,10 +134,12 @@ function clockTicking(TIME_LIMIT, passingQuestion) {
     clock.classList.add("starting", "clock");
     clock.innerText = `00:0${TIME_LIMIT}`;
 
-    clockBox.append(clock);
-    clockContainer.append(clockBox);
-    newClockContainer = typeAnswerInput(clockContainer, passingQuestion);
-    body.append(newClockContainer);
+    
+    
+    newClockBox = typeAnswerInput(clockBox);
+    newClockBox.append(clock);
+    clockContainer.append(newClockBox);
+    body.append(clockContainer);
 
     let timer = setInterval(() => {
         timePassed = timePassed += 1;
@@ -146,6 +148,8 @@ function clockTicking(TIME_LIMIT, passingQuestion) {
         clock.innerText = `00:0${timeLeft}`;
 
         if (timeLeft === 0) {
+
+            ///////////////////////////ADD TIMES UP! RESPONSE
             clearInterval(timer);
             clockContainer.classList.add("flip");
         }
@@ -206,7 +210,6 @@ function makeHtmlBoard(height, width, board) {
 
             const answerText = document.createElement("p");
             answerText.innerText = BOARD[y][x].answer;
-            // answerText.classList.add("flip");
 
             moneyDiv.append(moneyText);
             questionDiv.append(questionText);

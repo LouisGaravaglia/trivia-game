@@ -1,16 +1,19 @@
-
-
 async function setUp(height, width) {
     const HEIGHT = height;
     const WIDTH = width
     const TIME_LIMIT = 10;
 
     const categories = await getCategories(100);
-    const {selectCats, titles} = await getSelects(categories, WIDTH);
+    const {
+        selectCats,
+        titles
+    } = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
     const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board, titles);
-
     listening(TIME_LIMIT);
+
+
+
 }
 
 setUp(5, 6);
@@ -24,6 +27,10 @@ function listening(TIME_LIMIT) {
 
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
+            let money;
+            let question;
+            let passingQuestion;
+            let answer;
 
             if (e.target.localName === "p") {
                 money = e.target.parentElement;
@@ -37,14 +44,26 @@ function listening(TIME_LIMIT) {
                 answer = e.target.parentElement.lastChild;
             }
 
+            console.log(money);
+
             money.classList.add("flip");
             question.classList.toggle("flip");
+
+            const submitBtn = $("#button-addon2");
+
+            submitEvent(submitBtn, answer, money);
             clockTicking(TIME_LIMIT, answer, money);
             setTimeout(() => {
 
                 question.classList.toggle("flip");
                 answer.classList.remove("flip");
             }, 9000);
+
+            return {
+                money: money,
+                answer: answer,
+                submitBtn: submitBtn
+            };
         })
     })
 }
@@ -54,26 +73,37 @@ function listening(TIME_LIMIT) {
 
 
 
-    function checkingAnswer(guess, answer, money) {
-        correctAnswer = _.toUpper(answer.innerText);
-        money = money.innerText.slice(1);
-        moneyAmount = parseInt(money);
+function checkingAnswer(guess, answer, money) {
+    correctAnswer = _.toUpper(answer.innerText);
+    money = money.innerText.slice(1);
+    moneyAmount = parseInt(money);
 
-        if (guess === correctAnswer) {
-            console.log("this is RIGHT answer");
-            console.log(`right guess: ${guess}`);
-            console.log(`right answer: ${correctAnswer}`);
-            
-            return moneyAmount
+    sessionStorage.setItem("answer", `${correctAnswer}`);
+    const retrievedAnswer = sessionStorage.getItem("answer");
 
-        } else {
-            console.log("this is WRONG answer");
-            console.log(`wrong guess: ${guess}`);
-            console.log(`wrong answer: ${correctAnswer}`);
-            
-            return undefined;
-        }
-      
+    sessionStorage.setItem("guess", `${guess}`);
+    const retrievedGuess = sessionStorage.getItem("guess");
+
+    if (retrievedGuess === retrievedAnswer ) {
+        console.log("this is RIGHT answer");
+        console.log(`right guess: ${retrievedGuess}`);
+        console.log(`right answer: ${retrievedAnswer}`);
+        // console.log(`this is right answerArray[0]: ${retrievedAnswer }`);
+        // console.log(`this is right answerArray[1]: ${answerArray[1]}`);
+
+
+        return moneyAmount
+
+    } else {
+        console.log("this is WRONG answer");
+        console.log(`wrong guess: ${retrievedGuess}`);
+        console.log(`wrong answer: ${retrievedAnswer }`);
+        // console.log(`this is wrong answerArray: ${answerArray[0]}`);
+        // console.log(`this is wrong answerArray[1]: ${answerArray[1]}`);
+
+        return undefined;
+    }
+
 }
 
 const ifCorrect = (addScore) => {
@@ -82,20 +112,20 @@ const ifCorrect = (addScore) => {
     let score = parseInt(getScore);
 
     console.log(`this is the score before adding: ${score}`);
-    
-    if(!score) score = 0;
+
+    if (!score) score = 0;
     score += addScore;
-        
-    
-        displayScore.innerText = `SCORE:$${score}`
-        sessionStorage.setItem("score", `${score}`);
+
+
+    displayScore.innerText = `SCORE:$${score}`
+    sessionStorage.setItem("score", `${score}`);
 }
 
 
 function clockTicking(TIME_LIMIT, answer, money) {
     const body = document.querySelector("body");
     let timePassed = 0;
-    
+
 
     const clockContainer = document.createElement("div");
     clockContainer.classList.add("clock-container");
@@ -106,19 +136,18 @@ function clockTicking(TIME_LIMIT, answer, money) {
     const clock = document.createElement("h1");
     clock.classList.add("danger", "clock");
     clock.innerText = `00:0${TIME_LIMIT}`;
-    
+
     clockBox.append(clock);
     clockContainer.append(clockBox);
     body.append(clockContainer);
 
-    const typeField = document.querySelector(".form-control");
-    const submitBtn = $("#button-addon2");
+
 
     console.log(answer.innerText);
-  
-   
 
-   
+
+
+
 
     let timer = setInterval(() => {
         timePassed = timePassed += 1;
@@ -136,27 +165,10 @@ function clockTicking(TIME_LIMIT, answer, money) {
 }
 
 
- submitBtn.on("click", () => {
-        guess = _.toUpper(typeField.value);
-        
-       addScore = checkingAnswer(guess, answer, money);
-        console.log(`this is the addScore value: ${addScore}`);
-        
-        if(addScore == undefined) {
-            console.log("I'M only returning");
-            typeField.value = "";
-
-           return;
-        } else {
-            console.log("I'M running ifCorrect func");
-            typeField.value = "";
-
-            ifCorrect(addScore);
-        }
-    });
 
 
-function makeTopRow(WIDTH, titles){
+
+function makeTopRow(WIDTH, titles) {
     const topRow = document.createElement("tr");
 
     topRow.setAttribute("id", "column-top");
@@ -178,6 +190,41 @@ function makeTopRow(WIDTH, titles){
 
     return topRow;
 }
+
+
+
+
+
+
+// const submitBtn = $("#button-addon2");
+
+// submitEvent(submitBtn, guess);
+
+const submitEvent = (submitBtn, answer, money) => {
+
+    submitBtn.on("click", () => {
+
+        const typeField = document.querySelector(".form-control");
+        guess = _.toUpper(typeField.value);
+
+        addScore = checkingAnswer(guess, answer, money);
+        console.log(`this is the addScore value: ${addScore}`);
+
+        if (addScore == undefined) {
+            console.log("I'M only returning");
+            typeField.value = "";
+
+            return;
+        } else {
+            console.log("I'M running ifCorrect func");
+            typeField.value = "";
+
+            ifCorrect(addScore);
+        }
+
+    });
+};
+
 
 
 
@@ -271,14 +318,17 @@ async function getSelects(categories, width) {
             }
         });
         selectCats.push(res.data);
-        
+
     }
 
     for (let i = 0; i < WIDTH; i++) {
         titles.push(selectCats[i][0].category.title)
     }
 
-    return {selectCats: selectCats, titles: titles};
+    return {
+        selectCats: selectCats,
+        titles: titles
+    };
 }
 
 

@@ -3,7 +3,7 @@
 async function setUp(height, width) {
     const HEIGHT = height;
     const WIDTH = width
-    const TIME_LIMIT = 5;
+    const TIME_LIMIT = 10;
 
     const categories = await getCategories(100);
     const {selectCats, titles} = await getSelects(categories, WIDTH);
@@ -24,7 +24,7 @@ function listening(TIME_LIMIT) {
 
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
-            console.log(e);
+
             if (e.target.localName === "p") {
                 money = e.target.parentElement;
                 question = e.target.parentElement.parentElement.children[1];
@@ -39,27 +39,68 @@ function listening(TIME_LIMIT) {
 
             money.classList.add("flip");
             question.classList.toggle("flip");
-            clockTicking(TIME_LIMIT);
+            clockTicking(TIME_LIMIT, answer, money);
             setTimeout(() => {
 
                 question.classList.toggle("flip");
                 answer.classList.remove("flip");
-            }, 5000);
+            }, 9000);
         })
     })
 }
 
 
 
-function typeAnswerInput(clockBox) {
-    const typeField = document.querySelector(".type-answer");
+
+
+
+    function checkingAnswer(guess, answer, money, score) {
+        correctAnswer = _.toUpper(answer.innerText);
+        money = money.innerText.slice(1);
+        moneyAmount = parseInt(money);
+        
+        
+        
+        
+        
+        
+        
+        if (guess == correctAnswer) {
+            
+            score += moneyAmount;
+            console.log(score);
+            return moneyAmount
+            
+           
+
+        } else {
+            console.log("wrong answer");
+            
+        }
+
+
+        
+}
+
+const ifCorrect = (addScore, scoreArray) => {
+    
+
+    scoreArray.push(addScore);
+        const displayScore = document.querySelector(".score");
+        let sumScore = 0;
+
+        for (let i = 0; i < scoreArray.length; i++) {
+            sumScore += scoreArray[i];
+            
+        }
+        displayScore.innerText = `SCORE:$${sumScore}`
 }
 
 
-
-function clockTicking(TIME_LIMIT) {
+function clockTicking(TIME_LIMIT, answer, money) {
     const body = document.querySelector("body");
     let timePassed = 0;
+    
 
     const clockContainer = document.createElement("div");
     clockContainer.classList.add("clock-container");
@@ -70,12 +111,29 @@ function clockTicking(TIME_LIMIT) {
     const clock = document.createElement("h1");
     clock.classList.add("starting", "clock");
     clock.innerText = `00:0${TIME_LIMIT}`;
-
-    
     
     clockBox.append(clock);
     clockContainer.append(clockBox);
     body.append(clockContainer);
+
+    const typeField = document.querySelector(".form-control");
+    const submitBtn = $("#button-addon2");
+
+    console.log(answer.innerText);
+  
+    submitBtn.on("click", () => {
+        guess = _.toUpper(typeField.value);
+        
+        
+
+       addScore = checkingAnswer(guess, answer, money);
+
+        if(addScore) {
+            ifCorrect(addScore);
+        }
+    });
+
+   
 
     let timer = setInterval(() => {
         timePassed = timePassed += 1;
@@ -98,9 +156,6 @@ function makeTopRow(WIDTH, titles){
     const topRow = document.createElement("tr");
 
     topRow.setAttribute("id", "column-top");
-
-    // console.log(titles);
-    console.log(titles);
 
     for (let x = 0; x < WIDTH; x++) {
         const titleCell = document.createElement("td");

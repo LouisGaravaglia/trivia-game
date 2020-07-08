@@ -16,6 +16,33 @@ img {
   z-index: -2;
 }
 
+/* ///////////////////////////////////////////////SCORE */
+.score-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 90vh;
+}
+
+.score-box {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.score {
+position: absolute;
+display: block;
+top: 5px;
+left: 5vw;
+z-index: 1;
+text-align: center;
+font-size: 3vw;
+color: #21bf73;
+border: 3px solid #21bf73;
+padding: 1px 10px 3px;
+}
 
 
 /* ///////////////////////////////////////////////TIMER */
@@ -25,7 +52,7 @@ img {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
 }
 
 .clock-box {

@@ -61,20 +61,24 @@ font-size: 3vw;
 
   /* ///////////////////////////////////////////////TEXT INPUT */
 
-  .type-answer {
+  /* .type-answer {
     position: absolute;
     top: 90vh;
     left: 20vw;
     width: 60vw;
     height: 100vh;
-    }
+    } */
+
+    .type-answer {
+      margin: 0 auto;
+      }
 
 /* ///////////////////////////////////////////////TABLE */
 
 .card-container {
   width: 60%;
   border-collapse: collapse;
-  margin: 70px auto;
+  margin: 70px auto 20px;
 }
 
 .card-box {

@@ -50,25 +50,10 @@ function listening(TIME_LIMIT) {
 }
 
 
+
 function typeAnswerInput(clockBox) {
-    // const displayQuestion = document.createElement("h1");
-    // displayQuestion.innerText = passingQuestion;
-    // displayQuestion.classList.add("display-question");
-    const typeAnswer = document.createElement("div");
-    typeAnswer.classList.add("input-group-lg", "mb-3", "type-answer");
-    const input = document.createElement("input");
-    input.placeholder = "What is ...";
-    input.type = "text";
-    input.classList.add("form-control");
-
-    typeAnswer.append(input);
-    // clockContainer.append(displayQuestion);
-    clockBox.append(typeAnswer);
-    return clockBox;
+    const typeField = document.querySelector(".type-answer");
 }
-
-
-
 
 
 
@@ -88,9 +73,8 @@ function clockTicking(TIME_LIMIT) {
 
     
     
-    newClockBox = typeAnswerInput(clockBox);
-    newClockBox.append(clock);
-    clockContainer.append(newClockBox);
+    clockBox.append(clock);
+    clockContainer.append(clockBox);
     body.append(clockContainer);
 
     let timer = setInterval(() => {

@@ -25,7 +25,7 @@ function listening(TIME_LIMIT) {
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
             console.log(e);
-            if (e.target.localName === "h1") {
+            if (e.target.localName === "p") {
                 money = e.target.parentElement;
                 question = e.target.parentElement.parentElement.children[1];
                 passingQuestion = question.innerText;

@@ -110,7 +110,7 @@ function makeTopRow(WIDTH, titles){
         titleBox.classList.add("title-box");
 
         const title = document.createElement("p");
-        title.innerText = titles[x];
+        title.innerText = _.toUpper(titles[x]);
 
         titleBox.append(title);
         titleCell.append(titleBox);
@@ -154,14 +154,14 @@ async function makeHtmlBoard(height, width, board, titles) {
 
             const questionText = document.createElement("p");
             questionText.setAttribute("data-name", "P")
-            questionText.innerText = BOARD[y][x].question;
+            questionText.innerText = _.toUpper(BOARD[y][x].question);
 
             const answerDiv = document.createElement("div");
             answerDiv.classList.add("card-back");
             answerDiv.classList.add("flip");
 
             const answerText = document.createElement("p");
-            answerText.innerText = BOARD[y][x].answer;
+            answerText.innerText = _.toUpper(BOARD[y][x].answer);
 
             moneyDiv.append(moneyText);
             questionDiv.append(questionText);

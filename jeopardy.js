@@ -55,7 +55,7 @@ function typeAnswerInput(clockBox) {
     // displayQuestion.innerText = passingQuestion;
     // displayQuestion.classList.add("display-question");
     const typeAnswer = document.createElement("div");
-    typeAnswer.classList.add("input-group", "mb-3", "type-answer");
+    typeAnswer.classList.add("input-group-lg", "mb-3", "type-answer");
     const input = document.createElement("input");
     input.placeholder = "What is ...";
     input.type = "text";
@@ -145,15 +145,7 @@ async function makeHtmlBoard(height, width, board, titles) {
     const WIDTH = width;
     const BOARD = board;
     const htmlBoard = document.querySelector("#board");
-    // const top = document.createElement("tr");
 
-    // top.setAttribute("id", "column-top");
-
-    // for (let x = 0; x < WIDTH; x++) {
-    //     const headCell = document.createElement("td");
-    //     headCell.setAttribute("id", x);
-    //     top.append(headCell);
-    // }
     const top = makeTopRow(WIDTH, titles);
     htmlBoard.append(top);
 

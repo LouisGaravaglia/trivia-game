@@ -6,20 +6,11 @@
   #74119c
 */
 
-.card-container {
-  width: 100%;
 
-}
 
-.card-box {
-  position: relative;
-  width: 220px;
-  height: 120px;
-}
 
-.flip {
-  display: none;
-}
+
+/* ///////////////////////////////////////////////TIMER */
 
 .clock-container {
   position: absolute;
@@ -38,12 +29,22 @@
 position: absolute;
 display: block;
 top: 5px;
-left: 0;
-width: 100vw;
-height: 100vh;
+left: 45vw;
+/* width: 80vw;
+height: 80vh; */
 z-index: 1;
 text-align: center;
 font-size: 3vw;
+}
+
+.starting {
+  color: #21bf73;
+  /* border: 1px solid #21bf73; */
+}
+
+.danger {
+  color: #9a1f40;
+  /* border: 1px solid #9a1f40; */
 }
 
 /* .display-question {
@@ -57,25 +58,29 @@ font-size: 3vw;
   font-size: 3vw;
   } */
 
+
+  /* ///////////////////////////////////////////////TEXT INPUT */
+
   .type-answer {
     position: absolute;
     top: 90vh;
-    left: 0;
+    left: 20vw;
     width: 60vw;
     height: 100vh;
-    z-index: 1;
-    text-align: center;
-    font-size: 3vw;
     }
 
-.starting {
-  color: #21bf73;
-  /* border: 1px solid #21bf73; */
+/* ///////////////////////////////////////////////TABLE */
+
+.card-container {
+  width: 60%;
+  border-collapse: collapse;
+  margin: 70px auto;
 }
 
-.danger {
-  color: #9a1f40;
-  /* border: 1px solid #9a1f40; */
+.card-box {
+  position: relative;
+  width: 200px;
+  height: 90px;
 }
 
 .title-box {
@@ -86,15 +91,18 @@ font-size: 3vw;
   font-size: .8vw;
   background: yellow;
   margin-bottom: 10px;
+  padding-top: 10px;
 }
 
+
 .money-amount {
+  padding-top: 30px;
   position: absolute;
   font-size: .8vw;
   top: 0;
   left: 0;
   width: 16vw;
-  height: 16vh;
+  height: 13vh;
   text-align: center;
   word-wrap: break-word;
   background: yellow;
@@ -106,20 +114,25 @@ font-size: 3vw;
   top: 0;
   left: 0;
   width: 16vw;
-  height: 16vh;
+  height: 13vh;
   text-align: center;
   word-wrap: break-word;
   background: yellow;
 }
 
 .card-back {
+  padding-top: 40px;
   position: absolute;
   top: 0;
   left: 0;
   width: 16vw;
-  height: 16vh;
+  height: 13vh;
   z-index: -1;
   text-align: center;
   word-wrap: break-word;
   background: yellow;
+}
+
+.flip {
+  display: none;
 }

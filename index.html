@@ -1,21 +1,94 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Jeopardy</title>
-  <link href="https://fonts.googleapis.com/css?family=Copse&display=swap"
-        rel="stylesheet">
-  <link rel="stylesheet" href="jeopardy.css">
+      <meta charset="UTF-8">
+      <meta name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Jeopardy</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+      <link href="https://fonts.googleapis.com/css?family=Copse&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"> 
+      <link rel="stylesheet" href="jeopardy.css">
 </head>
+
 <body>
 
-<script src="https://unpkg.com/jquery"></script>
-<script src="https://unpkg.com/axios/dist/axios.js"></script>
-<script src="https://unpkg.com/lodash"></script>
-<script src="jeopardy.js"></script>
+      <div class="score-container flip">
+            <div class="score-box">
+                  <h1 class="score">SCORE: $000</h1>
+            </div>
+      </div>
+      
+      <div class="reset-container flip">
+            <div class="reset-box">
+                  <h1 class="reset">RESET</h1>
+            </div>
+      </div>
+
+      <div class="loading-container">
+            <div class="loading-box">
+                  <p class="loading">JEOPARDY!</p>
+            </div>
+      </div>
+
+      <div class="correct-container flip">
+            <div class="correct-box">
+                  <p class="correct">THAT IS CORRECT!</p>
+            </div>
+      </div>
+
+      <div class="wrong-container flip">
+            <div class="wrong-box">
+                  <p class="wrong">INCORRECT!</p>
+            </div>
+      </div>
+
+      <div class="times-up-container flip">
+            <div class="times-up-box">
+                  <p class="times-up">TIMES UP!</p>
+            </div>
+      </div>
+
+      <div>
+
+            <table id="board" class="card-container"></table>
+
+      </div>
+      <div class="input-group mb-3 type-answer w-50 flip">
+            <input type="text" class="form-control" placeholder="What is ..., Alex!" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-secondary type-button" type="button" id="button-addon2">SUBMIT</button>
+            </div>
+          </div>
+
+      <!-- <div class="card-container">
+            <div id="game"></div>
+                  <table id="board"></table>
+            </div>
+      </div> -->
+
+      <div id="hidden-money"></div>
+      <div id="hidden-answer"></div>
+      <div id="stop-timer"></div>
+
+      <img src="./images/bg2.png" alt="" srcset="">
+
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+      </script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+      </script>
+      <script src="https://unpkg.com/jquery"></script>
+      <script src="https://unpkg.com/axios/dist/axios.js"></script>
+      <script src="https://unpkg.com/lodash"></script>
+      <script src="jeopardy.js"></script>
 
 </body>
+
 </html>

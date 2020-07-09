@@ -30,8 +30,8 @@ function removeLoading() {
     sessionStorage.setItem("score", `000`);
 }
 
-const resetContainer = document.querySelector(".reset-container");
-resetContainer.addEventListener("click", () => {
+const reset = document.querySelector(".reset");
+reset.addEventListener("click", () => {
     window.location.reload(false); 
 })
 
@@ -39,12 +39,8 @@ resetContainer.addEventListener("click", () => {
 
 
 function cardContainerClick(e) {
-    console.log(e);
 
-    // let money;
-    // let question;
-    // let passingQuestion;
-    // let answer;
+    if(e.target.classList.contains("title-box")) return;
 
     if (e.target.localName === "p") {
         money = e.target.parentElement;

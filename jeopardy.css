@@ -1,10 +1,12 @@
-.colors {
- color: #115ff4;
- color: #060ce9;
- color: #28a200;
- color: #8d2ab5;
- color: #74119c;
- color: #ffd000;
+
+
+/* ///////////////////////////////////////////////HIDDEN ELEMENTS*/
+#hidden-answer {
+  display: none;
+}
+
+#hidden-money {
+  display: none;
 }
 
 

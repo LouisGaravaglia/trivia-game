@@ -1,7 +1,6 @@
 async function setUp(height, width) {
     const HEIGHT = height;
     const WIDTH = width
-    const TIME_LIMIT = 10;
 
     const categories = await getCategories(100);
     const {
@@ -10,7 +9,10 @@ async function setUp(height, width) {
     } = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
     const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board, titles);
-    listening(TIME_LIMIT);
+    // let testingAnswer = listening(TIME_LIMIT);
+    // console.log(`this is setUp func testingAnswer: ${testingAnswer}`);
+    // console.log(`this is setUp func money: ${money}`);
+
 
 
 
@@ -18,65 +20,125 @@ async function setUp(height, width) {
 
 setUp(5, 6);
 
+function cardContainerClick(e) {
+    console.log(e);
 
-
-
-function listening(TIME_LIMIT) {
-    const cards = document.querySelectorAll(".money-amount");
-    const cardContainer = document.querySelector(".card-container");
-
-    cards.forEach((card) => {
-        card.addEventListener("click", (e) => {
-            let money;
-            let question;
-            let passingQuestion;
-            let answer;
-
-            if (e.target.localName === "p") {
-                money = e.target.parentElement;
-                question = e.target.parentElement.parentElement.children[1];
-                passingQuestion = question.innerText;
-                answer = e.target.parentElement.parentElement.lastChild;
-            } else {
-                money = e.target;
-                question = e.target.parentElement.children[1];
-                passingQuestion = question.innerText;
-                answer = e.target.parentElement.lastChild;
-            }
-
-            let testingAnswer = answer.innerText;
-            console.log(`this is me testing the testing answer ${testingAnswer}`)
-
-            money.classList.add("flip");
-            question.classList.toggle("flip");
-
-            const submitBtn = $("#button-addon2");
-
-            submitEvent(submitBtn, testingAnswer, money);
-            clockTicking(TIME_LIMIT, testingAnswer, money);
-            setTimeout(() => {
-
-                question.classList.toggle("flip");
-                answer.classList.remove("flip");
-            }, 9000);
-
-            // return {
-            //     money: money,
-            //     answer: answer,
-            //     submitBtn: submitBtn
-            // };
-        })
-    })
+    let money;
+    let question;
+    let passingQuestion;
+    let answer;
+    
+    if (e.target.localName === "p") {
+        money = e.target.parentElement;
+        question = e.target.parentElement.parentElement.children[1];
+        passingQuestion = question.innerText;
+        answer = e.target.parentElement.parentElement.lastChild;
+    } else {
+        money = e.target;
+        question = e.target.parentElement.children[1];
+        passingQuestion = question.innerText;
+        answer = e.target.parentElement.lastChild;
+    }
+    
+    // console.log(`money: ${money.innerText}, answer: ${answer.innerText}`);
+    
+    
+    let testingAnswer = answer.innerText;
+    console.log(`this is me testing the testing answer ${testingAnswer}`)
+    
+    money.classList.add("flip");
+    question.classList.toggle("flip");
+    
+    
+    clockTicking(10, testingAnswer, money);
+    setTimeout(() => {
+    
+        question.classList.toggle("flip");
+        answer.classList.remove("flip");
+    }, 9000);
+    
+    return {
+        money: money,
+        testingAnswer: testingAnswer,
+    };
 }
 
 
 
 
+// const cards = document.querySelectorAll(".money-amount");
+const cardContainer = document.querySelector(".card-container");
+cardContainer.addEventListener("click", (e) => {
+    let {money, testingAnswer} = cardContainerClick(e);
+
+   $("#hidden-answer").val(testingAnswer);
+   $("#hidden-money").val(money);
+})
 
 
-function checkingAnswer(guess, testingAnswer, money) {
+
+
+// let cardEvent = cards.forEach((card) => {
+//     card.addEventListener("click", (e) => {
+
+//         console.log("DOES this work?");
+
+// let money;
+// let question;
+// let passingQuestion;
+// let answer;
+
+// if (e.target.localName === "p") {
+//     money = e.target.parentElement;
+//     question = e.target.parentElement.parentElement.children[1];
+//     passingQuestion = question.innerText;
+//     answer = e.target.parentElement.parentElement.lastChild;
+// } else {
+//     money = e.target;
+//     question = e.target.parentElement.children[1];
+//     passingQuestion = question.innerText;
+//     answer = e.target.parentElement.lastChild;
+// }
+
+// let testingAnswer = answer.innerText;
+// console.log(`this is me testing the testing answer ${testingAnswer}`)
+
+// money.classList.add("flip");
+// question.classList.toggle("flip");
+
+
+// clockTicking(TIME_LIMIT, testingAnswer, money);
+// setTimeout(() => {
+
+//     question.classList.toggle("flip");
+//     answer.classList.remove("flip");
+// }, 9000);
+
+// return {
+//     // money: money,
+//     testingAnswer: testingAnswer,
+// };
+//     })
+// })
+
+
+// console.log(`this is forEachLoop testingAnswer: ${cardEvent}`);
+
+
+// const submitBtn = $("#button-addon2");
+
+// submitEvent(submitBtn, testingAnswer, money);
+
+
+function checkingAnswer(guess) {
     // let correctAnswer = _.toUpper(answer.innerText);
+    let testingAnswer = $("#hidden-answer").val()
+    console.log(`hidden answer val: ${testingAnswer}`);
+    
     let correctAnswer = _.toUpper(testingAnswer);
+    let money = $("#hidden-money").val();
+    console.log(`hidden money val: ${money}`);
+
     let moneySlice = money.innerText.slice(1);
     let moneyAmount = parseInt(moneySlice);
 
@@ -86,7 +148,7 @@ function checkingAnswer(guess, testingAnswer, money) {
     sessionStorage.setItem("guess", `${guess}`);
     let retrievedGuess = sessionStorage.getItem("guess");
 
-    if (retrievedGuess === retrievedAnswer ) {
+    if (retrievedGuess === retrievedAnswer) {
         console.log("this is RIGHT answer");
         console.log(`right guess: ${retrievedGuess}`);
         console.log(`right answer: ${retrievedAnswer}`);
@@ -198,37 +260,64 @@ function makeTopRow(WIDTH, titles) {
 
 
 
-// const submitBtn = $("#button-addon2");
+const submitBtn = document.querySelector("#button-addon2");
+
+
+submitBtn.addEventListener("click", () => {
+
+    console.log("MADE IT TO SUBMIT BTN CLICK!");
+
+    const typeField = document.querySelector(".form-control");
+    let guess = _.toUpper(typeField.value);
+
+    let addScore = checkingAnswer(guess);
+    console.log(`this is the addScore value: ${addScore}`);
+
+    if (addScore == undefined) {
+        console.log("I'M only returning");
+        typeField.value = "";
+
+        return;
+    } else {
+        console.log("I'M running ifCorrect func");
+
+
+        ifCorrect(addScore);
+        typeField.value = "";
+    }
+
+});
+
 
 // submitEvent(submitBtn, guess);
 
-const submitEvent = (submitBtn, testingAnswer, money) => {
+// const submitEvent = (submitBtn, testingAnswer, money) => {
 
-    submitBtn.on("click", () => {
+//     submitBtn.on("click", () => {
 
-            console.log(testingAnswer);
-            
-        const typeField = document.querySelector(".form-control");
-        let guess = _.toUpper(typeField.value);
+//         console.log(testingAnswer);
 
-        let addScore = checkingAnswer(guess, testingAnswer, money);
-        console.log(`this is the addScore value: ${addScore}`);
+//         const typeField = document.querySelector(".form-control");
+//         let guess = _.toUpper(typeField.value);
 
-        if (addScore == undefined) {
-            console.log("I'M only returning");
-            typeField.value = "";
+//         let addScore = checkingAnswer(guess, testingAnswer, money);
+//         console.log(`this is the addScore value: ${addScore}`);
 
-            return;
-        } else {
-            console.log("I'M running ifCorrect func");
-            
+//         if (addScore == undefined) {
+//             console.log("I'M only returning");
+//             typeField.value = "";
 
-            ifCorrect(addScore);
-            typeField.value = "";
-        }
+//             return;
+//         } else {
+//             console.log("I'M running ifCorrect func");
 
-    });
-};
+
+//             ifCorrect(addScore);
+//             typeField.value = "";
+//         }
+
+//     });
+// };
 
 
 
@@ -359,4 +448,3 @@ async function getCategories(num) {
     return categories;
 
 };
-

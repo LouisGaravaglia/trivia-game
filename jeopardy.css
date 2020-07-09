@@ -1,3 +1,6 @@
+/* ///////////////////////////////////////////////UNIVERSAL ELEMENTS*/
+
+html, body {margin: 0; height: 100%; overflow: hidden}
 
 
 /* ///////////////////////////////////////////////HIDDEN ELEMENTS*/
@@ -34,18 +37,18 @@ img {
 }
 
 .score {
-position: absolute;
-display: block;
-top: 5px;
-left: 5vw;
-z-index: 1;
-text-align: center;
-border: 5px solid rgb(164, 0, 185);
-padding: 1px 10px 0px;
-font-family: 'Roboto', sans-serif;
-font-weight: 600;
-font-size: 3.3vw;
-color: rgb(210, 31, 255);
+  position: absolute;
+  display: block;
+  top: 5px;
+  left: 5vw;
+  z-index: 1;
+  text-align: center;
+  border: 5px solid rgb(164, 0, 185);
+  padding: 1px 10px 0px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 3.3vw;
+  color: rgb(210, 31, 255);
 }
 
 
@@ -66,15 +69,15 @@ color: rgb(210, 31, 255);
 }
 
 .clock {
-position: absolute;
-display: block;
-top: 5px;
-left: 44.5vw;
-z-index: 1;
-text-align: center;
-font-family: 'Roboto', sans-serif;
-font-weight: 600;
-font-size: 3.3vw;
+  position: absolute;
+  display: block;
+  top: 5px;
+  left: 44.5vw;
+  z-index: 1;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 3.3vw;
 }
 
 .starting {
@@ -90,11 +93,11 @@ font-size: 3.3vw;
 }
 
 
-  /* ///////////////////////////////////////////////TEXT INPUT */
+/* ///////////////////////////////////////////////TEXT INPUT */
 
-    .type-answer {
-      margin: 0 auto;
-      }
+.type-answer {
+  margin: 0 auto;
+}
 
 /* ///////////////////////////////////////////////TABLE */
 
@@ -136,174 +139,315 @@ font-size: 3.3vw;
   height: 13vh;
   text-align: center;
   word-wrap: break-word;
->>>>>>> answerEvent
-  color: #ffd000;
- }
- 
- 
- /* ///////////////////////////////////////////////IMAGE*/
- img {
-   position: absolute;
-   top: 0;
-   left: 0;
-   z-index: -2;
- }
- 
- /* ///////////////////////////////////////////////SCORE */
- .score-container {
-   position: absolute;
-   top: 0;
-   left: 0;
-   width: 100vw;
-   height: 90vh;
- }
- 
- .score-box {
-   position: relative;
-   top: 0;
-   left: 0;
- }
- 
- .score {
- position: absolute;
- display: block;
- top: 5px;
- left: 5vw;
- z-index: 1;
- text-align: center;
- border: 5px solid rgb(164, 0, 185);
- padding: 1px 10px 0px;
- font-family: 'Roboto', sans-serif;
- font-weight: 600;
- font-size: 3.3vw;
- color: rgb(210, 31, 255);
- }
- 
- 
- /* ///////////////////////////////////////////////TIMER */
- 
- .clock-container {
-   position: absolute;
-   top: 0;
-   left: 0;
-   width: 100vw;
-   height: 90vh;
- }
- 
- .clock-box {
-   position: relative;
-   top: 0;
-   left: 0;
- }
- 
- .clock {
- position: absolute;
- display: block;
- top: 5px;
- left: 44.5vw;
- z-index: 1;
- text-align: center;
- font-family: 'Roboto', sans-serif;
- font-weight: 600;
- font-size: 3.3vw;
- }
- 
- .starting {
-   color: #21bf73;
-   border: 5px solid #21bf73;
-   padding: 1px 10px 0px;
- }
- 
- .danger {
-   color: #d4043b;
-   border: 5px solid #9a1f40;
-   padding: 1px 10px 0px;
- }
- 
- 
-   /* ///////////////////////////////////////////////TEXT INPUT */
- 
-     .type-answer {
-       margin: 0 auto;
-       }
- 
- /* ///////////////////////////////////////////////TABLE */
- 
- .card-container {
-   width: 60%;
-   border-collapse: collapse;
-   margin: 75px auto 20px;
-   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
- }
- 
- .card-box {
-   position: relative;
-   width: 200px;
-   height: 90px;
- }
- 
- .title-box {
-   position: relative;
-   width: 16vw;
-   height: 9vh;
-   text-align: center;
-   font-size: 1vw;
-   margin-bottom: 2px;
-   padding-top: 20px;
-   color: #fff;
-   background: #050cd8;
-   font-family: 'Roboto', sans-serif;
-   font-weight: 800;
- }
- 
- 
- .money-amount {
-   padding-top: 12px;
-   position: absolute;
-   font-size: 3vw;
-   top: 0;
-   left: 0;
-   width: 16vw;
-   height: 13vh;
-   text-align: center;
-   word-wrap: break-word;
-   color: #ffd000;
-   background: #050cd8;
-   font-family: 'Roboto', sans-serif;
-   font-weight: 600;
- }
- 
- .card-front {
-   position: absolute;
-   font-size: 1vw;
-   top: 0;
-   left: 0;
-   width: 16vw;
-   height: 13vh;
-   z-index: -1;
-   text-align: center;
-   word-wrap: break-word;
-   color: #fff;
-   background: #050cd8;
- }
- 
- 
- .card-back {
-   padding-top: 30px;
-   position: absolute;
-   top: 0;
-   left: 0;
-   width: 16vw;
-   height: 13vh;
-   z-index: -1;
-   font-size: 1vw;
-   text-align: center;
-   word-wrap: break-word;
-   color: #fff;
-   background: #050cd8;
- }
- 
- .flip {
-   display: none;
- }
+  >>>>>>>answerEvent color: #ffd000;
+}
 
+
+/* ///////////////////////////////////////////////IMAGE*/
+img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+/* ///////////////////////////////////////////////SCORE */
+.score-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 90vh;
+}
+
+.score-box {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.score {
+  position: absolute;
+  display: block;
+  top: 5px;
+  left: 5vw;
+  z-index: 1;
+  text-align: center;
+  border: 5px solid rgb(164, 0, 185);
+  padding: 1px 10px 0px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 3.3vw;
+  color: rgb(210, 31, 255);
+}
+
+
+/* ///////////////////////////////////////////////RESET */
+.reset-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 90vh;
+}
+
+.reset-box {
+  position: relative;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+
+.reset {
+  position: absolute;
+  display: block;
+  top: 5px;
+  right: 5vw;
+  z-index: 1;
+  text-align: center;
+  border: 5px solid rgb(164, 0, 185);
+  padding: 1px 10px 0px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 3.3vw;
+  color: rgb(210, 31, 255);
+}
+
+.reset:hover {
+  border: 5px solid rgb(210, 31, 255);
+}
+
+/* ///////////////////////////////////////////////TYPE BUTTON */
+.type-button {
+  background-color: #f8d742;
+  border: .5px solid #f8d742;
+}
+
+.type-button:hover {
+  background-color: #b49610;
+  border: .5px solid #b49610;
+}
+
+
+
+/* ///////////////////////////////////////////////TIMER */
+
+.clock-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 90vh;
+}
+
+.clock-box {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.clock {
+  position: absolute;
+  display: block;
+  top: 5px;
+  left: 44.1vw;
+  z-index: 1;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 3.3vw;
+}
+
+.starting {
+  color: #21bf73;
+  border: 5px solid #21bf73;
+  padding: 1px 10px 0px;
+}
+
+.danger {
+  color: #ffd000;
+  border: 5px solid #bd9a00;
+  padding: 1px 10px 0px;
+}
+
+
+/* ///////////////////////////////////////////////TEXT INPUT */
+
+.type-answer {
+  margin: 0 auto;
+}
+
+/* ///////////////////////////////////////////////TABLE */
+
+.card-container {
+  width: 60%;
+  border-collapse: collapse;
+  margin: 75px auto 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.card-box {
+  position: relative;
+  width: 200px;
+  height: 90px;
+}
+
+.title-box {
+  position: relative;
+  width: 16vw;
+  height: 9vh;
+  text-align: center;
+  font-size: 1vw;
+  margin-bottom: 2px;
+  padding-top: 20px;
+  color: #fff;
+  background: #050cd8;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 800;
+}
+
+
+.money-amount {
+  padding-top: 12px;
+  position: absolute;
+  font-size: 3vw;
+  top: 0;
+  left: 0;
+  width: 16vw;
+  height: 13vh;
+  text-align: center;
+  word-wrap: break-word;
+  color: #ffd000;
+  background: #050cd8;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+}
+
+.card-front {
+  position: absolute;
+  font-size: 1vw;
+  top: 0;
+  left: 0;
+  width: 16vw;
+  height: 13vh;
+  z-index: -1;
+  text-align: center;
+  word-wrap: break-word;
+  color: #fff;
+  background: #050cd8;
+}
+
+
+.card-back {
+  padding-top: 30px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16vw;
+  height: 13vh;
+  z-index: -1;
+  font-size: 1vw;
+  text-align: center;
+  word-wrap: break-word;
+  color: #fff;
+  background: #050cd8;
+}
+
+.flip {
+  display: none;
+}
+
+/* ///////////////////////////////////////////// LOADING */
+
+.loading-container {
+  position: absolute;
+  top: 0;
+  left: 25vw;
+  width: 100vw;
+  height: 90vh;
+}
+
+.loading-box {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.loading {
+  position: absolute;
+  left: 4%;
+  top: 0;
+  margin-top: 220px;
+  z-index: 1;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 8vw;
+  color: rgb(210, 31, 255);
+  border: 10px solid rgb(164, 0, 185);
+  padding: 1px 10px 0px;
+}
+
+/* ///////////////////////////////////////////// CORRECT RESPONS */
+
+.correct-container {
+  position: absolute;
+  top: 0;
+  left: 9vw;
+  width: 100vw;
+  height: 90vh;
+}
+
+.correct-box {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.correct {
+  position: absolute;
+  left: 4%;
+  top: 0;
+  margin-top: 220px;
+  z-index: 1;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 8vw;
+  color: rgb(210, 31, 255);
+  border: 10px solid rgb(164, 0, 185);
+  padding: 1px 10px 0px;
+}
+
+
+/* ///////////////////////////////////////////// WRONG RESPONSE */
+
+.wrong-container {
+  position: absolute;
+  top: 0;
+  left: 20vw;
+  width: 100vw;
+  height: 90vh;
+}
+
+.wrong-box {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.wrong {
+  position: absolute;
+  left: 4%;
+  top: 0;
+  margin-top: 220px;
+  z-index: 1;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 8vw;
+  color: rgb(210, 31, 255);
+  border: 10px solid rgb(164, 0, 185);
+  padding: 1px 10px 0px;
+}

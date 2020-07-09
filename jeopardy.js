@@ -2,6 +2,7 @@ async function setUp(height, width) {
     const HEIGHT = height;
     const WIDTH = width
 
+    
     const categories = await getCategories(100);
     const {
         selectCats,
@@ -9,11 +10,33 @@ async function setUp(height, width) {
     } = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
     const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board, titles);
+    removeLoading();
 
 
 }
 
 setUp(5, 6);
+
+
+function removeLoading() {
+    const loadingContainer = document.querySelector(".loading-container");
+    const inputContainer = document.querySelector(".input-group");
+    const scoreContainer = document.querySelector(".score-container");
+    const resetContainer = document.querySelector(".reset-container");
+    loadingContainer.classList.toggle("flip");
+    inputContainer.classList.toggle("flip");
+    scoreContainer.classList.toggle("flip");
+    resetContainer.classList.toggle("flip");
+    sessionStorage.setItem("score", `000`);
+}
+
+const resetContainer = document.querySelector(".reset-container");
+resetContainer.addEventListener("click", () => {
+    window.location.reload(false); 
+})
+
+
+
 
 function cardContainerClick(e) {
     console.log(e);
@@ -87,11 +110,20 @@ function checkingAnswer(guess) {
 
 
     if (guess === correctAnswer) {
-
+        const correctContainer = document.querySelector(".correct-container");
+        correctContainer.classList.toggle("flip");
+        setTimeout(() => {
+            correctContainer.classList.toggle("flip");
+        }, 1000);
         return moneyAmount
+        
 
     } else {
-
+        const wrongContainer = document.querySelector(".wrong-container");
+        wrongContainer.classList.toggle("flip");
+        setTimeout(() => {
+            wrongContainer.classList.toggle("flip");
+        }, 1000);
         return undefined;
     }
 
@@ -108,7 +140,7 @@ const ifCorrect = (addScore) => {
     if (!score) score = 0;
     score += addScore;
 
-    displayScore.innerText = `SCORE:$${score}`
+    displayScore.innerText = `SCORE: $${score}`
     sessionStorage.setItem("score", `${score}`);
 
 }

@@ -210,7 +210,7 @@ function timerInterval(TIME_LIMIT, clock, clockContainer) {
             clockContainer.classList.add("flip");
         } 
 
-        if (timeLeft === 0) {
+        if (timeLeft === 0) {                                      
 
             ///////////////////////////ADD TIMES UP! RESPONSE
             clearInterval(timer);

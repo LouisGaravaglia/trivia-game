@@ -9,10 +9,8 @@ async function setUp(height, width) {
         titles
     } = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
-    const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board, titles);
+    makeHtmlBoard(HEIGHT, WIDTH, board, titles);
     removeLoading();
-
-
 }
 
 setUp(5, 6);
@@ -36,8 +34,6 @@ reset.addEventListener("click", () => {
 })
 
 
-
-
 function cardContainerClick(e) {
 
     if(e.target.classList.contains("title-box")) return;
@@ -54,25 +50,15 @@ function cardContainerClick(e) {
         answer = e.target.parentElement.lastChild;
     }
 
-    // console.log(`money: ${money.innerText}, answer: ${answer.innerText}`);
-
    
     let answerFull = answer.innerText;
     let testingAnswer = answerFull.replace(/[^A-Za-z0-9]/g, '');
-  
-    console.log(`this is me testing the testing answer ${testingAnswer}`)
 
     money.classList.add("flip");
     question.classList.toggle("flip");
-    
 
 
     clockTicking(10, question, answer);
-    // setTimeout(() => {
-
-    //     question.classList.toggle("flip");
-    //     answer.classList.remove("flip");
-    // }, 10000);
 
     return {
         money: money,
@@ -101,10 +87,6 @@ function checkingAnswer(guess) {
     let moneySlice = money.innerText.slice(1);
     let moneyAmount = parseInt(moneySlice);
 
-    console.log(`this is me checking guess: ${guess}`);
-    
-
-
     if (guess === correctAnswer) {
         const correctContainer = document.querySelector(".correct-container");
         correctContainer.classList.toggle("flip");
@@ -122,23 +104,19 @@ function checkingAnswer(guess) {
         }, 1500);
         return undefined;
     }
-
 }
+
 
 const ifCorrect = (addScore) => {
     const displayScore = document.querySelector(".score");
     const getScore = sessionStorage.getItem("score");
     let score = parseInt(getScore);
-   
-
-    console.log(`this is the score before adding: ${score}`);
 
     if (!score) score = 0;
     score += addScore;
 
     displayScore.innerText = `SCORE: $${score}`
     sessionStorage.setItem("score", `${score}`);
-
 }
 
 
@@ -161,8 +139,6 @@ function clockTicking(TIME_LIMIT, question, answer) {
 
 
     timerInterval(TIME_LIMIT, clock, clockContainer, question, answer);
-
-
 }
 
 
@@ -203,8 +179,6 @@ function timerInterval(TIME_LIMIT, clock, clockContainer, question, answer) {
 
 
 
-
-
 function makeTopRow(WIDTH, titles) {
     const topRow = document.createElement("tr");
 
@@ -224,7 +198,6 @@ function makeTopRow(WIDTH, titles) {
         titleCell.append(titleBox);
         topRow.append(titleCell);
     }
-
     return topRow;
 }
 
@@ -238,34 +211,22 @@ const submitBtn = document.querySelector("#button-addon2");
 
 submitBtn.addEventListener("click", () => {
 
-    console.log("MADE IT TO SUBMIT BTN CLICK!");
-
     const typeField = document.querySelector(".form-control");
     let guessFull = _.toUpper(typeField.value);
     let guess = guessFull.replace(/[^A-Za-z0-9]/g, '');
-    console.log(`this is the guess value: ${guess}`);
 
     let addScore = checkingAnswer(guess);
-    console.log(`this is the addScore value: ${addScore}`);
-
-   
-    
 
     if (addScore == undefined) {
-        console.log("I'M only returning");
         typeField.value = "";
         $("#stop-timer").val(true);
     
     } else {
-        console.log("I'M running ifCorrect func");
         $("#stop-timer").val(true);
 
         ifCorrect(addScore);
         typeField.value = "";
     }
-
-    
-
 });
 
 
@@ -390,9 +351,6 @@ async function getCategories(num) {
             id: item.id,
             title: item.title
         });
-
     }
-
     return categories;
-
 };

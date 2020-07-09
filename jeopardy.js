@@ -18,11 +18,11 @@ setUp(5, 6);
 function cardContainerClick(e) {
     console.log(e);
 
-    let money;
-    let question;
-    let passingQuestion;
-    let answer;
-    
+    // let money;
+    // let question;
+    // let passingQuestion;
+    // let answer;
+
     if (e.target.localName === "p") {
         money = e.target.parentElement;
         question = e.target.parentElement.parentElement.children[1];
@@ -34,24 +34,24 @@ function cardContainerClick(e) {
         passingQuestion = question.innerText;
         answer = e.target.parentElement.lastChild;
     }
-    
+
     // console.log(`money: ${money.innerText}, answer: ${answer.innerText}`);
-    
-    
+
+
     let testingAnswer = answer.innerText;
     console.log(`this is me testing the testing answer ${testingAnswer}`)
-    
+
     money.classList.add("flip");
     question.classList.toggle("flip");
-    
-    
+
+
     clockTicking(10, testingAnswer, money);
     setTimeout(() => {
-    
+
         question.classList.toggle("flip");
         answer.classList.remove("flip");
     }, 9000);
-    
+
     return {
         money: money,
         testingAnswer: testingAnswer,
@@ -62,15 +62,18 @@ function cardContainerClick(e) {
 
 const cardContainer = document.querySelector(".card-container");
 cardContainer.addEventListener("click", (e) => {
-let {money, testingAnswer} = cardContainerClick(e);
+    let {
+        money,
+        testingAnswer
+    } = cardContainerClick(e);
 
-   $("#hidden-answer").val(testingAnswer);
-   $("#hidden-money").val(money);
+    $("#hidden-answer").val(testingAnswer);
+    $("#hidden-money").val(money);
 })
 
 
 function checkingAnswer(guess) {
-    let answer= $("#hidden-answer").val();
+    let answer = $("#hidden-answer").val();
     let correctAnswer = _.toUpper(answer);
     let money = $("#hidden-money").val();
     let moneySlice = money.innerText.slice(1);
@@ -106,8 +109,6 @@ const ifCorrect = (addScore) => {
 
 function clockTicking(TIME_LIMIT, testingAnswer, money) {
     const body = document.querySelector("body");
-    let timePassed = 0;
-
 
     const clockContainer = document.createElement("div");
     clockContainer.classList.add("clock-container");
@@ -124,13 +125,13 @@ function clockTicking(TIME_LIMIT, testingAnswer, money) {
     body.append(clockContainer);
 
 
-
-    console.log(`this is the answer inside clockTicking: ${ testingAnswer}`);
-
+    timerInterval(TIME_LIMIT, clock, clockContainer);
 
 
+}
 
-
+function timerInterval(TIME_LIMIT, clock, clockContainer) {
+    let timePassed = 0;
     let timer = setInterval(() => {
         timePassed = timePassed += 1;
         timeLeft = TIME_LIMIT - timePassed;
@@ -145,7 +146,6 @@ function clockTicking(TIME_LIMIT, testingAnswer, money) {
         }
     }, 1000);
 }
-
 
 
 
@@ -205,39 +205,6 @@ submitBtn.addEventListener("click", () => {
     }
 
 });
-
-
-// submitEvent(submitBtn, guess);
-
-// const submitEvent = (submitBtn, testingAnswer, money) => {
-
-//     submitBtn.on("click", () => {
-
-//         console.log(testingAnswer);
-
-//         const typeField = document.querySelector(".form-control");
-//         let guess = _.toUpper(typeField.value);
-
-//         let addScore = checkingAnswer(guess, testingAnswer, money);
-//         console.log(`this is the addScore value: ${addScore}`);
-
-//         if (addScore == undefined) {
-//             console.log("I'M only returning");
-//             typeField.value = "";
-
-//             return;
-//         } else {
-//             console.log("I'M running ifCorrect func");
-
-
-//             ifCorrect(addScore);
-//             typeField.value = "";
-//         }
-
-//     });
-// };
-
-
 
 
 

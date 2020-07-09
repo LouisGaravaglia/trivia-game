@@ -205,7 +205,10 @@ function timerInterval(TIME_LIMIT, clock, clockContainer) {
 
         clock.innerText = `00:0${timeLeft}`;
 
-        if ($("#stop-timer").val()) clearInterval(timer);
+        if ($("#stop-timer").val()) {
+            clearInterval(timer);
+            clockContainer.classList.add("flip");
+        } 
 
         if (timeLeft === 0) {
 

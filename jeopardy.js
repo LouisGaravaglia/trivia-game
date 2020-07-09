@@ -95,15 +95,16 @@ const ifCorrect = (addScore) => {
     const displayScore = document.querySelector(".score");
     const getScore = sessionStorage.getItem("score");
     let score = parseInt(getScore);
+   
 
     console.log(`this is the score before adding: ${score}`);
 
     if (!score) score = 0;
     score += addScore;
 
-
     displayScore.innerText = `SCORE:$${score}`
     sessionStorage.setItem("score", `${score}`);
+
 }
 
 
@@ -130,22 +131,7 @@ function clockTicking(TIME_LIMIT, testingAnswer, money) {
 
 }
 
-function timerInterval(TIME_LIMIT, clock, clockContainer) {
-    let timePassed = 0;
-    let timer = setInterval(() => {
-        timePassed = timePassed += 1;
-        timeLeft = TIME_LIMIT - timePassed;
 
-        clock.innerText = `00:0${timeLeft}`;
-
-        if (timeLeft === 0) {
-
-            ///////////////////////////ADD TIMES UP! RESPONSE
-            clearInterval(timer);
-            clockContainer.classList.add("flip");
-        }
-    }, 1000);
-}
 
 
 
@@ -194,17 +180,41 @@ submitBtn.addEventListener("click", () => {
     if (addScore == undefined) {
         console.log("I'M only returning");
         typeField.value = "";
-
-        return;
+        $("#stop-timer").val(true);
+    
     } else {
         console.log("I'M running ifCorrect func");
-
+        $("#stop-timer").val(true);
 
         ifCorrect(addScore);
         typeField.value = "";
     }
 
+    
+
 });
+
+
+function timerInterval(TIME_LIMIT, clock, clockContainer) {
+    let timePassed = 0;
+    $("#stop-timer").val(false);
+
+    let timer = setInterval(() => {
+        timePassed = timePassed += 1;
+        timeLeft = TIME_LIMIT - timePassed;
+
+        clock.innerText = `00:0${timeLeft}`;
+
+        if ($("#stop-timer").val()) clearInterval(timer);
+
+        if (timeLeft === 0) {
+
+            ///////////////////////////ADD TIMES UP! RESPONSE
+            clearInterval(timer);
+            clockContainer.classList.add("flip");
+        }
+    }, 1000);
+}
 
 
 

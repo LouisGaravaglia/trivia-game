@@ -110,7 +110,7 @@ function checkingAnswer(guess) {
         correctContainer.classList.toggle("flip");
         setTimeout(() => {
             correctContainer.classList.toggle("flip");
-        }, 1000);
+        }, 1500);
         return moneyAmount
         
 
@@ -119,7 +119,7 @@ function checkingAnswer(guess) {
         wrongContainer.classList.toggle("flip");
         setTimeout(() => {
             wrongContainer.classList.toggle("flip");
-        }, 1000);
+        }, 1500);
         return undefined;
     }
 
@@ -185,7 +185,12 @@ function timerInterval(TIME_LIMIT, clock, clockContainer, question, answer) {
         } 
 
         if (timeLeft === 0) {                                      
-            ///////////////////////////ADD TIMES UP! RESPONSE
+            const timesUpContainer = document.querySelector(".times-up-container");
+            timesUpContainer.classList.toggle("flip");
+        setTimeout(() => {
+            timesUpContainer.classList.toggle("flip");
+        }, 1500);
+
             clearInterval(timer);
             clockContainer.classList.add("flip");
             question.classList.toggle("flip");

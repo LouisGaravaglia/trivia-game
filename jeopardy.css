@@ -251,7 +251,7 @@ img {
   position: absolute;
   display: block;
   top: 5px;
-  left: 44.1vw;
+  left: 44.7vw;
   z-index: 1;
   text-align: center;
   font-family: 'Roboto', sans-serif;
@@ -426,7 +426,7 @@ img {
 .wrong-container {
   position: absolute;
   top: 0;
-  left: 20vw;
+  left: 22vw;
   width: 100vw;
   height: 90vh;
 }
@@ -438,6 +438,37 @@ img {
 }
 
 .wrong {
+  position: absolute;
+  left: 4%;
+  top: 0;
+  margin-top: 220px;
+  z-index: 1;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 8vw;
+  color: rgb(210, 31, 255);
+  border: 10px solid rgb(164, 0, 185);
+  padding: 1px 10px 0px;
+}
+
+/* ///////////////////////////////////////////// TIMES UP RESPONSE */
+
+.times-up-container {
+  position: absolute;
+  top: 0;
+  left: 26vw;
+  width: 100vw;
+  height: 90vh;
+}
+
+.times-up-box {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.times-up {
   position: absolute;
   left: 4%;
   top: 0;

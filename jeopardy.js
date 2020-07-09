@@ -9,11 +9,6 @@ async function setUp(height, width) {
     } = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
     const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board, titles);
-    // let testingAnswer = listening(TIME_LIMIT);
-    // console.log(`this is setUp func testingAnswer: ${testingAnswer}`);
-    // console.log(`this is setUp func money: ${money}`);
-
-
 
 
 }
@@ -65,11 +60,9 @@ function cardContainerClick(e) {
 
 
 
-
-// const cards = document.querySelectorAll(".money-amount");
 const cardContainer = document.querySelector(".card-container");
 cardContainer.addEventListener("click", (e) => {
-    let {money, testingAnswer} = cardContainerClick(e);
+let {money, testingAnswer} = cardContainerClick(e);
 
    $("#hidden-answer").val(testingAnswer);
    $("#hidden-money").val(money);

@@ -44,26 +44,27 @@ function listening(TIME_LIMIT) {
                 answer = e.target.parentElement.lastChild;
             }
 
-            console.log(money);
+            let testingAnswer = answer.innerText;
+            console.log(`this is me testing the testing answer ${testingAnswer}`)
 
             money.classList.add("flip");
             question.classList.toggle("flip");
 
             const submitBtn = $("#button-addon2");
 
-            submitEvent(submitBtn, answer, money);
-            clockTicking(TIME_LIMIT, answer, money);
+            submitEvent(submitBtn, testingAnswer, money);
+            clockTicking(TIME_LIMIT, testingAnswer, money);
             setTimeout(() => {
 
                 question.classList.toggle("flip");
                 answer.classList.remove("flip");
             }, 9000);
 
-            return {
-                money: money,
-                answer: answer,
-                submitBtn: submitBtn
-            };
+            // return {
+            //     money: money,
+            //     answer: answer,
+            //     submitBtn: submitBtn
+            // };
         })
     })
 }
@@ -73,16 +74,17 @@ function listening(TIME_LIMIT) {
 
 
 
-function checkingAnswer(guess, answer, money) {
-    correctAnswer = _.toUpper(answer.innerText);
-    money = money.innerText.slice(1);
-    moneyAmount = parseInt(money);
+function checkingAnswer(guess, testingAnswer, money) {
+    // let correctAnswer = _.toUpper(answer.innerText);
+    let correctAnswer = _.toUpper(testingAnswer);
+    let moneySlice = money.innerText.slice(1);
+    let moneyAmount = parseInt(moneySlice);
 
     sessionStorage.setItem("answer", `${correctAnswer}`);
-    const retrievedAnswer = sessionStorage.getItem("answer");
+    let retrievedAnswer = sessionStorage.getItem("answer");
 
     sessionStorage.setItem("guess", `${guess}`);
-    const retrievedGuess = sessionStorage.getItem("guess");
+    let retrievedGuess = sessionStorage.getItem("guess");
 
     if (retrievedGuess === retrievedAnswer ) {
         console.log("this is RIGHT answer");
@@ -122,7 +124,7 @@ const ifCorrect = (addScore) => {
 }
 
 
-function clockTicking(TIME_LIMIT, answer, money) {
+function clockTicking(TIME_LIMIT, testingAnswer, money) {
     const body = document.querySelector("body");
     let timePassed = 0;
 
@@ -143,7 +145,7 @@ function clockTicking(TIME_LIMIT, answer, money) {
 
 
 
-    console.log(answer.innerText);
+    console.log(`this is the answer inside clockTicking: ${ testingAnswer}`);
 
 
 
@@ -200,14 +202,16 @@ function makeTopRow(WIDTH, titles) {
 
 // submitEvent(submitBtn, guess);
 
-const submitEvent = (submitBtn, answer, money) => {
+const submitEvent = (submitBtn, testingAnswer, money) => {
 
     submitBtn.on("click", () => {
 
+            console.log(testingAnswer);
+            
         const typeField = document.querySelector(".form-control");
-        guess = _.toUpper(typeField.value);
+        let guess = _.toUpper(typeField.value);
 
-        addScore = checkingAnswer(guess, answer, money);
+        let addScore = checkingAnswer(guess, testingAnswer, money);
         console.log(`this is the addScore value: ${addScore}`);
 
         if (addScore == undefined) {
@@ -217,9 +221,10 @@ const submitEvent = (submitBtn, answer, money) => {
             return;
         } else {
             console.log("I'M running ifCorrect func");
-            typeField.value = "";
+            
 
             ifCorrect(addScore);
+            typeField.value = "";
         }
 
     });
@@ -355,76 +360,3 @@ async function getCategories(num) {
 
 };
 
-
-
-
-
-/** Get NUM_CATEGORIES random category from API.
- *
- * Returns array of category ids
- */
-
-function getCategoryIds() {}
-
-/** Return object with data about a category:
- *
- *  Returns { title: "Math", clues: clue-array }
- *
- * Where clue-array is:
- *   [
- *      {question: "Hamlet Author", answer: "Shakespeare", showing: null},
- *      {question: "Bell Jar Author", answer: "Plath", showing: null},
- *      ...
- *   ]
- */
-
-function getCategory(catId) {}
-
-/** Fill the HTML table#jeopardy with the categories & cells for questions.
- *
- * - The <thead> should be filled w/a <tr>, and a <td> for each category
- * - The <tbody> should be filled w/NUM_QUESTIONS_PER_CAT <tr>s,
- *   each with a question for each category in a <td>
- *   (initally, just show a "?" where the question/answer would go.)
- */
-
-async function fillTable() {}
-
-/** Handle clicking on a clue: show the question or answer.
- *
- * Uses .showing property on clue to determine what to show:
- * - if currently null, show question & set .showing to "question"
- * - if currently "question", show answer & set .showing to "answer"
- * - if currently "answer", ignore click
- * */
-
-function handleClick(evt) {}
-
-/** Wipe the current Jeopardy board, show the loading spinner,
- * and update the button used to fetch data.
- */
-
-function showLoadingView() {
-
-}
-
-/** Remove the loading spinner and update the button used to fetch data. */
-
-function hideLoadingView() {}
-
-/** Start game:
- *
- * - get random category Ids
- * - get data for each category
- * - create HTML table
- * */
-
-async function setupAndStart() {}
-
-/** On click of start / restart button, set up game. */
-
-// TODO
-
-/** On page load, add event handler for clicking clues */
-
-// TODO

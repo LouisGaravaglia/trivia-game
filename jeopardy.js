@@ -76,94 +76,19 @@ cardContainer.addEventListener("click", (e) => {
 })
 
 
-
-
-// let cardEvent = cards.forEach((card) => {
-//     card.addEventListener("click", (e) => {
-
-//         console.log("DOES this work?");
-
-// let money;
-// let question;
-// let passingQuestion;
-// let answer;
-
-// if (e.target.localName === "p") {
-//     money = e.target.parentElement;
-//     question = e.target.parentElement.parentElement.children[1];
-//     passingQuestion = question.innerText;
-//     answer = e.target.parentElement.parentElement.lastChild;
-// } else {
-//     money = e.target;
-//     question = e.target.parentElement.children[1];
-//     passingQuestion = question.innerText;
-//     answer = e.target.parentElement.lastChild;
-// }
-
-// let testingAnswer = answer.innerText;
-// console.log(`this is me testing the testing answer ${testingAnswer}`)
-
-// money.classList.add("flip");
-// question.classList.toggle("flip");
-
-
-// clockTicking(TIME_LIMIT, testingAnswer, money);
-// setTimeout(() => {
-
-//     question.classList.toggle("flip");
-//     answer.classList.remove("flip");
-// }, 9000);
-
-// return {
-//     // money: money,
-//     testingAnswer: testingAnswer,
-// };
-//     })
-// })
-
-
-// console.log(`this is forEachLoop testingAnswer: ${cardEvent}`);
-
-
-// const submitBtn = $("#button-addon2");
-
-// submitEvent(submitBtn, testingAnswer, money);
-
-
 function checkingAnswer(guess) {
-    // let correctAnswer = _.toUpper(answer.innerText);
-    let testingAnswer = $("#hidden-answer").val()
-    console.log(`hidden answer val: ${testingAnswer}`);
-    
-    let correctAnswer = _.toUpper(testingAnswer);
+    let answer= $("#hidden-answer").val();
+    let correctAnswer = _.toUpper(answer);
     let money = $("#hidden-money").val();
-    console.log(`hidden money val: ${money}`);
-
     let moneySlice = money.innerText.slice(1);
     let moneyAmount = parseInt(moneySlice);
 
-    sessionStorage.setItem("answer", `${correctAnswer}`);
-    let retrievedAnswer = sessionStorage.getItem("answer");
 
-    sessionStorage.setItem("guess", `${guess}`);
-    let retrievedGuess = sessionStorage.getItem("guess");
-
-    if (retrievedGuess === retrievedAnswer) {
-        console.log("this is RIGHT answer");
-        console.log(`right guess: ${retrievedGuess}`);
-        console.log(`right answer: ${retrievedAnswer}`);
-        // console.log(`this is right answerArray[0]: ${retrievedAnswer }`);
-        // console.log(`this is right answerArray[1]: ${answerArray[1]}`);
-
+    if (guess === correctAnswer) {
 
         return moneyAmount
 
     } else {
-        console.log("this is WRONG answer");
-        console.log(`wrong guess: ${retrievedGuess}`);
-        console.log(`wrong answer: ${retrievedAnswer }`);
-        // console.log(`this is wrong answerArray: ${answerArray[0]}`);
-        // console.log(`this is wrong answerArray[1]: ${answerArray[1]}`);
 
         return undefined;
     }

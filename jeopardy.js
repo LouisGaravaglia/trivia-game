@@ -37,20 +37,23 @@ function cardContainerClick(e) {
 
     // console.log(`money: ${money.innerText}, answer: ${answer.innerText}`);
 
-
-    let testingAnswer = answer.innerText;
+   
+    let answerFull = answer.innerText;
+    let testingAnswer = answerFull.replace(/[^A-Za-z0-9]/g, '');
+  
     console.log(`this is me testing the testing answer ${testingAnswer}`)
 
     money.classList.add("flip");
     question.classList.toggle("flip");
+    
 
 
-    clockTicking(10, testingAnswer, money);
-    setTimeout(() => {
+    clockTicking(10, question, answer);
+    // setTimeout(() => {
 
-        question.classList.toggle("flip");
-        answer.classList.remove("flip");
-    }, 9000);
+    //     question.classList.toggle("flip");
+    //     answer.classList.remove("flip");
+    // }, 10000);
 
     return {
         money: money,
@@ -78,6 +81,9 @@ function checkingAnswer(guess) {
     let money = $("#hidden-money").val();
     let moneySlice = money.innerText.slice(1);
     let moneyAmount = parseInt(moneySlice);
+
+    console.log(`this is me checking guess: ${guess}`);
+    
 
 
     if (guess === correctAnswer) {
@@ -108,7 +114,7 @@ const ifCorrect = (addScore) => {
 }
 
 
-function clockTicking(TIME_LIMIT, testingAnswer, money) {
+function clockTicking(TIME_LIMIT, question, answer) {
     const body = document.querySelector("body");
 
     const clockContainer = document.createElement("div");
@@ -119,17 +125,47 @@ function clockTicking(TIME_LIMIT, testingAnswer, money) {
 
     const clock = document.createElement("h1");
     clock.classList.add("danger", "clock");
-    clock.innerText = `00:0${TIME_LIMIT}`;
+    clock.innerText = `00:${TIME_LIMIT}`;
 
     clockBox.append(clock);
     clockContainer.append(clockBox);
     body.append(clockContainer);
 
 
-    timerInterval(TIME_LIMIT, clock, clockContainer);
+    timerInterval(TIME_LIMIT, clock, clockContainer, question, answer);
 
 
 }
+
+
+
+function timerInterval(TIME_LIMIT, clock, clockContainer, question, answer) {
+    let timePassed = 0;
+    $("#stop-timer").val(false);
+
+    let timer = setInterval(() => {
+        timePassed = timePassed += 1;
+        timeLeft = TIME_LIMIT - timePassed;
+
+        clock.innerText = `00:0${timeLeft}`;
+
+        if ($("#stop-timer").val()) {
+            clearInterval(timer);
+            clockContainer.classList.add("flip");
+            question.classList.toggle("flip");
+            answer.classList.remove("flip");
+        } 
+
+        if (timeLeft === 0) {                                      
+            ///////////////////////////ADD TIMES UP! RESPONSE
+            clearInterval(timer);
+            clockContainer.classList.add("flip");
+            question.classList.toggle("flip");
+            answer.classList.remove("flip");
+        }
+    }, 1000);
+}
+
 
 
 
@@ -172,10 +208,15 @@ submitBtn.addEventListener("click", () => {
     console.log("MADE IT TO SUBMIT BTN CLICK!");
 
     const typeField = document.querySelector(".form-control");
-    let guess = _.toUpper(typeField.value);
+    let guessFull = _.toUpper(typeField.value);
+    let guess = guessFull.replace(/[^A-Za-z0-9]/g, '');
+    console.log(`this is the guess value: ${guess}`);
 
     let addScore = checkingAnswer(guess);
     console.log(`this is the addScore value: ${addScore}`);
+
+   
+    
 
     if (addScore == undefined) {
         console.log("I'M only returning");
@@ -194,30 +235,6 @@ submitBtn.addEventListener("click", () => {
 
 });
 
-
-function timerInterval(TIME_LIMIT, clock, clockContainer) {
-    let timePassed = 0;
-    $("#stop-timer").val(false);
-
-    let timer = setInterval(() => {
-        timePassed = timePassed += 1;
-        timeLeft = TIME_LIMIT - timePassed;
-
-        clock.innerText = `00:0${timeLeft}`;
-
-        if ($("#stop-timer").val()) {
-            clearInterval(timer);
-            clockContainer.classList.add("flip");
-        } 
-
-        if (timeLeft === 0) {                                      
-
-            ///////////////////////////ADD TIMES UP! RESPONSE
-            clearInterval(timer);
-            clockContainer.classList.add("flip");
-        }
-    }, 1000);
-}
 
 
 

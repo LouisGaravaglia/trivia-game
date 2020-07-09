@@ -2,32 +2,42 @@ async function setUp(height, width) {
     const HEIGHT = height;
     const WIDTH = width
 
+    
     const categories = await getCategories(100);
     const {
         selectCats,
         titles
     } = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
-    const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board, titles);
-    // let testingAnswer = listening(TIME_LIMIT);
-    // console.log(`this is setUp func testingAnswer: ${testingAnswer}`);
-    // console.log(`this is setUp func money: ${money}`);
-
-
-
-
+    makeHtmlBoard(HEIGHT, WIDTH, board, titles);
+    removeLoading();
 }
 
 setUp(5, 6);
 
-function cardContainerClick(e) {
-    console.log(e);
 
-    let money;
-    let question;
-    let passingQuestion;
-    let answer;
-    
+function removeLoading() {
+    const loadingContainer = document.querySelector(".loading-container");
+    const inputContainer = document.querySelector(".input-group");
+    const scoreContainer = document.querySelector(".score-container");
+    const resetContainer = document.querySelector(".reset-container");
+    loadingContainer.classList.toggle("flip");
+    inputContainer.classList.toggle("flip");
+    scoreContainer.classList.toggle("flip");
+    resetContainer.classList.toggle("flip");
+    sessionStorage.setItem("score", `000`);
+}
+
+const reset = document.querySelector(".reset");
+reset.addEventListener("click", () => {
+    window.location.reload(false); 
+})
+
+
+function cardContainerClick(e) {
+
+    if(e.target.classList.contains("title-box")) return;
+
     if (e.target.localName === "p") {
         money = e.target.parentElement;
         question = e.target.parentElement.parentElement.children[1];
@@ -39,24 +49,17 @@ function cardContainerClick(e) {
         passingQuestion = question.innerText;
         answer = e.target.parentElement.lastChild;
     }
-    
-    // console.log(`money: ${money.innerText}, answer: ${answer.innerText}`);
-    
-    
-    let testingAnswer = answer.innerText;
-    console.log(`this is me testing the testing answer ${testingAnswer}`)
-    
+
+   
+    let answerFull = answer.innerText;
+    let testingAnswer = answerFull.replace(/[^A-Za-z0-9]/g, '');
+
     money.classList.add("flip");
     question.classList.toggle("flip");
-    
-    
-    clockTicking(10, testingAnswer, money);
-    setTimeout(() => {
-    
-        question.classList.toggle("flip");
-        answer.classList.remove("flip");
-    }, 9000);
-    
+
+
+    clockTicking(10, question, answer);
+
     return {
         money: money,
         testingAnswer: testingAnswer,
@@ -65,131 +68,60 @@ function cardContainerClick(e) {
 
 
 
-
-// const cards = document.querySelectorAll(".money-amount");
 const cardContainer = document.querySelector(".card-container");
 cardContainer.addEventListener("click", (e) => {
-    let {money, testingAnswer} = cardContainerClick(e);
+    let {
+        money,
+        testingAnswer
+    } = cardContainerClick(e);
 
-   $("#hidden-answer").val(testingAnswer);
-   $("#hidden-money").val(money);
+    $("#hidden-answer").val(testingAnswer);
+    $("#hidden-money").val(money);
 })
 
 
-
-
-// let cardEvent = cards.forEach((card) => {
-//     card.addEventListener("click", (e) => {
-
-//         console.log("DOES this work?");
-
-// let money;
-// let question;
-// let passingQuestion;
-// let answer;
-
-// if (e.target.localName === "p") {
-//     money = e.target.parentElement;
-//     question = e.target.parentElement.parentElement.children[1];
-//     passingQuestion = question.innerText;
-//     answer = e.target.parentElement.parentElement.lastChild;
-// } else {
-//     money = e.target;
-//     question = e.target.parentElement.children[1];
-//     passingQuestion = question.innerText;
-//     answer = e.target.parentElement.lastChild;
-// }
-
-// let testingAnswer = answer.innerText;
-// console.log(`this is me testing the testing answer ${testingAnswer}`)
-
-// money.classList.add("flip");
-// question.classList.toggle("flip");
-
-
-// clockTicking(TIME_LIMIT, testingAnswer, money);
-// setTimeout(() => {
-
-//     question.classList.toggle("flip");
-//     answer.classList.remove("flip");
-// }, 9000);
-
-// return {
-//     // money: money,
-//     testingAnswer: testingAnswer,
-// };
-//     })
-// })
-
-
-// console.log(`this is forEachLoop testingAnswer: ${cardEvent}`);
-
-
-// const submitBtn = $("#button-addon2");
-
-// submitEvent(submitBtn, testingAnswer, money);
-
-
 function checkingAnswer(guess) {
-    // let correctAnswer = _.toUpper(answer.innerText);
-    let testingAnswer = $("#hidden-answer").val()
-    console.log(`hidden answer val: ${testingAnswer}`);
-    
-    let correctAnswer = _.toUpper(testingAnswer);
+    let answer = $("#hidden-answer").val();
+    let correctAnswer = _.toUpper(answer);
     let money = $("#hidden-money").val();
-    console.log(`hidden money val: ${money}`);
-
     let moneySlice = money.innerText.slice(1);
     let moneyAmount = parseInt(moneySlice);
 
-    sessionStorage.setItem("answer", `${correctAnswer}`);
-    let retrievedAnswer = sessionStorage.getItem("answer");
-
-    sessionStorage.setItem("guess", `${guess}`);
-    let retrievedGuess = sessionStorage.getItem("guess");
-
-    if (retrievedGuess === retrievedAnswer) {
-        console.log("this is RIGHT answer");
-        console.log(`right guess: ${retrievedGuess}`);
-        console.log(`right answer: ${retrievedAnswer}`);
-        // console.log(`this is right answerArray[0]: ${retrievedAnswer }`);
-        // console.log(`this is right answerArray[1]: ${answerArray[1]}`);
-
-
+    if (guess === correctAnswer) {
+        const correctContainer = document.querySelector(".correct-container");
+        correctContainer.classList.toggle("flip");
+        setTimeout(() => {
+            correctContainer.classList.toggle("flip");
+        }, 1500);
         return moneyAmount
+        
 
     } else {
-        console.log("this is WRONG answer");
-        console.log(`wrong guess: ${retrievedGuess}`);
-        console.log(`wrong answer: ${retrievedAnswer }`);
-        // console.log(`this is wrong answerArray: ${answerArray[0]}`);
-        // console.log(`this is wrong answerArray[1]: ${answerArray[1]}`);
-
+        const wrongContainer = document.querySelector(".wrong-container");
+        wrongContainer.classList.toggle("flip");
+        setTimeout(() => {
+            wrongContainer.classList.toggle("flip");
+        }, 1500);
         return undefined;
     }
-
 }
+
 
 const ifCorrect = (addScore) => {
     const displayScore = document.querySelector(".score");
     const getScore = sessionStorage.getItem("score");
     let score = parseInt(getScore);
 
-    console.log(`this is the score before adding: ${score}`);
-
     if (!score) score = 0;
     score += addScore;
 
-
-    displayScore.innerText = `SCORE:$${score}`
+    displayScore.innerText = `SCORE: $${score}`
     sessionStorage.setItem("score", `${score}`);
 }
 
 
-function clockTicking(TIME_LIMIT, testingAnswer, money) {
+function clockTicking(TIME_LIMIT, question, answer) {
     const body = document.querySelector("body");
-    let timePassed = 0;
-
 
     const clockContainer = document.createElement("div");
     clockContainer.classList.add("clock-container");
@@ -199,19 +131,21 @@ function clockTicking(TIME_LIMIT, testingAnswer, money) {
 
     const clock = document.createElement("h1");
     clock.classList.add("danger", "clock");
-    clock.innerText = `00:0${TIME_LIMIT}`;
+    clock.innerText = `00:${TIME_LIMIT}`;
 
     clockBox.append(clock);
     clockContainer.append(clockBox);
     body.append(clockContainer);
 
 
-
-    console.log(`this is the answer inside clockTicking: ${ testingAnswer}`);
-
-
+    timerInterval(TIME_LIMIT, clock, clockContainer, question, answer);
+}
 
 
+
+function timerInterval(TIME_LIMIT, clock, clockContainer, question, answer) {
+    let timePassed = 0;
+    $("#stop-timer").val(false);
 
     let timer = setInterval(() => {
         timePassed = timePassed += 1;
@@ -219,11 +153,24 @@ function clockTicking(TIME_LIMIT, testingAnswer, money) {
 
         clock.innerText = `00:0${timeLeft}`;
 
-        if (timeLeft === 0) {
-
-            ///////////////////////////ADD TIMES UP! RESPONSE
+        if ($("#stop-timer").val()) {
             clearInterval(timer);
             clockContainer.classList.add("flip");
+            question.classList.toggle("flip");
+            answer.classList.remove("flip");
+        } 
+
+        if (timeLeft === 0) {                                      
+            const timesUpContainer = document.querySelector(".times-up-container");
+            timesUpContainer.classList.toggle("flip");
+        setTimeout(() => {
+            timesUpContainer.classList.toggle("flip");
+        }, 1500);
+
+            clearInterval(timer);
+            clockContainer.classList.add("flip");
+            question.classList.toggle("flip");
+            answer.classList.remove("flip");
         }
     }, 1000);
 }
@@ -251,7 +198,6 @@ function makeTopRow(WIDTH, titles) {
         titleCell.append(titleBox);
         topRow.append(titleCell);
     }
-
     return topRow;
 }
 
@@ -265,60 +211,23 @@ const submitBtn = document.querySelector("#button-addon2");
 
 submitBtn.addEventListener("click", () => {
 
-    console.log("MADE IT TO SUBMIT BTN CLICK!");
-
     const typeField = document.querySelector(".form-control");
-    let guess = _.toUpper(typeField.value);
+    let guessFull = _.toUpper(typeField.value);
+    let guess = guessFull.replace(/[^A-Za-z0-9]/g, '');
 
     let addScore = checkingAnswer(guess);
-    console.log(`this is the addScore value: ${addScore}`);
 
     if (addScore == undefined) {
-        console.log("I'M only returning");
         typeField.value = "";
-
-        return;
+        $("#stop-timer").val(true);
+    
     } else {
-        console.log("I'M running ifCorrect func");
-
+        $("#stop-timer").val(true);
 
         ifCorrect(addScore);
         typeField.value = "";
     }
-
 });
-
-
-// submitEvent(submitBtn, guess);
-
-// const submitEvent = (submitBtn, testingAnswer, money) => {
-
-//     submitBtn.on("click", () => {
-
-//         console.log(testingAnswer);
-
-//         const typeField = document.querySelector(".form-control");
-//         let guess = _.toUpper(typeField.value);
-
-//         let addScore = checkingAnswer(guess, testingAnswer, money);
-//         console.log(`this is the addScore value: ${addScore}`);
-
-//         if (addScore == undefined) {
-//             console.log("I'M only returning");
-//             typeField.value = "";
-
-//             return;
-//         } else {
-//             console.log("I'M running ifCorrect func");
-
-
-//             ifCorrect(addScore);
-//             typeField.value = "";
-//         }
-
-//     });
-// };
-
 
 
 
@@ -442,9 +351,6 @@ async function getCategories(num) {
             id: item.id,
             title: item.title
         });
-
     }
-
     return categories;
-
 };

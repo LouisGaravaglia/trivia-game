@@ -1,65 +1,195 @@
-
-
 async function setUp(height, width) {
     const HEIGHT = height;
     const WIDTH = width
-    const TIME_LIMIT = 5;
 
     const categories = await getCategories(100);
-    const {selectCats, titles} = await getSelects(categories, WIDTH);
+    const {
+        selectCats,
+        titles
+    } = await getSelects(categories, WIDTH);
     const board = await getClues(selectCats, HEIGHT, WIDTH);
     const htmlBoard = await makeHtmlBoard(HEIGHT, WIDTH, board, titles);
+    // let testingAnswer = listening(TIME_LIMIT);
+    // console.log(`this is setUp func testingAnswer: ${testingAnswer}`);
+    // console.log(`this is setUp func money: ${money}`);
 
-    listening(TIME_LIMIT);
+
+
+
 }
 
 setUp(5, 6);
 
+function cardContainerClick(e) {
+    console.log(e);
 
-
-
-function listening(TIME_LIMIT) {
-    const cards = document.querySelectorAll(".money-amount");
-    const cardContainer = document.querySelector(".card-container");
-
-    cards.forEach((card) => {
-        card.addEventListener("click", (e) => {
-            console.log(e);
-            if (e.target.localName === "p") {
-                money = e.target.parentElement;
-                question = e.target.parentElement.parentElement.children[1];
-                passingQuestion = question.innerText;
-                answer = e.target.parentElement.parentElement.lastChild;
-            } else {
-                money = e.target;
-                question = e.target.parentElement.children[1];
-                passingQuestion = question.innerText;
-                answer = e.target.parentElement.lastChild;
-            }
-
-            money.classList.add("flip");
-            question.classList.toggle("flip");
-            clockTicking(TIME_LIMIT);
-            setTimeout(() => {
-
-                question.classList.toggle("flip");
-                answer.classList.remove("flip");
-            }, 5000);
-        })
-    })
+    let money;
+    let question;
+    let passingQuestion;
+    let answer;
+    
+    if (e.target.localName === "p") {
+        money = e.target.parentElement;
+        question = e.target.parentElement.parentElement.children[1];
+        passingQuestion = question.innerText;
+        answer = e.target.parentElement.parentElement.lastChild;
+    } else {
+        money = e.target;
+        question = e.target.parentElement.children[1];
+        passingQuestion = question.innerText;
+        answer = e.target.parentElement.lastChild;
+    }
+    
+    // console.log(`money: ${money.innerText}, answer: ${answer.innerText}`);
+    
+    
+    let testingAnswer = answer.innerText;
+    console.log(`this is me testing the testing answer ${testingAnswer}`)
+    
+    money.classList.add("flip");
+    question.classList.toggle("flip");
+    
+    
+    clockTicking(10, testingAnswer, money);
+    setTimeout(() => {
+    
+        question.classList.toggle("flip");
+        answer.classList.remove("flip");
+    }, 9000);
+    
+    return {
+        money: money,
+        testingAnswer: testingAnswer,
+    };
 }
 
 
 
-function typeAnswerInput(clockBox) {
-    const typeField = document.querySelector(".type-answer");
+
+// const cards = document.querySelectorAll(".money-amount");
+const cardContainer = document.querySelector(".card-container");
+cardContainer.addEventListener("click", (e) => {
+    let {money, testingAnswer} = cardContainerClick(e);
+
+   $("#hidden-answer").val(testingAnswer);
+   $("#hidden-money").val(money);
+})
+
+
+
+
+// let cardEvent = cards.forEach((card) => {
+//     card.addEventListener("click", (e) => {
+
+//         console.log("DOES this work?");
+
+// let money;
+// let question;
+// let passingQuestion;
+// let answer;
+
+// if (e.target.localName === "p") {
+//     money = e.target.parentElement;
+//     question = e.target.parentElement.parentElement.children[1];
+//     passingQuestion = question.innerText;
+//     answer = e.target.parentElement.parentElement.lastChild;
+// } else {
+//     money = e.target;
+//     question = e.target.parentElement.children[1];
+//     passingQuestion = question.innerText;
+//     answer = e.target.parentElement.lastChild;
+// }
+
+// let testingAnswer = answer.innerText;
+// console.log(`this is me testing the testing answer ${testingAnswer}`)
+
+// money.classList.add("flip");
+// question.classList.toggle("flip");
+
+
+// clockTicking(TIME_LIMIT, testingAnswer, money);
+// setTimeout(() => {
+
+//     question.classList.toggle("flip");
+//     answer.classList.remove("flip");
+// }, 9000);
+
+// return {
+//     // money: money,
+//     testingAnswer: testingAnswer,
+// };
+//     })
+// })
+
+
+// console.log(`this is forEachLoop testingAnswer: ${cardEvent}`);
+
+
+// const submitBtn = $("#button-addon2");
+
+// submitEvent(submitBtn, testingAnswer, money);
+
+
+function checkingAnswer(guess) {
+    // let correctAnswer = _.toUpper(answer.innerText);
+    let testingAnswer = $("#hidden-answer").val()
+    console.log(`hidden answer val: ${testingAnswer}`);
+    
+    let correctAnswer = _.toUpper(testingAnswer);
+    let money = $("#hidden-money").val();
+    console.log(`hidden money val: ${money}`);
+
+    let moneySlice = money.innerText.slice(1);
+    let moneyAmount = parseInt(moneySlice);
+
+    sessionStorage.setItem("answer", `${correctAnswer}`);
+    let retrievedAnswer = sessionStorage.getItem("answer");
+
+    sessionStorage.setItem("guess", `${guess}`);
+    let retrievedGuess = sessionStorage.getItem("guess");
+
+    if (retrievedGuess === retrievedAnswer) {
+        console.log("this is RIGHT answer");
+        console.log(`right guess: ${retrievedGuess}`);
+        console.log(`right answer: ${retrievedAnswer}`);
+        // console.log(`this is right answerArray[0]: ${retrievedAnswer }`);
+        // console.log(`this is right answerArray[1]: ${answerArray[1]}`);
+
+
+        return moneyAmount
+
+    } else {
+        console.log("this is WRONG answer");
+        console.log(`wrong guess: ${retrievedGuess}`);
+        console.log(`wrong answer: ${retrievedAnswer }`);
+        // console.log(`this is wrong answerArray: ${answerArray[0]}`);
+        // console.log(`this is wrong answerArray[1]: ${answerArray[1]}`);
+
+        return undefined;
+    }
+
+}
+
+const ifCorrect = (addScore) => {
+    const displayScore = document.querySelector(".score");
+    const getScore = sessionStorage.getItem("score");
+    let score = parseInt(getScore);
+
+    console.log(`this is the score before adding: ${score}`);
+
+    if (!score) score = 0;
+    score += addScore;
+
+
+    displayScore.innerText = `SCORE:$${score}`
+    sessionStorage.setItem("score", `${score}`);
 }
 
 
-
-function clockTicking(TIME_LIMIT) {
+function clockTicking(TIME_LIMIT, testingAnswer, money) {
     const body = document.querySelector("body");
     let timePassed = 0;
+
 
     const clockContainer = document.createElement("div");
     clockContainer.classList.add("clock-container");
@@ -68,14 +198,20 @@ function clockTicking(TIME_LIMIT) {
     clockBox.classList.add("clock-box");
 
     const clock = document.createElement("h1");
-    clock.classList.add("starting", "clock");
+    clock.classList.add("danger", "clock");
     clock.innerText = `00:0${TIME_LIMIT}`;
 
-    
-    
     clockBox.append(clock);
     clockContainer.append(clockBox);
     body.append(clockContainer);
+
+
+
+    console.log(`this is the answer inside clockTicking: ${ testingAnswer}`);
+
+
+
+
 
     let timer = setInterval(() => {
         timePassed = timePassed += 1;
@@ -94,13 +230,12 @@ function clockTicking(TIME_LIMIT) {
 
 
 
-function makeTopRow(WIDTH, titles){
+
+
+function makeTopRow(WIDTH, titles) {
     const topRow = document.createElement("tr");
 
     topRow.setAttribute("id", "column-top");
-
-    // console.log(titles);
-    console.log(titles);
 
     for (let x = 0; x < WIDTH; x++) {
         const titleCell = document.createElement("td");
@@ -119,6 +254,71 @@ function makeTopRow(WIDTH, titles){
 
     return topRow;
 }
+
+
+
+
+
+
+const submitBtn = document.querySelector("#button-addon2");
+
+
+submitBtn.addEventListener("click", () => {
+
+    console.log("MADE IT TO SUBMIT BTN CLICK!");
+
+    const typeField = document.querySelector(".form-control");
+    let guess = _.toUpper(typeField.value);
+
+    let addScore = checkingAnswer(guess);
+    console.log(`this is the addScore value: ${addScore}`);
+
+    if (addScore == undefined) {
+        console.log("I'M only returning");
+        typeField.value = "";
+
+        return;
+    } else {
+        console.log("I'M running ifCorrect func");
+
+
+        ifCorrect(addScore);
+        typeField.value = "";
+    }
+
+});
+
+
+// submitEvent(submitBtn, guess);
+
+// const submitEvent = (submitBtn, testingAnswer, money) => {
+
+//     submitBtn.on("click", () => {
+
+//         console.log(testingAnswer);
+
+//         const typeField = document.querySelector(".form-control");
+//         let guess = _.toUpper(typeField.value);
+
+//         let addScore = checkingAnswer(guess, testingAnswer, money);
+//         console.log(`this is the addScore value: ${addScore}`);
+
+//         if (addScore == undefined) {
+//             console.log("I'M only returning");
+//             typeField.value = "";
+
+//             return;
+//         } else {
+//             console.log("I'M running ifCorrect func");
+
+
+//             ifCorrect(addScore);
+//             typeField.value = "";
+//         }
+
+//     });
+// };
+
 
 
 
@@ -212,14 +412,17 @@ async function getSelects(categories, width) {
             }
         });
         selectCats.push(res.data);
-        
+
     }
 
     for (let i = 0; i < WIDTH; i++) {
         titles.push(selectCats[i][0].category.title)
     }
 
-    return {selectCats: selectCats, titles: titles};
+    return {
+        selectCats: selectCats,
+        titles: titles
+    };
 }
 
 
@@ -245,77 +448,3 @@ async function getCategories(num) {
     return categories;
 
 };
-
-
-
-
-
-/** Get NUM_CATEGORIES random category from API.
- *
- * Returns array of category ids
- */
-
-function getCategoryIds() {}
-
-/** Return object with data about a category:
- *
- *  Returns { title: "Math", clues: clue-array }
- *
- * Where clue-array is:
- *   [
- *      {question: "Hamlet Author", answer: "Shakespeare", showing: null},
- *      {question: "Bell Jar Author", answer: "Plath", showing: null},
- *      ...
- *   ]
- */
-
-function getCategory(catId) {}
-
-/** Fill the HTML table#jeopardy with the categories & cells for questions.
- *
- * - The <thead> should be filled w/a <tr>, and a <td> for each category
- * - The <tbody> should be filled w/NUM_QUESTIONS_PER_CAT <tr>s,
- *   each with a question for each category in a <td>
- *   (initally, just show a "?" where the question/answer would go.)
- */
-
-async function fillTable() {}
-
-/** Handle clicking on a clue: show the question or answer.
- *
- * Uses .showing property on clue to determine what to show:
- * - if currently null, show question & set .showing to "question"
- * - if currently "question", show answer & set .showing to "answer"
- * - if currently "answer", ignore click
- * */
-
-function handleClick(evt) {}
-
-/** Wipe the current Jeopardy board, show the loading spinner,
- * and update the button used to fetch data.
- */
-
-function showLoadingView() {
-
-}
-
-/** Remove the loading spinner and update the button used to fetch data. */
-
-function hideLoadingView() {}
-
-/** Start game:
- *
- * - get random category Ids
- * - get data for each category
- * - create HTML table
- * */
-
-async function setupAndStart() {}
-
-/** On click of start / restart button, set up game. */
-
-// TODO
-
-/** On page load, add event handler for clicking clues */
-
-// TODO

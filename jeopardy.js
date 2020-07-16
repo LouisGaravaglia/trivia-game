@@ -1,6 +1,7 @@
 
 // =============================================================== MAIN FUNCTION ===============================================================
 
+
 /**
  * Main function which when called will call 5 other functions in
  * order to make a call to the API and generate HTML.
@@ -9,20 +10,31 @@
  * @param {number} width  Number of columns of Jeopardy questions.
  * @returns {void}        Returns nothing.
  */
-async function setUp(height, width) {
+async function main(height, width) {
+
+    //catergories variable that holds the return value of getCategories(), to be used in getSelects().
     const categories = await getCategories(100);
+
+    //deconstructed selectCats and titles variables that hold return values of getSelects(), to be used in getClues() and makeHtmlBoard().
     const {
         selectCats,
         titles
     } = await getSelects(categories, width);
+
+    //board variable that holds the return value of getClues(), to be used in makeHtmlBoard().
     const board = await getClues(selectCats, height, width);
 
+    //calling makeHtmlBoard() to populate the correct number of Jeopardy questions the assigned width and height.
     makeHtmlBoard(height, width, board, titles);
 
-    removeLoading();
+    //calling hideLoadingShowGame() to remove the "JEOPARDY" loding HTML Elment, and show game board after the API has responded.
+    hideLoadingShowGame();
 }
 
-setUp(5, 6);
+
+//Call main() to construct the state.
+main(5, 6);
+
 
 // =============================================================== CLICK EVENTS ===============================================================
 
@@ -31,7 +43,6 @@ setUp(5, 6);
  * @type {HTML Element} Container that holds all of the questions/answer data cells, that we need to listen for the user clicks.
  */
 const cardContainer = document.querySelector(".card-container");
-
 
 
 /**
@@ -48,6 +59,7 @@ cardContainer.addEventListener("click", (e) => {
     $("#hidden-answer").val(minifiedAnswer);
     $("#hidden-money").val(money);
 })
+
 
 /**
  * Uses the event that was clicked in order to get a hold
@@ -93,7 +105,6 @@ function cardContainerClick(e) {
 const submitBtn = document.querySelector("#button-addon2");
 
 
-
 /** 
  * @type {Event Listener} Click event on the submitBtn which is needed to pass the value of the user's answer.
  */
@@ -118,6 +129,7 @@ submitBtn.addEventListener("click", () => {
         typeField.value = "";
     }
 });
+
 
 /**
  * checkingAnswer() function checks the value of guess against the correctAnswer
@@ -178,6 +190,7 @@ const ifCorrect = (moneyAmount) => {
     sessionStorage.setItem("score", `${score}`);
 }
 
+
 /**
  * @type {HTML Element} Reset button that the user clicks to reset the game board.
  */
@@ -192,9 +205,7 @@ reset.addEventListener("click", () => {
 })
 
 
-
 // =============================================================== DOM ELEMENT FUNCTIONS ===============================================================
-
 
 
 /**
@@ -257,6 +268,7 @@ async function getSelects(categories, width) {
     };
 }
 
+
 /**
  * getClues() function creates a 2D array called board in order to then populate with the caterogry, question,
  * and answer to then return and be used to populate HTML Elements with.
@@ -283,9 +295,6 @@ async function getClues(selectCats, height, width) {
     }
     return board;
 };
-
-
-
 
 
 /**
@@ -347,6 +356,7 @@ async function makeHtmlBoard(height, width, board, titles) {
     return htmlBoard;
 }
 
+
 /**
  * makeTopRow() function creates an Table Row HTML Element to store
  * the title values and display them.
@@ -378,14 +388,13 @@ function makeTopRow(width, titles) {
 }
 
 
-
 /**
- * removeLoading() removeds the loading "JEOPARDY" HTML element, since it's purpose is
+ * hideLoadingShowGame() removeds the loading "JEOPARDY" HTML element, since it's purpose is
  * mainly to function as a placeholder until the API call has returned.
  * 
  * @returns {void}  Returns nothing.
  */
-function removeLoading() {
+function hideLoadingShowGame() {
     const loadingContainer = document.querySelector(".loading-container");
     const inputContainer = document.querySelector(".input-group");
     const scoreContainer = document.querySelector(".score-container");
@@ -400,15 +409,7 @@ function removeLoading() {
 }
 
 
-
-
-
-
-
 // =============================================================== CLOCK TICKING FUNCTION ===============================================================
-
-
-
 
 
 /**
@@ -455,7 +456,7 @@ function clockTicking(timeLimit, question, answer) {
  */
 function timerInterval(timeLimit, clock, clockContainer, question, answer) {
     let timePassed = 0;
-    
+
     $("#stop-timer").val(false);
 
     let timer = setInterval(() => {

@@ -10,17 +10,17 @@
  * @returns {void}        Returns nothing.
  */
 async function setUp(height, width) {
-    const HEIGHT = height;
-    const WIDTH = width
+    // const HEIGHT = height;
+    // const WIDTH = width
 
 
     const categories = await getCategories(100);
     const {
         selectCats,
         titles
-    } = await getSelects(categories, WIDTH);
-    const board = await getClues(selectCats, HEIGHT, WIDTH);
-    makeHtmlBoard(HEIGHT, WIDTH, board, titles);
+    } = await getSelects(categories, width);
+    const board = await getClues(selectCats, height, width);
+    makeHtmlBoard(height, width, board, titles);
     removeLoading();
 }
 

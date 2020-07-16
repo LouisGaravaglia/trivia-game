@@ -10,17 +10,15 @@
  * @returns {void}        Returns nothing.
  */
 async function setUp(height, width) {
-    // const HEIGHT = height;
-    // const WIDTH = width
-
-
     const categories = await getCategories(100);
     const {
         selectCats,
         titles
     } = await getSelects(categories, width);
     const board = await getClues(selectCats, height, width);
+
     makeHtmlBoard(height, width, board, titles);
+
     removeLoading();
 }
 
@@ -38,16 +36,16 @@ const cardContainer = document.querySelector(".card-container");
 
 /**
  * Event listener which calls the cardContainerClick() function
- * in order to pass the money & testingAnswer values to HTML elements
+ * in order to pass the money & minifiedAnswer values to HTML elements
  * to be called upon at a later time.
  */
 cardContainer.addEventListener("click", (e) => {
     let {
         money,
-        testingAnswer
+        minifiedAnswer
     } = cardContainerClick(e);
 
-    $("#hidden-answer").val(testingAnswer);
+    $("#hidden-answer").val(minifiedAnswer);
     $("#hidden-money").val(money);
 })
 
@@ -59,34 +57,32 @@ cardContainer.addEventListener("click", (e) => {
  * @returns {void}         Returns nothing.
  */
 function cardContainerClick(e) {
+    let money;
+    let question;
+    let answer;
 
     if (e.target.classList.contains("title-box")) return;
 
     if (e.target.localName === "p") {
         money = e.target.parentElement;
         question = e.target.parentElement.parentElement.children[1];
-        passingQuestion = question.innerText;
         answer = e.target.parentElement.parentElement.lastChild;
     } else {
         money = e.target;
         question = e.target.parentElement.children[1];
-        passingQuestion = question.innerText;
         answer = e.target.parentElement.lastChild;
     }
-
-
-    let answerFull = answer.innerText;
-    let testingAnswer = answerFull.replace(/[^A-Za-z0-9]/g, '');
 
     money.classList.add("flip");
     question.classList.toggle("flip");
 
-
     clockTicking(10, question, answer);
+
+    let minifiedAnswer = answer.innerText.replace(/[^A-Za-z0-9]/g, '');
 
     return {
         money: money,
-        testingAnswer: testingAnswer,
+        minifiedAnswer: minifiedAnswer,
     };
 }
 
@@ -102,21 +98,23 @@ const submitBtn = document.querySelector("#button-addon2");
  * @type {Event Listener} Click event on the submitBtn which is needed to pass the value of the user's answer.
  */
 submitBtn.addEventListener("click", () => {
-
     const typeField = document.querySelector(".form-control");
     let guessFull = _.toUpper(typeField.value);
     let guess = guessFull.replace(/[^A-Za-z0-9]/g, '');
+    let moneyAmount = checkingAnswer(guess);
 
-    let addScore = checkingAnswer(guess);
+    if (moneyAmount == undefined) {
 
-    if (addScore == undefined) {
         typeField.value = "";
+
         $("#stop-timer").val(true);
 
     } else {
+
         $("#stop-timer").val(true);
 
-        ifCorrect(addScore);
+        ifCorrect(moneyAmount);
+
         typeField.value = "";
     }
 });
@@ -136,20 +134,26 @@ function checkingAnswer(guess) {
     let moneyAmount = parseInt(moneySlice);
 
     if (guess === correctAnswer) {
+        
         const correctContainer = document.querySelector(".correct-container");
+
         correctContainer.classList.toggle("flip");
+
         setTimeout(() => {
             correctContainer.classList.toggle("flip");
         }, 1500);
-        return moneyAmount
 
+        return moneyAmount
 
     } else {
         const wrongContainer = document.querySelector(".wrong-container");
+
         wrongContainer.classList.toggle("flip");
+
         setTimeout(() => {
             wrongContainer.classList.toggle("flip");
         }, 1500);
+
         return undefined;
     }
 }
@@ -159,20 +163,33 @@ function checkingAnswer(guess) {
  * ifCorrect() function adds the Money value for the question answered to the existing score
  * in sessionStorage, as sets the score in sessionStorage in order to retreive it to add up next time.
  * 
- * @param {number} addScore Money value for question parsed as an integer in order to add up Score.
+ * @param {number} moneyAmount Money value for question parsed as an integer in order to add up Score.
  * @returns {void}          Returns nothing.
  */
-const ifCorrect = (addScore) => {
+const ifCorrect = (moneyAmount) => {
     const displayScore = document.querySelector(".score");
     const getScore = sessionStorage.getItem("score");
     let score = parseInt(getScore);
 
     if (!score) score = 0;
-    score += addScore;
+    score += moneyAmount;
 
     displayScore.innerText = `SCORE: $${score}`
     sessionStorage.setItem("score", `${score}`);
 }
+
+/**
+ * @type {HTML Element} Reset button that the user clicks to reset the game board.
+ */
+const reset = document.querySelector(".reset");
+
+
+/** 
+ * @type {Event Listener} Click event on the reset button in order to clear state.
+ */
+reset.addEventListener("click", () => {
+    window.location.reload(false);
+})
 
 
 
@@ -219,8 +236,7 @@ async function getCategories(num) {
 async function getSelects(categories, width) {
     const selectCats = [];
     const titles = [];
-    const WIDTH = width;
-    for (let i = 0; i < WIDTH; i++) {
+    for (let i = 0; i < width; i++) {
         let randomNum = Math.floor(Math.random() * 100);
         const res = await axios.get("https://jservice.io/api/clues", {
             params: {
@@ -231,7 +247,7 @@ async function getSelects(categories, width) {
 
     }
 
-    for (let i = 0; i < WIDTH; i++) {
+    for (let i = 0; i < width; i++) {
         titles.push(selectCats[i][0].category.title)
     }
 
@@ -246,18 +262,18 @@ async function getSelects(categories, width) {
  * and answer to then return and be used to populate HTML Elements with.
  * 
  * @param {array} selectCats    Array for the appropriate number of categories, which will then be deconstructed.
- * @param {number} HEIGHT       Number of rows of Jeopardy questions.
- * @param {number} WIDTH        Number of columns of Jeopardy questions.
+ * @param {number} height       Number of rows of Jeopardy questions.
+ * @param {number} width        Number of columns of Jeopardy questions.
  * @returns {array}             2D array containing question/answer/categories for each card.
  */
-async function getClues(selectCats, HEIGHT, WIDTH) {
-    const board = new Array(HEIGHT);
-    for (let i = 0; i < HEIGHT; i++) {
-        board[i] = new Array(WIDTH);
+async function getClues(selectCats, height, width) {
+    const board = new Array(height);
+    for (let i = 0; i < height; i++) {
+        board[i] = new Array(width);
     }
 
-    for (let j = 0; j < WIDTH; j++) {
-        for (let k = 0; k < HEIGHT; k++) {
+    for (let j = 0; j < width; j++) {
+        for (let k = 0; k < height; k++) {
             board[k][j] = {
                 title: selectCats[j][k].category.title,
                 question: selectCats[j][k].question,
@@ -283,18 +299,14 @@ async function getClues(selectCats, HEIGHT, WIDTH) {
  * @returns {HTML Element} Returns the HTML table populated with all questions/answers/categories.
  */
 async function makeHtmlBoard(height, width, board, titles) {
-    const HEIGHT = height;
-    const WIDTH = width;
-    const BOARD = board;
     const htmlBoard = document.querySelector("#board");
-
-    const top = makeTopRow(WIDTH, titles);
+    const top = makeTopRow(width, titles);
     htmlBoard.append(top);
 
-    for (let y = 0; y < HEIGHT; y++) {
+    for (let y = 0; y < height; y++) {
         const row = document.createElement("tr");
 
-        for (let x = 0; x < WIDTH; x++) {
+        for (let x = 0; x < width; x++) {
             const cell = document.createElement("td");
             cell.classList.add("card-box");
 
@@ -312,14 +324,14 @@ async function makeHtmlBoard(height, width, board, titles) {
 
             const questionText = document.createElement("p");
             questionText.setAttribute("data-name", "P")
-            questionText.innerText = _.toUpper(BOARD[y][x].question);
+            questionText.innerText = _.toUpper(board[y][x].question);
 
             const answerDiv = document.createElement("div");
             answerDiv.classList.add("card-back");
             answerDiv.classList.add("flip");
 
             const answerText = document.createElement("p");
-            answerText.innerText = _.toUpper(BOARD[y][x].answer);
+            answerText.innerText = _.toUpper(board[y][x].answer);
 
             moneyDiv.append(moneyText);
             questionDiv.append(questionText);
@@ -339,16 +351,16 @@ async function makeHtmlBoard(height, width, board, titles) {
  * makeTopRow() function creates an Table Row HTML Element to store
  * the title values and display them.
  * 
- * @param {number} WIDTH    Number of columns of Jeopardy questions.
+ * @param {number} width    Number of columns of Jeopardy questions.
  * @param {array} titles    Array that holds the category of the Jeopardy question.
  * @returns {HTML Element}  Displays the Table Row above the questions.
  */
-function makeTopRow(WIDTH, titles) {
+function makeTopRow(width, titles) {
     const topRow = document.createElement("tr");
 
     topRow.setAttribute("id", "column-top");
 
-    for (let x = 0; x < WIDTH; x++) {
+    for (let x = 0; x < width; x++) {
         const titleCell = document.createElement("td");
         titleCell.setAttribute("id", x);
 
@@ -378,17 +390,16 @@ function removeLoading() {
     const inputContainer = document.querySelector(".input-group");
     const scoreContainer = document.querySelector(".score-container");
     const resetContainer = document.querySelector(".reset-container");
+
     loadingContainer.classList.toggle("flip");
     inputContainer.classList.toggle("flip");
     scoreContainer.classList.toggle("flip");
     resetContainer.classList.toggle("flip");
+
     sessionStorage.setItem("score", `000`);
 }
 
-const reset = document.querySelector(".reset");
-reset.addEventListener("click", () => {
-    window.location.reload(false);
-})
+
 
 
 
@@ -404,12 +415,12 @@ reset.addEventListener("click", () => {
  * clockTicking() function gets a hold of several DOM elements in order
  * to manipulate them by timerInterval() to create a ticking clock.
  * 
- * @param {number} TIME_LIMIT Number value to start the clock ticking from.
+ * @param {number} timeLimit Number value to start the clock ticking from.
  * @param {string} question   String value of the question that was clicked by user.
  * @param {string} answer     String value of the answer to the question that was clicked by user.
  * @returns {void}            Returns nothing.
  */
-function clockTicking(TIME_LIMIT, question, answer) {
+function clockTicking(timeLimit, question, answer) {
     const body = document.querySelector("body");
 
     const clockContainer = document.createElement("div");
@@ -420,14 +431,14 @@ function clockTicking(TIME_LIMIT, question, answer) {
 
     const clock = document.createElement("h1");
     clock.classList.add("danger", "clock");
-    clock.innerText = `00:${TIME_LIMIT}`;
+    clock.innerText = `00:${timeLimit}`;
 
     clockBox.append(clock);
     clockContainer.append(clockBox);
     body.append(clockContainer);
 
 
-    timerInterval(TIME_LIMIT, clock, clockContainer, question, answer);
+    timerInterval(timeLimit, clock, clockContainer, question, answer);
 }
 
 
@@ -435,20 +446,21 @@ function clockTicking(TIME_LIMIT, question, answer) {
  * timerInterval() function uses a setInterval of 1000 miliseconds to update the innerText
  * of the clock HTML element in order to create a ticking clock for the user to race against.
  * 
- * @param {number} TIME_LIMIT            Number value to start the clock ticking from.
- * @param {HTML Element} clock           HTML Element that holds the innerText of the TIME_LIMIT value.
+ * @param {number} timeLimit            Number value to start the clock ticking from.
+ * @param {HTML Element} clock           HTML Element that holds the innerText of the timeLimit value.
  * @param {HTML Element} clockContainer  HTML Element that holds the clock element.
  * @param {string} question              String value of the question that was clicked by user.
  * @param {string} answer                String value of the answer to the question that was clicked by user.
  * @returns {void}
  */
-function timerInterval(TIME_LIMIT, clock, clockContainer, question, answer) {
+function timerInterval(timeLimit, clock, clockContainer, question, answer) {
     let timePassed = 0;
+    
     $("#stop-timer").val(false);
 
     let timer = setInterval(() => {
         timePassed = timePassed += 1;
-        timeLeft = TIME_LIMIT - timePassed;
+        timeLeft = timeLimit - timePassed;
 
         clock.innerText = `00:0${timeLeft}`;
 

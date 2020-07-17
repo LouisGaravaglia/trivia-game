@@ -31,7 +31,7 @@ async function main(height, width) {
 }
 
 
-//Call main() to construct the state.
+//Call main() to construct the state with a height of 5 rows and a width of 6 columns.
 main(5, 6);
 
 
@@ -54,12 +54,17 @@ const cardContainer = document.querySelector(".card-container");
  * @event {click} cardContainer Click event on the cardContainer.
  */
 cardContainer.addEventListener("click", (e) => {
+
+    //money and minifiedAnswer are assigned as variables from the return values of cardContainerClick().
     let {
         money,
         minifiedAnswer
     } = cardContainerClick(e);
 
+    //Value of minifiedAnswer stored as a hidden value inside the Div with an ID of "hidden-answer".
     $("#hidden-answer").val(minifiedAnswer);
+
+    //Value of money stored as a hidden value inside the Div with an ID of "hidden-money".
     $("#hidden-money").val(money);
 })
 
@@ -72,12 +77,16 @@ cardContainer.addEventListener("click", (e) => {
  * @returns {void}         Returns nothing.
  */
 function cardContainerClick(e) {
+
+    //Defining money, question, and answer without values to establish them, until being assigned based on below conditonals.
     let money;
     let question;
     let answer;
 
+    //Conditional to check if user clicked a title card, if so we are returning instead of fliping over that element.
     if (e.target.classList.contains("title-box")) return;
 
+    //
     if (e.target.localName === "p") {
         money = e.target.parentElement;
         question = e.target.parentElement.parentElement.children[1];

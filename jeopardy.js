@@ -1,4 +1,3 @@
-
 // =============================================================== MAIN FUNCTION ===============================================================
 
 
@@ -40,6 +39,8 @@ main(5, 6);
 
 
 /**
+ * Global variable to hold value of Div with a class of "card-container", in order to add a click event.
+ * 
  * @type {HTML Element} Container that holds all of the questions/answer data cells, that we need to listen for the user clicks.
  */
 const cardContainer = document.querySelector(".card-container");
@@ -49,6 +50,8 @@ const cardContainer = document.querySelector(".card-container");
  * Event listener which calls the cardContainerClick() function
  * in order to pass the money & minifiedAnswer values to HTML elements
  * to be called upon at a later time.
+ * 
+ * @event {click} cardContainer Click event on the cardContainer.
  */
 cardContainer.addEventListener("click", (e) => {
     let {
@@ -100,13 +103,17 @@ function cardContainerClick(e) {
 
 
 /**
+ * Global variable to hold value of the button with an ID of "button-addon2", in order to add a click event.
+ *
  * @type {HTML Element} Submit button that the user clicks to submit their answer.
  */
 const submitBtn = document.querySelector("#button-addon2");
 
 
 /** 
- * @type {Event Listener} Click event on the submitBtn which is needed to pass the value of the user's answer.
+ * Click event on submitBtn in order to get ahold of the answer that the user typed into the input.
+ * 
+ * @event {click} submitBtn Event on the submitBtn which is needed to pass the value of the user's answer.
  */
 submitBtn.addEventListener("click", () => {
     const typeField = document.querySelector(".form-control");
@@ -176,7 +183,7 @@ function checkingAnswer(guess) {
  * in sessionStorage, as sets the score in sessionStorage in order to retreive it to add up next time.
  * 
  * @param {number} moneyAmount Money value for question parsed as an integer in order to add up Score.
- * @returns {void}          Returns nothing.
+ * @returns {void}             Returns nothing.
  */
 const ifCorrect = (moneyAmount) => {
     const displayScore = document.querySelector(".score");
@@ -192,13 +199,17 @@ const ifCorrect = (moneyAmount) => {
 
 
 /**
+ * Global variable to hold the value of the Div with a class of "reset".
+ * 
  * @type {HTML Element} Reset button that the user clicks to reset the game board.
  */
 const reset = document.querySelector(".reset");
 
 
 /** 
- * @type {Event Listener} Click event on the reset button in order to clear state.
+ * Click event that will clear the state and reset the gameboard when the reset button is clicked.
+ * 
+ * @event {click} reset Click event on the reset button in order to clear state.
  */
 reset.addEventListener("click", () => {
     window.location.reload(false);
@@ -416,7 +427,7 @@ function hideLoadingShowGame() {
  * clockTicking() function gets a hold of several DOM elements in order
  * to manipulate them by timerInterval() to create a ticking clock.
  * 
- * @param {number} timeLimit Number value to start the clock ticking from.
+ * @param {number} timeLimit  Number value to start the clock ticking from.
  * @param {string} question   String value of the question that was clicked by user.
  * @param {string} answer     String value of the answer to the question that was clicked by user.
  * @returns {void}            Returns nothing.
@@ -447,7 +458,7 @@ function clockTicking(timeLimit, question, answer) {
  * timerInterval() function uses a setInterval of 1000 miliseconds to update the innerText
  * of the clock HTML element in order to create a ticking clock for the user to race against.
  * 
- * @param {number} timeLimit            Number value to start the clock ticking from.
+ * @param {number} timeLimit             Number value to start the clock ticking from.
  * @param {HTML Element} clock           HTML Element that holds the innerText of the timeLimit value.
  * @param {HTML Element} clockContainer  HTML Element that holds the clock element.
  * @param {string} question              String value of the question that was clicked by user.

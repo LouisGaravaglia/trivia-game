@@ -26,8 +26,9 @@ async function main(height, width) {
     //calling makeHtmlBoard() to populate the correct number of Jeopardy questions the assigned width and height.
     makeHtmlBoard(height, width, board, titles);
 
-    //calling hideLoadingShowGame() to remove the "JEOPARDY" loding HTML Elment, and show game board after the API has responded.
-    hideLoadingShowGame();
+    //calling hideLoadingAndShowGame() to remove the "JEOPARDY" loding HTML Elment, and show game board after the API has responded.
+    hideLoadingAndShowGame();
+
 }
 
 
@@ -44,7 +45,6 @@ main(5, 6);
  * @type {HTML Element} Container that holds all of the questions/answer data cells, that we need to listen for the user clicks.
  */
 const cardContainer = document.querySelector(".card-container");
-
 
 /**
  * Event listener which calls the cardContainerClick() function
@@ -97,7 +97,7 @@ function cardContainerClick(e) {
         answer = e.target.parentElement.lastChild;
     }
 
-    //Hid the money amount, and show the questions.
+    //Hide the money amount, and show the questions.
     money.classList.add("flip");
     question.classList.toggle("flip");
 
@@ -112,6 +112,7 @@ function cardContainerClick(e) {
         money: money,
         minifiedAnswer: minifiedAnswer,
     };
+
 }
 
 
@@ -162,6 +163,7 @@ submitBtn.addEventListener("click", () => {
         //Reset typeField.value to empty so the user's last guess isn't remaining after they submit their guess.
         typeField.value = "";
     }
+
 });
 
 
@@ -222,6 +224,7 @@ function checkingAnswer(guess) {
         //Return undefined since the guess is incorrect.
         return undefined;
     }
+
 }
 
 
@@ -254,6 +257,7 @@ const ifCorrect = (moneyAmount) => {
 
     //Set sessionStorage "score" to equal the current value score.
     sessionStorage.setItem("score", `${score}`);
+
 }
 
 
@@ -271,7 +275,10 @@ const reset = document.querySelector(".reset");
  * @event {click} reset Click event on the reset button in order to clear state.
  */
 reset.addEventListener("click", () => {
-    window.location.reload(false);
+
+    //Reloading state.
+    window.location.reload();
+
 })
 
 
@@ -312,6 +319,7 @@ async function getCategories(num) {
 
     //Returning the categories array.
     return categories;
+
 };
 
 
@@ -358,6 +366,7 @@ async function getSelects(categories, width) {
         selectCats: selectCats,
         titles: titles
     };
+
 }
 
 
@@ -393,6 +402,7 @@ async function getClues(selectCats, height, width) {
 
     //Returning the board to be used in makeHtmlBoard().
     return board;
+
 };
 
 
@@ -511,27 +521,41 @@ function makeTopRow(width, titles) {
 
     //Return topRow to be used in makeHtmlBoard().
     return topRow;
+
 }
 
 
 /**
- * hideLoadingShowGame() removeds the loading "JEOPARDY" HTML element, since it's purpose is
+ * hideLoadingAndShowGame() removeds the loading "JEOPARDY" HTML element, since it's purpose is
  * mainly to function as a placeholder until the API call has returned.
  * 
  * @returns {void}  Returns nothing.
  */
-function hideLoadingShowGame() {
+function hideLoadingAndShowGame() {
+
+    //Create a variable for the container that holds the "JEOPARDY" text to show when loading API content.
     const loadingContainer = document.querySelector(".loading-container");
+
+    //Create a variable for the input where the user enters their guess.
     const inputContainer = document.querySelector(".input-group");
+
+    //Create a variable for the container that holds the score value.
     const scoreContainer = document.querySelector(".score-container");
+
+    //Create a variable for the container that holds the reset button.
     const resetContainer = document.querySelector(".reset-container");
 
+    //Toggle the flip class on to hide the loading "JEOPARDY" text.
     loadingContainer.classList.toggle("flip");
+
+    //Toggle the flip class off on these rest to reveal them.
     inputContainer.classList.toggle("flip");
     scoreContainer.classList.toggle("flip");
     resetContainer.classList.toggle("flip");
 
+    //Set the score to "000" to start the game off.
     sessionStorage.setItem("score", `000`);
+
 }
 
 
@@ -548,24 +572,31 @@ function hideLoadingShowGame() {
  * @returns {void}            Returns nothing.
  */
 function clockTicking(timeLimit, question, answer) {
+
+    //Get a hold of the body.
     const body = document.querySelector("body");
 
+    //Create a container div to contain the clock box.
     const clockContainer = document.createElement("div");
     clockContainer.classList.add("clock-container");
 
+    //Create a box div to contain the h1 clock
     const clockBox = document.createElement("div");
     clockBox.classList.add("clock-box");
 
+    //Create a h1 element to hold the countdown clock.
     const clock = document.createElement("h1");
     clock.classList.add("danger", "clock");
     clock.innerText = `00:${timeLimit}`;
 
+    //Append the clock container and its children to the body.
     clockBox.append(clock);
     clockContainer.append(clockBox);
     body.append(clockContainer);
 
-
+    //Call timerInterval() to start the clock countdown.
     timerInterval(timeLimit, clock, clockContainer, question, answer);
+
 }
 
 
@@ -581,16 +612,27 @@ function clockTicking(timeLimit, question, answer) {
  * @returns {void}
  */
 function timerInterval(timeLimit, clock, clockContainer, question, answer) {
+    
+    //Initialize timePassed to be set to 0.
     let timePassed = 0;
+    let timeLeft;
 
+    //Initialize the value of "#stop-timer" to false so that the count down continues.
     $("#stop-timer").val(false);
 
+    //Establish and run the timer every second.
     let timer = setInterval(() => {
+
+        //Use timePassed to keep track of how much time has passed.
         timePassed = timePassed += 1;
+
+        //Subtrack timePassed by the designated timeLimit to get timeLeft.
         timeLeft = timeLimit - timePassed;
 
+        //Display timeLeft as the clock's element innerText.
         clock.innerText = `00:0${timeLeft}`;
 
+        //Condtional to see if "#stop-timer" value is set to "true", if so stop the timer and hide the question and show the answer.
         if ($("#stop-timer").val()) {
             clearInterval(timer);
             clockContainer.classList.add("flip");
@@ -598,17 +640,22 @@ function timerInterval(timeLimit, clock, clockContainer, question, answer) {
             answer.classList.remove("flip");
         }
 
+        //If the timer has run out of time.
         if (timeLeft === 0) {
+
+            //Display the "TIME'S UP" container, then remove it after a second and half.
             const timesUpContainer = document.querySelector(".times-up-container");
             timesUpContainer.classList.toggle("flip");
             setTimeout(() => {
                 timesUpContainer.classList.toggle("flip");
             }, 1500);
 
+            //Clear the timer, hide the question, and show the answer.
             clearInterval(timer);
             clockContainer.classList.add("flip");
             question.classList.toggle("flip");
             answer.classList.remove("flip");
         }
     }, 1000);
+    
 }

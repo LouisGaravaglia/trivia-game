@@ -209,9 +209,50 @@ function checkingAnswer(guess) {
         return moneyAmount
 
     } else {
-
+        //FIXME:
         //Getting a hold of the ".wrong-container" which is the alert showing the user that they answered incorrectly.
         const wrongContainer = document.querySelector(".wrong-container");
+
+
+ /////////////////////////////////////////////////////////////////////       
+        // const body = document.querySelector("body");
+        // const wrongContainer = document.createElement("div");
+        // wrongContainer.classList.add("wrong-container");
+        // wrongContainer.classList.add("flip");
+        // const wrongBox = document.createElement("div");
+        // wrongContainer.classList.add("wrong-box");
+        // const wrong = document.createElement("p");
+        // wrongContainer.classList.add("wrong");
+        // wrong.innerText = "INCORRECT!"
+
+        // wrongBox.append(wrong);
+        // wrongContainer.append(wrongBox);
+        // body.append(wrongContainer);
+
+
+///////////////////////////////////////////////////////////////////////
+            //Get a hold of the body.
+    const body = document.querySelector("body");
+
+    //Create a container div to contain the clock box.
+    const noClickContainer = document.createElement("div");
+    noClickContainer.classList.add("no-clicking-container");
+
+    //Create a box div to contain the h1 clock
+    const noClickBox = document.createElement("div");
+    noClickBox.classList.add("no-clicking-box");
+
+    //Create a h1 element to hold the countdown clock.
+    // const clock = document.createElement("h1");
+    // clock.classList.add("danger", "clock");
+    // clock.innerText = `00:${timeLimit}`;
+
+    //Append the clock container and its children to the body.
+   
+    noClickContainer.append(noClickBox);
+    body.append(noClickContainer);
+/////////////////////////////////////////////////////////////////////////
+
 
         //Reveal that incorrect answer container.
         wrongContainer.classList.toggle("flip");
@@ -219,6 +260,7 @@ function checkingAnswer(guess) {
         //After a second and half, remove the incorrect answer container.
         setTimeout(() => {
             wrongContainer.classList.toggle("flip");
+            noClickContainer.classList.toggle("flip");
         }, 1500);
 
         //Return undefined since the guess is incorrect.
@@ -226,6 +268,9 @@ function checkingAnswer(guess) {
     }
 
 }
+
+
+
 
 
 /**

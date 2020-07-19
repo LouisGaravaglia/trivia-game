@@ -374,10 +374,13 @@ async function getClues(selectCats, height, width) {
 
     //board is set to a array with the length of height.
     const board = new Array(height);
+
+    //Loop to create a 2D array with an array with length of width for reach index of the board array.
     for (let i = 0; i < height; i++) {
         board[i] = new Array(width);
     }
 
+    //Loop to set the value of each index of the 2D array with a category title, question, and answer.
     for (let j = 0; j < width; j++) {
         for (let k = 0; k < height; k++) {
             board[k][j] = {
@@ -387,6 +390,8 @@ async function getClues(selectCats, height, width) {
             };
         }
     }
+
+    //Returning the board to be used in makeHtmlBoard().
     return board;
 };
 

@@ -483,24 +483,33 @@ async function makeHtmlBoard(height, width, board, titles) {
  * @returns {HTML Element}  Displays the Table Row above the questions.
  */
 function makeTopRow(width, titles) {
+
+    //Create a table row element to add category titles.
     const topRow = document.createElement("tr");
 
+    //Add attribute of id to "column-top".
     topRow.setAttribute("id", "column-top");
 
+    //Loop of the width of the row to a table data cell.
     for (let x = 0; x < width; x++) {
         const titleCell = document.createElement("td");
         titleCell.setAttribute("id", x);
 
+        //Create a div to hold the title paragraph element.
         const titleBox = document.createElement("div");
         titleBox.classList.add("title-box");
 
+        //Create a paragraph elmenet to hold the capitalized title.
         const title = document.createElement("p");
         title.innerText = _.toUpper(titles[x]);
 
+        //Append the title to its parent div, then the div to the topRow.
         titleBox.append(title);
         titleCell.append(titleBox);
         topRow.append(titleCell);
     }
+
+    //Return topRow to be used in makeHtmlBoard().
     return topRow;
 }
 

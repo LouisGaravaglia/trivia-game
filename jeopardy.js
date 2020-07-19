@@ -276,13 +276,43 @@ const reset = document.querySelector(".reset");
  */
 reset.addEventListener("click", () => {
 
-    //Reloading state.
-    window.location.reload();
+    //Create a variable for the container that holds the "JEOPARDY" text to show when loading API content.
+    const loadingContainer = document.querySelector(".loading-container");
+
+    //Create a variable for the input where the user enters their guess.
+    const inputContainer = document.querySelector(".input-group");
+
+    //Create a variable for the container that holds the score value.
+    const scoreContainer = document.querySelector(".score-container");
+
+    //Create a variable for the container that holds the reset button.
+    const resetContainer = document.querySelector(".reset-container");
+
+    //Create a variable for the gameBoard that holds the titles and Q's/A's.
+    const gameBoard = document.querySelector("#board");
+
+
+    //Clear the gameBoard
+    gameBoard.innerHTML = "";
+
+    //Toggle the flip class on to remove these from the state.
+    inputContainer.classList.toggle("flip");
+    scoreContainer.classList.toggle("flip");
+    resetContainer.classList.toggle("flip");
+
+    //Toggle the flip class on to show the loading "JEOPARDY" text.
+    loadingContainer.classList.toggle("flip");
+
+    //Set the score back to "000".
+    sessionStorage.setItem("score", `000`);
+
+    //Call the main function to make the new calls to the API to get new categories and reset the gameboard.
+    main(5, 6);
 
 })
 
 
-// =============================================================== DOM ELEMENT FUNCTIONS ===============================================================
+// =============================================================== API CALL FUNCTIONS & SETTING UP GAME BOARD ===============================================================
 
 
 /**
@@ -657,5 +687,5 @@ function timerInterval(timeLimit, clock, clockContainer, question, answer) {
             answer.classList.remove("flip");
         }
     }, 1000);
-    
+
 }

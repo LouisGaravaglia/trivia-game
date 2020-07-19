@@ -286,21 +286,31 @@ reset.addEventListener("click", () => {
  * @returns {array}     Returns an array of the categories parsed from the API data.
  */
 async function getCategories(num) {
+
+    //Setting categories to be an empty array to push to.
     const categories = [];
+
+    //Setting res to be the return value from the API call to jservice.io.
     const res = await axios.get("https://jservice.io/api/categories", {
         params: {
             count: num
         }
     });
 
+    //list is assinged to be data object in res.
     const list = res.data
 
+    //For of loop to loop over list items.
     for (const item of list) {
+
+        //Push an object containing key/values of id and title into the categories array.
         categories.push({
             id: item.id,
             title: item.title
         });
     }
+
+    //Returning the categories array.
     return categories;
 };
 
@@ -315,23 +325,35 @@ async function getCategories(num) {
  * @returns {object}        Returns an object with a widdled down list of catergories based of the width, and their titles.
  */
 async function getSelects(categories, width) {
+
+    //Assigning selectCats and titles to an empty arrays to push to.
     const selectCats = [];
     const titles = [];
+
+    //For loop to make a call to the API for the amount of times as width.
     for (let i = 0; i < width; i++) {
+
+        //Assign randomNum to randombly pick a category.
         let randomNum = Math.floor(Math.random() * 100);
+
+        //Randomly pick a category from 100 choices from the return value of the API.
         const res = await axios.get("https://jservice.io/api/clues", {
             params: {
                 category: categories[randomNum].id
             }
         });
+
+        //Push that category to selectCats.
         selectCats.push(res.data);
 
     }
 
+    //Loop over the selectCats array to get a hold of the title of each category and push to it's own array.
     for (let i = 0; i < width; i++) {
         titles.push(selectCats[i][0].category.title)
     }
 
+    //Return selectCats and titles to use in getClues() and makeHtmlBoard().
     return {
         selectCats: selectCats,
         titles: titles
@@ -349,6 +371,8 @@ async function getSelects(categories, width) {
  * @returns {array}             2D array containing question/answer/categories for each card.
  */
 async function getClues(selectCats, height, width) {
+
+    //board is set to a array with the length of height.
     const board = new Array(height);
     for (let i = 0; i < height; i++) {
         board[i] = new Array(width);

@@ -110,6 +110,8 @@ function cardContainerClick(e) {
     //Remove HTML markup from the answer.
     let minifiedAnswer = htmlStrippedAnswer.replace(/[^A-Za-z0-9]/g, '');
 
+    console.log(minifiedAnswer);
+
     //Return money amount from the container that the user clicked. As well as the answer to check against what the user submits.
     return {
         money: money,
@@ -200,12 +202,23 @@ function checkingAnswer(guess) {
         //Getting a hold of the ".correct-container" which is the alert showing the user that they answered correctly.
         const correctContainer = document.querySelector(".correct-container");
 
+        //Get a hold of the body.
+        const body = document.querySelector("body");
+
+        //Create a container div to contain the clock box.
+        const noClickContainer = document.createElement("div");
+        noClickContainer.classList.add("no-clicking-container");
+
+        //Append the noClickContainer to the body.
+        body.append(noClickContainer);
+
         //Reveal that correct answer container.
         correctContainer.classList.toggle("flip");
 
-        //After a second and half, remove the correct answer container.
+        //After a second and half, remove the correct answer container and the div that prevents user clicks.
         setTimeout(() => {
             correctContainer.classList.toggle("flip");
+            noClickContainer.classList.toggle("flip");
         }, 1500);
 
         //Return the value of moneyAmount to be used in ifCorrect().

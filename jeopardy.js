@@ -105,7 +105,10 @@ function cardContainerClick(e) {
     clockTicking(10, question, answer);
 
     //Remove non alpha/numeric characters and whitespace from the answer.
-    let minifiedAnswer = answer.innerText.replace(/[^A-Za-z0-9]/g, '');
+    let htmlStrippedAnswer = answer.innerText.replace(/(<([^>]+)>)/ig,"");
+
+    //Remove HTML markup from the answer.
+    let minifiedAnswer = htmlStrippedAnswer.replace(/[^A-Za-z0-9]/g, '');
 
     //Return money amount from the container that the user clicked. As well as the answer to check against what the user submits.
     return {
@@ -209,7 +212,7 @@ function checkingAnswer(guess) {
         return moneyAmount
 
     } else {
-        //FIXME:
+        
         //Getting a hold of the ".wrong-container" which is the alert showing the user that they answered incorrectly.
         const wrongContainer = document.querySelector(".wrong-container");
 
@@ -497,7 +500,8 @@ async function makeHtmlBoard(height, width, board, titles) {
             //Create a paragraph element to contain the appropriate question from the category.
             const questionText = document.createElement("p");
             questionText.setAttribute("data-name", "P")
-            questionText.innerText = _.toUpper(board[y][x].question);
+            const capitalizedQuestion = _.toUpper(board[y][x].question);
+            questionText.innerText = capitalizedQuestion.replace(/(<([^>]+)>)/ig,"");
 
             //Create a div to hold the answer and a class list of ".flip" to start it out as disply: none.
             const answerDiv = document.createElement("div");
@@ -506,7 +510,8 @@ async function makeHtmlBoard(height, width, board, titles) {
 
             //Create a paragraph element whose innerText is set to the appropriate answer from the category.
             const answerText = document.createElement("p");
-            answerText.innerText = _.toUpper(board[y][x].answer);
+            const capitalizedAnswer = _.toUpper(board[y][x].answer);
+            answerText.innerText = capitalizedAnswer.replace(/(<([^>]+)>)/ig,"");
 
             //Append elements to their parent divs, then append divs to the data cell, then append data cell to the row. (Repeat width x height times)
             moneyDiv.append(moneyText);

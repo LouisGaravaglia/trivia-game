@@ -66,6 +66,7 @@ cardContainer.addEventListener("click", (e) => {
 
     //Value of money stored as a hidden value inside the Div with an ID of "hidden-money".
     $("#hidden-money").val(money);
+    
 })
 
 

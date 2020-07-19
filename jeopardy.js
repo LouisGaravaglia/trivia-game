@@ -86,7 +86,7 @@ function cardContainerClick(e) {
     //Conditional to check if user clicked a title card, if so we are returning instead of fliping over that element.
     if (e.target.classList.contains("title-box")) return;
 
-    //
+    //Conditional to check to see if the event clicked was the text for the money amount / otherwise it's the div.
     if (e.target.localName === "p") {
         money = e.target.parentElement;
         question = e.target.parentElement.parentElement.children[1];
@@ -97,13 +97,17 @@ function cardContainerClick(e) {
         answer = e.target.parentElement.lastChild;
     }
 
+    //Hid the money amount, and show the questions.
     money.classList.add("flip");
     question.classList.toggle("flip");
 
+    //Start the timer countdown, with a countdown from 10 seconds.
     clockTicking(10, question, answer);
 
+    //Remove non alpha/numeric characters and whitespace from the answer.
     let minifiedAnswer = answer.innerText.replace(/[^A-Za-z0-9]/g, '');
 
+    //Return money amount from the container that the user clicked. As well as the answer to check against what the user submits.
     return {
         money: money,
         minifiedAnswer: minifiedAnswer,
@@ -125,23 +129,37 @@ const submitBtn = document.querySelector("#button-addon2");
  * @event {click} submitBtn Event on the submitBtn which is needed to pass the value of the user's answer.
  */
 submitBtn.addEventListener("click", () => {
+
+    //Defining typeField to get a hold of the input with a class of "form-control".
     const typeField = document.querySelector(".form-control");
+
+    //Defining guessFull to represent a capitalized version of the user's guess.
     let guessFull = _.toUpper(typeField.value);
+
+    //Defining guess to remove non alpha/numeric characters and whitespace from the user's guess.
     let guess = guessFull.replace(/[^A-Za-z0-9]/g, '');
+
+    //Define moneyAmount to represent the return value of checkingAnswer().
     let moneyAmount = checkingAnswer(guess);
 
+    //If the guess is incorrect, checkingAnswer will return moneyAmount as undefined.
     if (moneyAmount == undefined) {
 
+        //Reset typeField.value to empty so the user's last guess isn't remaining after they submit their guess.
         typeField.value = "";
 
+        //Set the #stop-timer id value to true in order for the timerInterval() function to exit it's interval.
         $("#stop-timer").val(true);
 
     } else {
 
+        //Set the #stop-timer id value to true in order for the timerInterval() function to exit it's interval.
         $("#stop-timer").val(true);
 
+        //If the guess is correct, ifCorrect() will run and will update the score in sessionStorage() with the added moneyAmount.
         ifCorrect(moneyAmount);
 
+        //Reset typeField.value to empty so the user's last guess isn't remaining after they submit their guess.
         typeField.value = "";
     }
 });
@@ -155,33 +173,53 @@ submitBtn.addEventListener("click", () => {
  * @returns {number}     Returns the money amount that is associated with that question.
  */
 function checkingAnswer(guess) {
+
+    //Retrieve the answer stored in the #hidden-answer div and assign it to answer.
     let answer = $("#hidden-answer").val();
+
+    //Capitalize the answer to compare it to the capitalized guess.
     let correctAnswer = _.toUpper(answer);
+
+    //Retrieve the answer stored in the #hidden-money div and assign it to money.
     let money = $("#hidden-money").val();
+
+    //Remove the "$" from the money value of the current user's clicked question.
     let moneySlice = money.innerText.slice(1);
+
+    //Turn the string into an integer to add up.
     let moneyAmount = parseInt(moneySlice);
 
+    //Conditional to check if the guess is the correct answer.
     if (guess === correctAnswer) {
         
+        //Getting a hold of the ".correct-container" which is the alert showing the user that they answered correctly.
         const correctContainer = document.querySelector(".correct-container");
 
+        //Reveal that correct answer container.
         correctContainer.classList.toggle("flip");
 
+        //After a second and half, remove the correct answer container.
         setTimeout(() => {
             correctContainer.classList.toggle("flip");
         }, 1500);
 
+        //Return the value of moneyAmount to be used in ifCorrect().
         return moneyAmount
 
     } else {
+
+        //Getting a hold of the ".wrong-container" which is the alert showing the user that they answered incorrectly.
         const wrongContainer = document.querySelector(".wrong-container");
 
+        //Reveal that incorrect answer container.
         wrongContainer.classList.toggle("flip");
 
+        //After a second and half, remove the incorrect answer container.
         setTimeout(() => {
             wrongContainer.classList.toggle("flip");
         }, 1500);
 
+        //Return undefined since the guess is incorrect.
         return undefined;
     }
 }
@@ -195,14 +233,26 @@ function checkingAnswer(guess) {
  * @returns {void}             Returns nothing.
  */
 const ifCorrect = (moneyAmount) => {
+
+    //displayScore holds the value of the h1 element containing the score.
     const displayScore = document.querySelector(".score");
+
+    //Retrieve the score value from sessionStorage.
     const getScore = sessionStorage.getItem("score");
+
+    //Converting the string version of score into an integer.
     let score = parseInt(getScore);
 
+    //If there is no score in the sessionStorage, set score to equal 0.
     if (!score) score = 0;
+
+    //Set score to equal current value of score plus the moneyAmount from the current question the user answered correctly.
     score += moneyAmount;
 
+    //Updated displayScore to show the current value of score.
     displayScore.innerText = `SCORE: $${score}`
+
+    //Set sessionStorage "score" to equal the current value score.
     sessionStorage.setItem("score", `${score}`);
 }
 

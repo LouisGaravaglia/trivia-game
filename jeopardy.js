@@ -407,40 +407,57 @@ async function getClues(selectCats, height, width) {
  * @returns {HTML Element} Returns the HTML table populated with all questions/answers/categories.
  */
 async function makeHtmlBoard(height, width, board, titles) {
+
+    //Get a hold of the table with an ID of "#board".
     const htmlBoard = document.querySelector("#board");
+
+    //Call makeTopRow() to populate the top row of the game board with the category titles.
     const top = makeTopRow(width, titles);
+
+    //Add the top row to the table htmlBoard.
     htmlBoard.append(top);
 
+    //Run a loop to assign a table row element to each index of height.
     for (let y = 0; y < height; y++) {
         const row = document.createElement("tr");
 
+        //Run a loop to assign table data cells to each value in the 2D array.
         for (let x = 0; x < width; x++) {
+
+            //Create the data cell and add the class of ".card-box".
             const cell = document.createElement("td");
             cell.classList.add("card-box");
 
+            //Create a div to contain how much money that question is worth and a data-name attribute to keep track.
             const moneyDiv = document.createElement("div");
             moneyDiv.setAttribute("data-name", "MONEY")
             moneyDiv.classList.add("money-amount");
 
+            //Create a paragraph element with its innerText to be incrementing values by $200, starting at $200, from the the top.
             const moneyText = document.createElement("p");
             moneyText.innerText = `$${(y+1)*2}00`;
 
+            //Create a div to contain a unique data-key and a class list of ".flip" to start it out as disply: none.
             const questionDiv = document.createElement("div");
             questionDiv.setAttribute("data-key", `${y}-${x}`)
             questionDiv.classList.add("card-front");
             questionDiv.classList.add("flip");
 
+            //Create a paragraph element to contain the appropriate question from the category.
             const questionText = document.createElement("p");
             questionText.setAttribute("data-name", "P")
             questionText.innerText = _.toUpper(board[y][x].question);
 
+            //Create a div to hold the answer and a class list of ".flip" to start it out as disply: none.
             const answerDiv = document.createElement("div");
             answerDiv.classList.add("card-back");
             answerDiv.classList.add("flip");
 
+            //Create a paragraph element whose innerText is set to the appropriate answer from the category.
             const answerText = document.createElement("p");
             answerText.innerText = _.toUpper(board[y][x].answer);
 
+            //Append elements to their parent divs, then append divs to the data cell, then append data cell to the row. (Repeat width x height times)
             moneyDiv.append(moneyText);
             questionDiv.append(questionText);
             answerDiv.append(answerText);
@@ -450,9 +467,10 @@ async function makeHtmlBoard(height, width, board, titles) {
             row.append(cell);
         }
 
+        //Append the row to the htmlBoard (Repeat height times)
         htmlBoard.append(row);
     }
-    return htmlBoard;
+
 }
 
 

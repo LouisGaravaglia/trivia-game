@@ -333,6 +333,9 @@ reset.addEventListener("click", () => {
     //Set the score back to "000".
     sessionStorage.setItem("score", `000`);
 
+    //Set the div containg the value of #stop-timer to be true in order to clear the timer.
+    $("#stop-timer").val(true);
+
     //Call the main function to make the new calls to the API to get new categories and reset the gameboard.
     main(5, 6);
 

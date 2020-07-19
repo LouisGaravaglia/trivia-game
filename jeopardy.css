@@ -396,7 +396,7 @@ img {
   top: 0;
   left: 9vw;
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
 }
 
 .correct-box {
@@ -428,7 +428,7 @@ img {
   top: 0;
   left: 22vw;
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
 }
 
 .wrong-box {
@@ -459,7 +459,7 @@ img {
   top: 0;
   left: 26vw;
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
 }
 
 .times-up-box {
@@ -482,3 +482,17 @@ img {
   border: 10px solid rgb(164, 0, 185);
   padding: 1px 10px 0px;
 }
+
+/* ///////////////////////////////////////////// PREVENT SUBMISSION AND CLICKING*/
+
+
+.no-clicking-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+
+

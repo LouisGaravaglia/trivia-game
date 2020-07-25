@@ -422,6 +422,7 @@ async function makeHtmlBoard(height, width, board, titles) {
             const questionDiv = document.createElement("div");
             const questionText = document.createElement("p");
             const capitalizedQuestion = _.toUpper(board[y][x].question);
+            const truncatedQuestion = capitalizedQuestion.substring(0, 100);
             const answerDiv = document.createElement("div");
             const answerText = document.createElement("p");
             const capitalizedAnswer = _.toUpper(board[y][x].answer);
@@ -438,7 +439,7 @@ async function makeHtmlBoard(height, width, board, titles) {
             questionDiv.classList.add("flip");
 
             questionText.setAttribute("data-name", "P")
-            questionText.innerText = capitalizedQuestion.replace(/(<([^>]+)>)/ig, "");
+            questionText.innerText = truncatedQuestion.replace(/(<([^>]+)>)/ig, "");
 
             answerDiv.classList.add("card-back");
             answerDiv.classList.add("flip");

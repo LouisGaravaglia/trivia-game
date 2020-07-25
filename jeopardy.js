@@ -51,13 +51,12 @@ const cardContainer = document.querySelector(".card-container");
  */
 cardContainer.addEventListener("click", (e) => {
 
-    let {
+    const {
         money,
         minifiedAnswer
     } = cardContainerClick(e);
 
     $("#hidden-answer").val(minifiedAnswer);
-
     $("#hidden-money").val(money);
 
 })
@@ -80,13 +79,17 @@ function cardContainerClick(e) {
 
     //Conditional to check to see if the event clicked was the text displaying the money amount / otherwise it's the div.
     if (e.target.localName === "p") {
+
         money = e.target.parentElement;
         question = e.target.parentElement.parentElement.children[1];
         answer = e.target.parentElement.parentElement.lastChild;
+
     } else {
+
         money = e.target;
         question = e.target.parentElement.children[1];
         answer = e.target.parentElement.lastChild;
+
     }
 
     money.classList.add("flip");
@@ -94,9 +97,8 @@ function cardContainerClick(e) {
 
     clockTicking(10, question, answer);
 
-    let htmlStrippedAnswer = answer.innerText.replace(/(<([^>]+)>)/ig, "");
-
-    let minifiedAnswer = htmlStrippedAnswer.replace(/[^A-Za-z0-9]/g, '');
+    const htmlStrippedAnswer = answer.innerText.replace(/(<([^>]+)>)/ig, "");
+    const minifiedAnswer = htmlStrippedAnswer.replace(/[^A-Za-z0-9]/g, '');
 
     console.log(minifiedAnswer);
 
@@ -124,28 +126,22 @@ const submitBtn = document.querySelector("#button-addon2");
 submitBtn.addEventListener("click", () => {
 
     const typeField = document.querySelector(".form-control");
-    let guessFull = _.toUpper(typeField.value);
-    let guess = guessFull.replace(/[^A-Za-z0-9]/g, '');
-    let moneyAmount = checkingAnswer(guess);
+    const guessFull = _.toUpper(typeField.value);
+    const guess = guessFull.replace(/[^A-Za-z0-9]/g, '');
+    const moneyAmount = checkingAnswer(guess);
 
-    //If the guess is incorrect, checkingAnswer will return moneyAmount as undefined.
     if (moneyAmount == undefined) {
 
-        //Reset typeField.value to empty so the user's last guess isn't remaining after they submit their guess.
         typeField.value = "";
 
-        //Set the #stop-timer id value to true in order for the timerInterval() function to exit it's interval.
         $("#stop-timer").val(true);
 
     } else {
 
-        //Set the #stop-timer id value to true in order for the timerInterval() function to exit it's interval.
         $("#stop-timer").val(true);
 
-        //If the guess is correct, ifCorrect() will run and will update the score in sessionStorage() with the added moneyAmount.
         ifCorrect(moneyAmount);
 
-        //Reset typeField.value to empty so the user's last guess isn't remaining after they submit their guess.
         typeField.value = "";
     }
 
@@ -161,75 +157,52 @@ submitBtn.addEventListener("click", () => {
  */
 function checkingAnswer(guess) {
 
-    //Retrieve the answer stored in the #hidden-answer div and assign it to answer.
-    let answer = $("#hidden-answer").val();
+    const answer = $("#hidden-answer").val();
+    const correctAnswer = _.toUpper(answer);
+    const money = $("#hidden-money").val();
+    const moneySlice = money.innerText.slice(1);
+    const moneyAmount = parseInt(moneySlice);
+    
+    if (guess === correctAnswer) { 
 
-    //Capitalize the answer to compare it to the capitalized guess.
-    let correctAnswer = _.toUpper(answer);
-
-    //Retrieve the answer stored in the #hidden-money div and assign it to money.
-    let money = $("#hidden-money").val();
-
-    //Remove the "$" from the money value of the current user's clicked question.
-    let moneySlice = money.innerText.slice(1);
-
-    //Turn the string into an integer to add up.
-    let moneyAmount = parseInt(moneySlice);
-
-    //Conditional to check if the guess is the correct answer.
-    if (guess === correctAnswer) {
-
-        //Getting a hold of the ".correct-container" which is the alert showing the user that they answered correctly.
         const correctContainer = document.querySelector(".correct-container");
-
-        //Get a hold of the body.
         const body = document.querySelector("body");
-
-        //Create a container div to contain the clock box.
         const noClickContainer = document.createElement("div");
-        noClickContainer.classList.add("no-clicking-container");
 
-        //Append the noClickContainer to the body.
+        noClickContainer.classList.add("no-clicking-container");
         body.append(noClickContainer);
 
-        //Reveal that correct answer container.
         correctContainer.classList.toggle("flip");
 
-        //After a second and half, remove the correct answer container and the div that prevents user clicks.
         setTimeout(() => {
+
             correctContainer.classList.toggle("flip");
             noClickContainer.classList.toggle("flip");
+
         }, 1500);
 
-        //Return the value of moneyAmount to be used in ifCorrect().
         return moneyAmount
 
     } else {
 
-        //Getting a hold of the ".wrong-container" which is the alert showing the user that they answered incorrectly.
         const wrongContainer = document.querySelector(".wrong-container");
-
-        //Get a hold of the body.
         const body = document.querySelector("body");
-
-        //Create a container div to contain the clock box.
         const noClickContainer = document.createElement("div");
-        noClickContainer.classList.add("no-clicking-container");
 
-        //Append the noClickContainer to the body.
+        noClickContainer.classList.add("no-clicking-container");
         body.append(noClickContainer);
 
-        //Reveal that incorrect answer container.
         wrongContainer.classList.toggle("flip");
 
-        //After a second and half, remove the incorrect answer container.
         setTimeout(() => {
+
             wrongContainer.classList.toggle("flip");
             noClickContainer.classList.toggle("flip");
+
         }, 1500);
 
-        //Return undefined since the guess is incorrect.
         return undefined;
+
     }
 
 }
@@ -244,25 +217,16 @@ function checkingAnswer(guess) {
  */
 const ifCorrect = (moneyAmount) => {
 
-    //displayScore holds the value of the h1 element containing the score.
     const displayScore = document.querySelector(".score");
-
-    //Retrieve the score value from sessionStorage.
     const getScore = sessionStorage.getItem("score");
-
-    //Converting the string version of score into an integer.
     let score = parseInt(getScore);
 
-    //If there is no score in the sessionStorage, set score to equal 0.
     if (!score) score = 0;
 
-    //Set score to equal current value of score plus the moneyAmount from the current question the user answered correctly.
     score += moneyAmount;
 
-    //Updated displayScore to show the current value of score.
     displayScore.innerText = `SCORE: $${score}`
 
-    //Set sessionStorage "score" to equal the current value score.
     sessionStorage.setItem("score", `${score}`);
 
 }
@@ -283,40 +247,24 @@ const reset = document.querySelector(".reset");
  */
 reset.addEventListener("click", () => {
 
-    //Create a variable for the container that holds the "JEOPARDY" text to show when loading API content.
     const loadingContainer = document.querySelector(".loading-container");
-
-    //Create a variable for the input where the user enters their guess.
     const inputContainer = document.querySelector(".input-group");
-
-    //Create a variable for the container that holds the score value.
     const scoreContainer = document.querySelector(".score-container");
-
-    //Create a variable for the container that holds the reset button.
     const resetContainer = document.querySelector(".reset-container");
-
-    //Create a variable for the gameBoard that holds the titles and Q's/A's.
     const gameBoard = document.querySelector("#board");
 
-
-    //Clear the gameBoard
     gameBoard.innerHTML = "";
 
-    //Toggle the flip class on to remove these from the state.
     inputContainer.classList.toggle("flip");
     scoreContainer.classList.toggle("flip");
     resetContainer.classList.toggle("flip");
 
-    //Toggle the flip class on to show the loading "JEOPARDY" text.
     loadingContainer.classList.toggle("flip");
 
-    //Set the score back to "000".
     sessionStorage.setItem("score", `000`);
 
-    //Set the div containg the value of #stop-timer to be true in order to clear the timer.
     $("#stop-timer").val(true);
 
-    //Call the main function to make the new calls to the API to get new categories and reset the gameboard.
     main(5, 6);
 
 })
@@ -334,30 +282,23 @@ reset.addEventListener("click", () => {
  */
 async function getCategories(num) {
 
-    //Setting categories to be an empty array to push to.
     const categories = [];
-
-    //Setting res to be the return value from the API call to jservice.io.
     const res = await axios.get("https://jservice.io/api/categories", {
         params: {
             count: num
         }
     });
-
-    //list is assinged to be data object in res.
     const list = res.data
 
-    //For of loop to loop over list items.
     for (const item of list) {
 
-        //Push an object containing key/values of id and title into the categories array.
         categories.push({
             id: item.id,
             title: item.title
         });
+
     }
 
-    //Returning the categories array.
     return categories;
 
 };
@@ -374,15 +315,12 @@ async function getCategories(num) {
  */
 async function getSelects(categories, width) {
 
-    //Assigning selectCats and titles to an empty arrays to push to.
     const selectCats = [];
     const titles = [];
 
-    //For loop to make a call to the API for the amount of times as width.
     for (let i = 0; i < width; i++) {
 
-        //Assign randomNum to randombly pick a category.
-        let randomNum = Math.floor(Math.random() * 100);
+        const randomNum = Math.floor(Math.random() * 100);
 
         //Randomly pick a category from 100 choices from the return value of the API.
         const res = await axios.get("https://jservice.io/api/clues", {

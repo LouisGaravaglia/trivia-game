@@ -143,6 +143,7 @@ submitBtn.addEventListener("click", () => {
         ifCorrect(moneyAmount);
 
         typeField.value = "";
+
     }
 
 });
@@ -174,10 +175,14 @@ function checkingAnswer(guess) {
 
         correctContainer.classList.toggle("flip");
 
+        $("#correct-answer").val(true)
+
         setTimeout(() => {
 
             correctContainer.classList.toggle("flip");
             noClickContainer.classList.toggle("flip");
+
+            $("#correct-answer").val(false)
 
         }, 1500);
 
@@ -194,10 +199,15 @@ function checkingAnswer(guess) {
 
         wrongContainer.classList.toggle("flip");
 
+        $("#incorrect-answer").val(true)
+
+
         setTimeout(() => {
 
             wrongContainer.classList.toggle("flip");
             noClickContainer.classList.toggle("flip");
+
+            $("#incorrect-answer").val(false)
 
         }, 1500);
 
@@ -540,6 +550,9 @@ function clockTicking(timeLimit, question, answer) {
     clockContainer.append(clockBox);
     body.append(clockContainer);
 
+    $("#correct-answer").val(false)
+    $("#incorrect-answer").val(false)
+
     timerInterval(timeLimit, clock, clockContainer, question, answer);
 
 }
@@ -580,7 +593,7 @@ function timerInterval(timeLimit, clock, clockContainer, question, answer) {
 
         }
 
-        if (timeLeft === 0) {
+        if (timeLeft === 0 && $("#correct-answer").val() === false && $("#incorrect-answer").val() === false) {
 
             const timesUpContainer = document.querySelector(".times-up-container");
             const body = document.querySelector("body");
@@ -605,7 +618,7 @@ function timerInterval(timeLimit, clock, clockContainer, question, answer) {
             answer.classList.remove("flip");
 
         }
-        
+
     }, 1000);
 
 }

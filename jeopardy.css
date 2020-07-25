@@ -165,7 +165,7 @@ img {
   font-size: 1vw;
   margin-bottom: 2px;
   padding-top: 20px;
-  color: #fff;
+  color: #E3E3FA;
   background: #341170;
   font-family: 'Roboto', sans-serif;
   font-weight: 800;
@@ -198,7 +198,7 @@ img {
   z-index: -1;
   text-align: center;
   word-wrap: break-word;
-  color: #fff;
+  color: #E3E3FA;
   background: #341170;
 }
 
@@ -214,7 +214,7 @@ img {
   font-size: 1vw;
   text-align: center;
   word-wrap: break-word;
-  color: #fff;
+  color: #E3E3FA;
   background: #341170;
 }
 

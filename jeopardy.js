@@ -172,11 +172,10 @@ function checkingAnswer(guess) {
         const inputContainer = document.querySelector(".input-group");
 
         inputContainer.classList.toggle("flip");
-
         noClickContainer.classList.add("no-clicking-container");
-        body.append(noClickContainer);
-
         correctContainer.classList.toggle("flip");
+
+        body.append(noClickContainer);
 
         $("#correct-answer").val(true)
 
@@ -199,14 +198,12 @@ function checkingAnswer(guess) {
         const inputContainer = document.querySelector(".input-group");
 
         inputContainer.classList.toggle("flip");
-
+        wrongContainer.classList.toggle("flip");
         noClickContainer.classList.add("no-clicking-container");
+
         body.append(noClickContainer);
 
-        wrongContainer.classList.toggle("flip");
-
         $("#incorrect-answer").val(true)
-
 
         setTimeout(() => {
 
@@ -272,7 +269,6 @@ reset.addEventListener("click", () => {
 
     scoreContainer.classList.toggle("flip");
     resetContainer.classList.toggle("flip");
-
     loadingContainer.classList.toggle("flip");
 
     sessionStorage.setItem("score", `000`);
@@ -421,31 +417,32 @@ async function makeHtmlBoard(height, width, board, titles) {
         for (let x = 0; x < width; x++) {
 
             const cell = document.createElement("td");
+            const moneyDiv = document.createElement("div");
+            const moneyText = document.createElement("p");
+            const questionDiv = document.createElement("div");
+            const questionText = document.createElement("p");
+            const capitalizedQuestion = _.toUpper(board[y][x].question);
+            const answerDiv = document.createElement("div");
+            const answerText = document.createElement("p");
+            const capitalizedAnswer = _.toUpper(board[y][x].answer);
+
             cell.classList.add("card-box");
 
-            const moneyDiv = document.createElement("div");
             moneyDiv.setAttribute("data-name", "MONEY")
             moneyDiv.classList.add("money-amount");
 
-            const moneyText = document.createElement("p");
             moneyText.innerText = `$${(y+1)*2}00`;
 
-            const questionDiv = document.createElement("div");
             questionDiv.setAttribute("data-key", `${y}-${x}`)
             questionDiv.classList.add("card-front");
             questionDiv.classList.add("flip");
 
-            const questionText = document.createElement("p");
             questionText.setAttribute("data-name", "P")
-            const capitalizedQuestion = _.toUpper(board[y][x].question);
             questionText.innerText = capitalizedQuestion.replace(/(<([^>]+)>)/ig, "");
 
-            const answerDiv = document.createElement("div");
             answerDiv.classList.add("card-back");
             answerDiv.classList.add("flip");
-
-            const answerText = document.createElement("p");
-            const capitalizedAnswer = _.toUpper(board[y][x].answer);
+            
             answerText.innerText = capitalizedAnswer.replace(/(<([^>]+)>)/ig, "");
 
             moneyDiv.append(moneyText);
@@ -481,12 +478,14 @@ function makeTopRow(width, titles) {
     for (let x = 0; x < width; x++) {
 
         const titleCell = document.createElement("td");
+        const titleBox = document.createElement("div");
+        const title = document.createElement("p");
+
+
         titleCell.setAttribute("id", x);
 
-        const titleBox = document.createElement("div");
         titleBox.classList.add("title-box");
 
-        const title = document.createElement("p");
         title.innerText = _.toUpper(titles[x]);
 
         titleBox.append(title);
@@ -537,24 +536,21 @@ function hideLoadingAndShowGame() {
 function clockTicking(timeLimit, question, answer) {
 
     const body = document.querySelector("body");
-
     const clockContainer = document.createElement("div");
-    clockContainer.classList.add("clock-container");
-
     const clockBox = document.createElement("div");
-    clockBox.classList.add("clock-box");
-
     const clock = document.createElement("h1");
+    const inputContainer = document.querySelector(".input-group");
+
+    clockContainer.classList.add("clock-container");
+    clockBox.classList.add("clock-box");
     clock.classList.add("danger", "clock");
+    inputContainer.classList.toggle("flip");
+
     clock.innerText = `00:${timeLimit}`;
 
     clockBox.append(clock);
     clockContainer.append(clockBox);
     body.append(clockContainer);
-
-    const inputContainer = document.querySelector(".input-group");
-    inputContainer.classList.toggle("flip");
-
 
     $("#correct-answer").val(false)
     $("#incorrect-answer").val(false)

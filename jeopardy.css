@@ -2,7 +2,6 @@
 
 html, body {margin: 0; height: 100%; overflow: hidden}
 
-
 /* ///////////////////////////////////////////////HIDDEN ELEMENTS*/
 #hidden-answer {
   display: none;
@@ -11,7 +10,6 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 #hidden-money {
   display: none;
 }
-
 
 /* ///////////////////////////////////////////////IMAGE*/
 img {
@@ -51,7 +49,6 @@ img {
   color: #C014FA;
 }
 
-
 /* ///////////////////////////////////////////////RESET */
 .reset-container {
   position: absolute;
@@ -67,7 +64,6 @@ img {
   left: 0;
   cursor: pointer;
 }
-
 
 .reset {
   position: absolute;
@@ -98,8 +94,6 @@ img {
   background-color: #ffd000;
   border: .5px solid #ffd000;
 }
-
-
 
 /* ///////////////////////////////////////////////TIMER */
 
@@ -134,7 +128,6 @@ img {
   border: 5px solid #bd9a00;
   padding: 1px 10px 0px;
 }
-
 
 /* ///////////////////////////////////////////////TEXT INPUT */
 
@@ -171,7 +164,6 @@ img {
   font-weight: 800;
 }
 
-
 .money-amount {
   padding-top: 12px;
   position: absolute;
@@ -201,7 +193,6 @@ img {
   color: #E3E3FA;
   background: #341170;
 }
-
 
 .card-back {
   padding-top: 30px;
@@ -284,7 +275,6 @@ img {
   padding: 1px 10px 0px;
 }
 
-
 /* ///////////////////////////////////////////// WRONG RESPONSE */
 
 .wrong-container {
@@ -348,7 +338,6 @@ img {
 }
 
 /* ///////////////////////////////////////////// PREVENT SUBMISSION AND CLICKING*/
-
 
 .no-clicking-container {
   position: absolute;

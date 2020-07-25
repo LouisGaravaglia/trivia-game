@@ -11,19 +11,16 @@
  */
 async function main(height, width) {
 
-    //catergories variable that holds the return value of getCategories(), to be used in getSelects().
     const categories = await getCategories(100);
 
-    //deconstructed selectCats and titles variables that hold return values of getSelects(), to be used in getClues() and makeHtmlBoard().
     const {
         selectCats,
         titles
     } = await getSelects(categories, width);
 
-    //board variable that holds the return value of getClues(), to be used in makeHtmlBoard().
     const board = await getClues(selectCats, height, width);
 
-    //calling makeHtmlBoard() to populate the correct number of Jeopardy questions the assigned width and height.
+    //calling makeHtmlBoard() to populate the correct number of Jeopardy questions/answers/money value to the assigned width and height.
     makeHtmlBoard(height, width, board, titles);
 
     //calling hideLoadingAndShowGame() to remove the "JEOPARDY" loding HTML Elment, and show game board after the API has responded.
@@ -32,7 +29,6 @@ async function main(height, width) {
 }
 
 
-//Call main() to construct the state with a height of 5 rows and a width of 6 columns.
 main(5, 6);
 
 
@@ -55,18 +51,15 @@ const cardContainer = document.querySelector(".card-container");
  */
 cardContainer.addEventListener("click", (e) => {
 
-    //money and minifiedAnswer are assigned as variables from the return values of cardContainerClick().
     let {
         money,
         minifiedAnswer
     } = cardContainerClick(e);
 
-    //Value of minifiedAnswer stored as a hidden value inside the Div with an ID of "hidden-answer".
     $("#hidden-answer").val(minifiedAnswer);
 
-    //Value of money stored as a hidden value inside the Div with an ID of "hidden-money".
     $("#hidden-money").val(money);
-    
+
 })
 
 
@@ -79,15 +72,13 @@ cardContainer.addEventListener("click", (e) => {
  */
 function cardContainerClick(e) {
 
-    //Defining money, question, and answer without values to establish them, until being assigned based on below conditonals.
     let money;
     let question;
     let answer;
 
-    //Conditional to check if user clicked a title card, if so we are returning instead of fliping over that element.
     if (e.target.classList.contains("title-box")) return;
 
-    //Conditional to check to see if the event clicked was the text for the money amount / otherwise it's the div.
+    //Conditional to check to see if the event clicked was the text displaying the money amount / otherwise it's the div.
     if (e.target.localName === "p") {
         money = e.target.parentElement;
         question = e.target.parentElement.parentElement.children[1];
@@ -98,22 +89,17 @@ function cardContainerClick(e) {
         answer = e.target.parentElement.lastChild;
     }
 
-    //Hide the money amount, and show the questions.
     money.classList.add("flip");
     question.classList.toggle("flip");
 
-    //Start the timer countdown, with a countdown from 10 seconds.
     clockTicking(10, question, answer);
 
-    //Remove non alpha/numeric characters and whitespace from the answer.
-    let htmlStrippedAnswer = answer.innerText.replace(/(<([^>]+)>)/ig,"");
+    let htmlStrippedAnswer = answer.innerText.replace(/(<([^>]+)>)/ig, "");
 
-    //Remove HTML markup from the answer.
     let minifiedAnswer = htmlStrippedAnswer.replace(/[^A-Za-z0-9]/g, '');
 
     console.log(minifiedAnswer);
 
-    //Return money amount from the container that the user clicked. As well as the answer to check against what the user submits.
     return {
         money: money,
         minifiedAnswer: minifiedAnswer,
@@ -137,16 +123,9 @@ const submitBtn = document.querySelector("#button-addon2");
  */
 submitBtn.addEventListener("click", () => {
 
-    //Defining typeField to get a hold of the input with a class of "form-control".
     const typeField = document.querySelector(".form-control");
-
-    //Defining guessFull to represent a capitalized version of the user's guess.
     let guessFull = _.toUpper(typeField.value);
-
-    //Defining guess to remove non alpha/numeric characters and whitespace from the user's guess.
     let guess = guessFull.replace(/[^A-Za-z0-9]/g, '');
-
-    //Define moneyAmount to represent the return value of checkingAnswer().
     let moneyAmount = checkingAnswer(guess);
 
     //If the guess is incorrect, checkingAnswer will return moneyAmount as undefined.
@@ -199,7 +178,7 @@ function checkingAnswer(guess) {
 
     //Conditional to check if the guess is the correct answer.
     if (guess === correctAnswer) {
-        
+
         //Getting a hold of the ".correct-container" which is the alert showing the user that they answered correctly.
         const correctContainer = document.querySelector(".correct-container");
 
@@ -226,7 +205,7 @@ function checkingAnswer(guess) {
         return moneyAmount
 
     } else {
-        
+
         //Getting a hold of the ".wrong-container" which is the alert showing the user that they answered incorrectly.
         const wrongContainer = document.querySelector(".wrong-container");
 
@@ -518,7 +497,7 @@ async function makeHtmlBoard(height, width, board, titles) {
             const questionText = document.createElement("p");
             questionText.setAttribute("data-name", "P")
             const capitalizedQuestion = _.toUpper(board[y][x].question);
-            questionText.innerText = capitalizedQuestion.replace(/(<([^>]+)>)/ig,"");
+            questionText.innerText = capitalizedQuestion.replace(/(<([^>]+)>)/ig, "");
 
             //Create a div to hold the answer and a class list of ".flip" to start it out as disply: none.
             const answerDiv = document.createElement("div");
@@ -528,7 +507,7 @@ async function makeHtmlBoard(height, width, board, titles) {
             //Create a paragraph element whose innerText is set to the appropriate answer from the category.
             const answerText = document.createElement("p");
             const capitalizedAnswer = _.toUpper(board[y][x].answer);
-            answerText.innerText = capitalizedAnswer.replace(/(<([^>]+)>)/ig,"");
+            answerText.innerText = capitalizedAnswer.replace(/(<([^>]+)>)/ig, "");
 
             //Append elements to their parent divs, then append divs to the data cell, then append data cell to the row. (Repeat width x height times)
             moneyDiv.append(moneyText);
@@ -675,7 +654,7 @@ function clockTicking(timeLimit, question, answer) {
  * @returns {void}
  */
 function timerInterval(timeLimit, clock, clockContainer, question, answer) {
-    
+
     //Initialize timePassed to be set to 0.
     let timePassed = 0;
     let timeLeft;

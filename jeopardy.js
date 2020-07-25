@@ -169,6 +169,9 @@ function checkingAnswer(guess) {
         const correctContainer = document.querySelector(".correct-container");
         const body = document.querySelector("body");
         const noClickContainer = document.createElement("div");
+        const inputContainer = document.querySelector(".input-group");
+
+        inputContainer.classList.toggle("flip");
 
         noClickContainer.classList.add("no-clicking-container");
         body.append(noClickContainer);
@@ -193,6 +196,9 @@ function checkingAnswer(guess) {
         const wrongContainer = document.querySelector(".wrong-container");
         const body = document.querySelector("body");
         const noClickContainer = document.createElement("div");
+        const inputContainer = document.querySelector(".input-group");
+
+        inputContainer.classList.toggle("flip");
 
         noClickContainer.classList.add("no-clicking-container");
         body.append(noClickContainer);
@@ -258,14 +264,12 @@ const reset = document.querySelector(".reset");
 reset.addEventListener("click", () => {
 
     const loadingContainer = document.querySelector(".loading-container");
-    const inputContainer = document.querySelector(".input-group");
     const scoreContainer = document.querySelector(".score-container");
     const resetContainer = document.querySelector(".reset-container");
     const gameBoard = document.querySelector("#board");
 
     gameBoard.innerHTML = "";
 
-    inputContainer.classList.toggle("flip");
     scoreContainer.classList.toggle("flip");
     resetContainer.classList.toggle("flip");
 
@@ -505,13 +509,11 @@ function makeTopRow(width, titles) {
 function hideLoadingAndShowGame() {
 
     const loadingContainer = document.querySelector(".loading-container");
-    const inputContainer = document.querySelector(".input-group");
     const scoreContainer = document.querySelector(".score-container");
     const resetContainer = document.querySelector(".reset-container");
 
     loadingContainer.classList.toggle("flip");
 
-    inputContainer.classList.toggle("flip");
     scoreContainer.classList.toggle("flip");
     resetContainer.classList.toggle("flip");
 
@@ -549,6 +551,10 @@ function clockTicking(timeLimit, question, answer) {
     clockBox.append(clock);
     clockContainer.append(clockBox);
     body.append(clockContainer);
+
+    const inputContainer = document.querySelector(".input-group");
+    inputContainer.classList.toggle("flip");
+
 
     $("#correct-answer").val(false)
     $("#incorrect-answer").val(false)
@@ -598,6 +604,9 @@ function timerInterval(timeLimit, clock, clockContainer, question, answer) {
             const timesUpContainer = document.querySelector(".times-up-container");
             const body = document.querySelector("body");
             const noClickContainer = document.createElement("div");
+            const inputContainer = document.querySelector(".input-group");
+
+            inputContainer.classList.toggle("flip");
 
             noClickContainer.classList.add("no-clicking-container");
             body.append(noClickContainer);
